@@ -3,12 +3,12 @@ package SolitaireSolver;
 import java.util.ArrayList;
 import java.util.Stack;
 
-public class Piles {
+public class Pile {
     Stack<Card> hiddenCards;
     Stack<Card> buildStack;
     Card topCard;
 
-    public Piles() {
+    public Pile() {
         hiddenCards = new Stack<>();
         buildStack = new Stack<>();
     }

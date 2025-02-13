@@ -26,7 +26,7 @@ public class Card {
             return "K" + suit;
         }
         else {
-            return rank + " " + suit;
+            return rank + "" + suit;
         }
     }
 

@@ -64,99 +64,83 @@ public class Foundation {
     //Note: These getters are only to visualise the game. They will not be used in actual solution.
     //      Getters returning the integer values will be used instead.
 
-    public String[] getSpadeCards() {
-        String[] spadesArray = new String[13];
-        for (int i = 1; i <= spades; i++) {
-            String spadeCard;
-            if (i == 1) {
-                spadeCard = "A-Spade";
-            }
-            else if (i == 11) {
-                spadeCard = "J-Spade";
-            }
-            else if (i == 12) {
-                spadeCard = "Q-Spade";
-            }
-            else if (i == 13) {
-                spadeCard = "K-Spade";
-            }
-            else {
-                spadeCard = i + "-Spade";
-            }
-            spadesArray[i] = spadeCard;
+    public String getSpadeCard() {
+        String spadeCard;
+        if (this.getSpades() == 1) {
+            spadeCard = "AS";
         }
-        return spadesArray;
+        else if (this.getSpades() == 11) {
+            spadeCard = "JS";
+        }
+        else if (this.getSpades() == 12) {
+            spadeCard = "QS";
+        }
+        else if (this.getSpades() == 13) {
+            spadeCard = "KS";
+        }
+        else {
+            spadeCard = this.getSpades() + "S";
+        }
+        return spadeCard;
     }
 
-    public String[] getHeartCards() {
-        String[] heartsArray = new String[13];
-        for (int i = 1; i <= hearts; i++) {
-            String heartCard;
-            if (i == 1) {
-                heartCard = "A-Heart";
-            }
-            else if (i == 11) {
-                heartCard = "J-Heart";
-            }
-            else if (i == 12) {
-                heartCard = "Q-Heart";
-            }
-            else if (i == 13) {
-                heartCard = "K-Heart";
-            }
-            else {
-                heartCard = i + "-Heart";
-            }
-            heartsArray[i] = heartCard;
+    public String getHeartCard() {
+        String heartCard;
+        if (this.getHearts() == 1) {
+            heartCard = "AH";
         }
-        return heartsArray;
+        else if (this.getHearts() == 11) {
+            heartCard = "JH";
+        }
+        else if (this.getHearts() == 12) {
+            heartCard = "QH";
+        }
+        else if (this.getHearts() == 13) {
+            heartCard = "KH";
+        }
+        else {
+            heartCard = this.getHearts() + "H";
+        }
+        return heartCard;
     }
 
-    public String[] getClubCards() {
-        String[] clubsArray = new String[13];
-        for (int i = 1; i <= clubs; i++) {
-            String clubCard;
-            if (i == 1) {
-                clubCard = "A-Club";
-            }
-            else if (i == 11) {
-                clubCard = "J-Club";
-            }
-            else if (i == 12) {
-                clubCard = "Q-Club";
-            }
-            else if (i == 13) {
-                clubCard = "K-Club";
-            }
-            else {
-                clubCard = i + "-Club";
-            }
-            clubsArray[i] = clubCard;
+    public String getClubCard() {
+        String clubCard;
+        if (this.getClubs() == 1) {
+            clubCard = "AC";
         }
-        return clubsArray;
+        else if (this.getClubs() == 11) {
+            clubCard = "JC";
+        }
+        else if (this.getClubs() == 12) {
+            clubCard = "QC";
+        }
+        else if (this.getClubs() == 13) {
+            clubCard = "KC";
+        }
+        else {
+            clubCard = this.getClubs() + "C";
+        }
+        return clubCard;
     }
 
-    public String[] getDiamondCards() {
-        String[] diamondsArray = new String[13];
-        for (int i = 1; i <= diamonds; i++) {
-            String diamondCard;
-            if (i == 1) {
-                diamondCard = "A-Diamond";
-            }
-            else if (i == 11) {
-                diamondCard = "J-Diamond";
-            }
-            else if (i == 12) {
-                diamondCard = "Q-Diamond";
-            }
-            else if (i == 13) {
-                diamondCard = "K-Diamond";
-            }
-            else {
-                diamondCard = i + "-Diamond";
-            }
-            diamondsArray[i] = diamondCard;
+    public String getDiamondCard() {
+        String diamondCard;
+        if (this.getDiamonds() == 1) {
+            diamondCard = "AD";
         }
-        return diamondsArray;
+        else if (this.getDiamonds() == 11) {
+            diamondCard = "JD";
+        }
+        else if (this.getDiamonds() == 12) {
+            diamondCard = "QD";
+        }
+        else if (this.getDiamonds() == 13) {
+            diamondCard = "KD";
+        }
+        else {
+            diamondCard = this.getDiamonds() + "D";
+        }
+        return diamondCard;
     }
 }
