@@ -1,5 +1,6 @@
 package SolitaireSolver;
 
+import java.util.ArrayList;
 import java.util.Stack;
 
 public class Piles {
@@ -40,6 +41,17 @@ public class Piles {
             return true;
         }
         return false;
+    }
+
+    public ArrayList<String> getPile() {
+        ArrayList<String> pile = new ArrayList<>();
+        for (Card card : hiddenCards) {
+            pile.add("-");
+        }
+        for (Card card : buildStack) {
+            pile.add(card.toString());
+        }
+        return pile;
     }
 
     public Card getTopCard() {
