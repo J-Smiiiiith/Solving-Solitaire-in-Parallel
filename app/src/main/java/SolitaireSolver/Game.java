@@ -1,6 +1,7 @@
 package SolitaireSolver;
 
 import java.util.Collections;
+import java.util.Scanner;
 import java.util.Stack;
 
 public class Game {
@@ -60,6 +61,58 @@ public class Game {
 
     public static void main(String[] args) {
         Game game = new Game();
-        System.out.println(game);
+
+        boolean end = false;
+
+        Scanner scanner = new Scanner(System.in);
+
+        while (!end) {
+            System.out.println(game + "\n");
+
+            System.out.println("Select option:");
+            System.out.println("1. Draw Cards from stock");
+            System.out.println("2. Move card from stock to pile");
+            System.out.println("3. Move card from stock to foundation");
+            System.out.println("8. Exit");
+
+            int choice = scanner.nextInt();
+            if (choice == 1) {
+                game.stockWaste.draw();
+            }
+            else if (choice == 2) {
+                System.out.println("Which pile are you moving the card to? (1-7) ");
+                int i = scanner.nextInt() - 1;
+
+                //Stock to pile
+                game.piles[i].addToBuildStack(game.stockWaste.getTopCard());
+                game.stockWaste.removeTopCard();
+                //Stock to pile
+            }
+            else if (choice == 3) {
+
+                //Stock to foundation
+                if (game.stockWaste.getTopCard().getSuit() == 'C') {
+                    game.foundation.incrementClubs();
+                    game.stockWaste.removeTopCard();
+                }
+                else if (game.stockWaste.getTopCard().getSuit() == 'S') {
+                    game.foundation.incrementSpades();
+                    game.stockWaste.removeTopCard();
+                }
+                else if (game.stockWaste.getTopCard().getSuit() == 'H') {
+                    game.foundation.incrementHearts();
+                    game.stockWaste.removeTopCard();
+                }
+                else if (game.stockWaste.getTopCard().getSuit() == 'D') {
+                    game.foundation.incrementDiamonds();
+                    game.stockWaste.removeTopCard();
+                }
+                //Stock to foundation
+
+            }
+            else if (choice == 8) {
+                end = true;
+            }
+        }
     }
 }
