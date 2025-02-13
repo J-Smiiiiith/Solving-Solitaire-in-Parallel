@@ -35,6 +35,15 @@ public class StockWaste {
         return false;
     }
 
+    public boolean removeTopCard() {
+        if (!waste.isEmpty()) {
+            waste.pop();
+            topCard = waste.peek();
+            return true;
+        }
+        return false;
+    }
+
     public Card getTopCard() {
         return topCard;
     }
