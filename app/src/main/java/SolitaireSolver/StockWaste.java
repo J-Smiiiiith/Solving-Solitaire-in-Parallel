@@ -3,11 +3,11 @@ package SolitaireSolver;
 import java.util.Stack;
 
 public class StockWaste {
-    Stack<String> stock;
-    Stack<String> waste;
-    String topCard;
+    Stack<Card> stock;
+    Stack<Card> waste;
+    Card topCard;
 
-    public StockWaste(Stack<String> cards) {
+    public StockWaste(Stack<Card> cards) {
         stock = cards;
         waste = new Stack<>();
         this.draw();
@@ -35,7 +35,7 @@ public class StockWaste {
         return false;
     }
 
-    public String getTopCard() {
+    public Card getTopCard() {
         return topCard;
     }
 }
