@@ -7,10 +7,10 @@ public class Foundation {
     int spades, hearts, clubs, diamonds;
 
     public Foundation() {
-        int spades = 0;
-        int hearts = 0;
-        int clubs = 0;
-        int diamonds = 0;
+        spades = 0;
+        hearts = 0;
+        clubs = 0;
+        diamonds = 0;
     }
 
     public boolean incrementSpades() {
