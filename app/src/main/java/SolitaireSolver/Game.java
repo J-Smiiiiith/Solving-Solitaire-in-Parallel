@@ -104,11 +104,17 @@ public class Game {
                         game.foundation.incrementClubs();
                         game.stockWaste.removeTopCard();
                     }
+                    else {
+                        System.out.println("Invalid move");
+                    }
                 }
                 else if (game.stockWaste.getTopCard().getSuit() == 'S') {
                     if (game.stockWaste.getTopCard().getRank() == game.foundation.getSpades() - 1) {
                         game.foundation.incrementSpades();
                         game.stockWaste.removeTopCard();
+                    }
+                    else {
+                        System.out.println("Invalid move");
                     }
                 }
                 else if (game.stockWaste.getTopCard().getSuit() == 'H') {
@@ -116,11 +122,17 @@ public class Game {
                         game.foundation.incrementHearts();
                         game.stockWaste.removeTopCard();
                     }
+                    else {
+                        System.out.println("Invalid move");
+                    }
                 }
                 else if (game.stockWaste.getTopCard().getSuit() == 'D') {
                     if (game.stockWaste.getTopCard().getRank() == game.foundation.getDiamonds() - 1) {
                         game.foundation.incrementDiamonds();
                         game.stockWaste.removeTopCard();
+                    }
+                    else {
+                        System.out.println("Invalid move");
                     }
                 }
                 //Stock to foundation
