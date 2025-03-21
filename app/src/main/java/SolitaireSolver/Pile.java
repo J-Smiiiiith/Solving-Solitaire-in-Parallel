@@ -35,9 +35,11 @@ public class Pile {
     }
 
     public boolean revealCard() {
+        System.out.println(hiddenCards.isEmpty());
         if (!hiddenCards.isEmpty()) {
             buildStack.push(hiddenCards.pop());
             topCard = buildStack.peek();
+            System.out.println("Revealed Card: " + topCard);
             return true;
         }
         return false;
