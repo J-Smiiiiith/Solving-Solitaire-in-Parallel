@@ -43,6 +43,7 @@ public class Game {
                 piles[i].dealCard(deck.pop());
             }
             piles[i].revealCard();
+            piles[i].setBottomCard();
         }
     }
 
