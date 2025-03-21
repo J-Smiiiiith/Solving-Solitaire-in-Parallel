@@ -15,8 +15,15 @@ public class StockWaste {
 
     public boolean draw() {
         if (!stock.isEmpty()) {
-            for (int i = 0; i < 4; i++) {
-                waste.push(stock.pop());
+            if (waste.size() < 3) {
+                for (int i = 0; i < stock.size(); i++) {
+                    waste.push(stock.pop());
+                }
+            }
+            else {
+                for (int i = 0; i < 4; i++) {
+                    waste.push(stock.pop());
+                }
             }
             topCard = waste.peek();
             return true;
@@ -35,7 +42,20 @@ public class StockWaste {
         return false;
     }
 
+    public boolean removeTopCard() {
+        if (!waste.isEmpty()) {
+            waste.pop();
+            topCard = waste.peek();
+            return true;
+        }
+        return false;
+    }
+
     public Card getTopCard() {
         return topCard;
+    }
+
+    public int getStockSize() {
+        return stock.size();
     }
 }
