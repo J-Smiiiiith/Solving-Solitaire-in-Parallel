@@ -67,6 +67,10 @@ public class Game {
         Scanner scanner = new Scanner(System.in);
 
         while (!end) {
+            if (game.stockWaste.getStockSize() == 0) {
+                game.stockWaste.replenish();
+            }
+
             System.out.println(game + "\n");
 
             System.out.println("Select option:");
@@ -84,8 +88,12 @@ public class Game {
                 int i = scanner.nextInt() - 1;
 
                 //Stock to pile
-                game.piles[i].addToBuildStack(game.stockWaste.getTopCard());
-                game.stockWaste.removeTopCard();
+                if (!game.piles[i].addToBuildStack(game.stockWaste.getTopCard())) {
+                    System.out.println("Invalid move");
+                }
+                else {
+                    game.stockWaste.removeTopCard();
+                }
                 //Stock to pile
             }
             else if (choice == 3) {
