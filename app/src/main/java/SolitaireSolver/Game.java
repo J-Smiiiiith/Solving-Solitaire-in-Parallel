@@ -100,20 +100,28 @@ public class Game {
 
                 //Stock to foundation
                 if (game.stockWaste.getTopCard().getSuit() == 'C') {
-                    game.foundation.incrementClubs();
-                    game.stockWaste.removeTopCard();
+                    if (game.stockWaste.getTopCard().getRank() == game.foundation.getClubs() - 1) {
+                        game.foundation.incrementClubs();
+                        game.stockWaste.removeTopCard();
+                    }
                 }
                 else if (game.stockWaste.getTopCard().getSuit() == 'S') {
-                    game.foundation.incrementSpades();
-                    game.stockWaste.removeTopCard();
+                    if (game.stockWaste.getTopCard().getRank() == game.foundation.getSpades() - 1) {
+                        game.foundation.incrementSpades();
+                        game.stockWaste.removeTopCard();
+                    }
                 }
                 else if (game.stockWaste.getTopCard().getSuit() == 'H') {
-                    game.foundation.incrementHearts();
-                    game.stockWaste.removeTopCard();
+                    if (game.stockWaste.getTopCard().getRank() == game.foundation.getHearts() - 1) {
+                        game.foundation.incrementHearts();
+                        game.stockWaste.removeTopCard();
+                    }
                 }
                 else if (game.stockWaste.getTopCard().getSuit() == 'D') {
-                    game.foundation.incrementDiamonds();
-                    game.stockWaste.removeTopCard();
+                    if (game.stockWaste.getTopCard().getRank() == game.foundation.getDiamonds() - 1) {
+                        game.foundation.incrementDiamonds();
+                        game.stockWaste.removeTopCard();
+                    }
                 }
                 //Stock to foundation
 
