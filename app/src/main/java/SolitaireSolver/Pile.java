@@ -27,6 +27,7 @@ public class Pile {
             if (topCard.getRank() == card.getRank() + 1) {
                 if (topCard.isBlack() != card.isBlack()) {
                     buildStack.push(card);
+                    topCard = buildStack.peek();
                     return true;
                 }
             }
@@ -35,11 +36,9 @@ public class Pile {
     }
 
     public boolean revealCard() {
-        System.out.println(hiddenCards.isEmpty());
         if (!hiddenCards.isEmpty()) {
             buildStack.push(hiddenCards.pop());
             topCard = buildStack.peek();
-            System.out.println("Revealed Card: " + topCard);
             return true;
         }
         return false;
@@ -65,6 +64,10 @@ public class Pile {
     }
     public void setBottomCard() {
         bottomCard = buildStack.firstElement();
+    }
+
+    public Card getBuildCard(int index) {
+        return buildStack.get(index);
     }
 
     public Stack<Card> getBuildStack() {
