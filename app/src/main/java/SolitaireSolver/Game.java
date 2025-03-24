@@ -47,6 +47,16 @@ public class Game {
         }
     }
 
+    private void stockToPile(int pileIndex) {
+        if (this.piles[pileIndex].addToBuildStack(this.stockWaste.getTopCard())) {
+            this.stockWaste.removeTopCard();
+        }
+        else {
+            System.out.println("Invalid move");
+        }
+        //Stock to pile
+    }
+
     @Override
     public String toString() {
         String output = "";
@@ -90,16 +100,7 @@ public class Game {
                 System.out.println("Which pile are you moving the card to? (1-7) ");
                 int i = scanner.nextInt() - 1;
 
-                System.out.println("Top Card: " + game.piles[i].getTopCard());
-                //Stock to pile
-                if (!game.piles[i].addToBuildStack(game.stockWaste.getTopCard())) {
-                    System.out.println("Invalid move");
-                }
-                else {
-                    game.stockWaste.removeTopCard();
-                    System.out.println("New Top Card: " + game.piles[i].getTopCard());
-                }
-                //Stock to pile
+                game.stockToPile(i);
             }
             else if (choice == 3) {
 
