@@ -95,6 +95,27 @@ public class Game {
         }
     }
 
+    private void moveEntireBuildStack(Pile src, Pile dst) {
+        if (src.getBottomCard().getRank() == dst.getTopCard().getRank() - 1) {
+            Stack<Card> tmpStack = new Stack<>();
+            while (!src.getBuildStack().isEmpty()) {
+                tmpStack.push(src.getBuildStack().pop());
+            }
+            addStackToBuildStack(tmpStack, dst);
+            src.revealCard();
+            src.setBottomCard();
+        }
+        else {
+            System.out.println("Invalid move");
+        }
+    }
+
+    private void addStackToBuildStack(Stack<Card> stack, Pile dst) {
+        while (!stack.isEmpty()) {
+            dst.addToBuildStack(stack.pop());
+        }
+    }
+
     @Override
     public String toString() {
         String output = "";
@@ -149,25 +170,7 @@ public class Game {
                 System.out.println("Which pile would you like to move this stack to? (1-7) ");
                 int y = scanner.nextInt() - 1;
 
-                //Move entire build stack
-                if (game.piles[x].getBottomCard().getRank() == game.piles[y].getTopCard().getRank() - 1) {
-                    Stack<Card> tmpStack = new Stack<>();
-                    int size = game.piles[x].getBuildStack().size();
-                    for (int i = 0; i < size; i++) {
-                        tmpStack.push(game.piles[x].getBuildStack().pop());
-                    }
-
-                    size = tmpStack.size();
-                    for (int i = 0; i < size; i++) {
-                        game.piles[y].addToBuildStack(tmpStack.pop());
-                    }
-                    game.piles[x].revealCard();
-                    game.piles[x].setBottomCard();
-                }
-                else {
-                    System.out.println("Invalid move");
-                }
-                //Move entire build stack
+                game.moveEntireBuildStack(game.piles[x], game.piles[y]);
             }
 
             else if (choice == 5) {
