@@ -54,7 +54,45 @@ public class Game {
         else {
             System.out.println("Invalid move");
         }
-        //Stock to pile
+    }
+
+    private void stockToFoundation() {
+        if (this.stockWaste.getTopCard().getSuit() == 'C') {
+            if (this.stockWaste.getTopCard().getRank() == this.foundation.getClubs() - 1) {
+                this.foundation.incrementClubs();
+                this.stockWaste.removeTopCard();
+            }
+            else {
+                System.out.println("Invalid move");
+            }
+        }
+        else if (this.stockWaste.getTopCard().getSuit() == 'S') {
+            if (this.stockWaste.getTopCard().getRank() == this.foundation.getSpades() - 1) {
+                this.foundation.incrementSpades();
+                this.stockWaste.removeTopCard();
+            }
+            else {
+                System.out.println("Invalid move");
+            }
+        }
+        else if (this.stockWaste.getTopCard().getSuit() == 'H') {
+            if (this.stockWaste.getTopCard().getRank() == this.foundation.getHearts() - 1) {
+                this.foundation.incrementHearts();
+                this.stockWaste.removeTopCard();
+            }
+            else {
+                System.out.println("Invalid move");
+            }
+        }
+        else if (this.stockWaste.getTopCard().getSuit() == 'D') {
+            if (this.stockWaste.getTopCard().getRank() == this.foundation.getDiamonds() - 1) {
+                this.foundation.incrementDiamonds();
+                this.stockWaste.removeTopCard();
+            }
+            else {
+                System.out.println("Invalid move");
+            }
+        }
     }
 
     @Override
@@ -103,45 +141,7 @@ public class Game {
                 game.stockToPile(i);
             }
             else if (choice == 3) {
-
-                //Stock to foundation
-                if (game.stockWaste.getTopCard().getSuit() == 'C') {
-                    if (game.stockWaste.getTopCard().getRank() == game.foundation.getClubs() - 1) {
-                        game.foundation.incrementClubs();
-                        game.stockWaste.removeTopCard();
-                    }
-                    else {
-                        System.out.println("Invalid move");
-                    }
-                }
-                else if (game.stockWaste.getTopCard().getSuit() == 'S') {
-                    if (game.stockWaste.getTopCard().getRank() == game.foundation.getSpades() - 1) {
-                        game.foundation.incrementSpades();
-                        game.stockWaste.removeTopCard();
-                    }
-                    else {
-                        System.out.println("Invalid move");
-                    }
-                }
-                else if (game.stockWaste.getTopCard().getSuit() == 'H') {
-                    if (game.stockWaste.getTopCard().getRank() == game.foundation.getHearts() - 1) {
-                        game.foundation.incrementHearts();
-                        game.stockWaste.removeTopCard();
-                    }
-                    else {
-                        System.out.println("Invalid move");
-                    }
-                }
-                else if (game.stockWaste.getTopCard().getSuit() == 'D') {
-                    if (game.stockWaste.getTopCard().getRank() == game.foundation.getDiamonds() - 1) {
-                        game.foundation.incrementDiamonds();
-                        game.stockWaste.removeTopCard();
-                    }
-                    else {
-                        System.out.println("Invalid move");
-                    }
-                }
-                //Stock to foundation
+                game.stockToFoundation();
             }
             else if (choice == 4) {
                 System.out.println("Which build stack would you like to move? (1-7)");
