@@ -6,7 +6,7 @@ import java.util.Stack;
 public class Pile {
     Stack<Card> hiddenCards;
     Stack<Card> buildStack;
-    Card topCard;
+    Card topCard, bottomCard;
 
     public Pile() {
         hiddenCards = new Stack<>();
@@ -27,6 +27,7 @@ public class Pile {
             if (topCard.getRank() == card.getRank() + 1) {
                 if (topCard.isBlack() != card.isBlack()) {
                     buildStack.push(card);
+                    topCard = buildStack.peek();
                     return true;
                 }
             }
@@ -56,6 +57,17 @@ public class Pile {
 
     public Card getTopCard() {
         return topCard;
+    }
+
+    public Card getBottomCard() {
+        return bottomCard;
+    }
+    public void setBottomCard() {
+        bottomCard = buildStack.firstElement();
+    }
+
+    public Card getBuildCard(int index) {
+        return buildStack.get(index);
     }
 
     public Stack<Card> getBuildStack() {

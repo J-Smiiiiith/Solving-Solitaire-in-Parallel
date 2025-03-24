@@ -43,6 +43,7 @@ public class Game {
                 piles[i].dealCard(deck.pop());
             }
             piles[i].revealCard();
+            piles[i].setBottomCard();
         }
     }
 
@@ -77,6 +78,8 @@ public class Game {
             System.out.println("1. Draw Cards from stock");
             System.out.println("2. Move card from stock to pile");
             System.out.println("3. Move card from stock to foundation");
+            System.out.println("4. Move entire build stack");
+            System.out.println("5. Move partial build stack");
             System.out.println("8. Exit");
 
             int choice = scanner.nextInt();
@@ -87,12 +90,14 @@ public class Game {
                 System.out.println("Which pile are you moving the card to? (1-7) ");
                 int i = scanner.nextInt() - 1;
 
+                System.out.println("Top Card: " + game.piles[i].getTopCard());
                 //Stock to pile
                 if (!game.piles[i].addToBuildStack(game.stockWaste.getTopCard())) {
                     System.out.println("Invalid move");
                 }
                 else {
                     game.stockWaste.removeTopCard();
+                    System.out.println("New Top Card: " + game.piles[i].getTopCard());
                 }
                 //Stock to pile
             }
@@ -136,8 +141,60 @@ public class Game {
                     }
                 }
                 //Stock to foundation
-
             }
+            else if (choice == 4) {
+                System.out.println("Which build stack would you like to move? (1-7)");
+                int x = scanner.nextInt() - 1;
+                System.out.println("Which pile would you like to move this stack to? (1-7) ");
+                int y = scanner.nextInt() - 1;
+
+                //Move entire build stack
+                System.out.println(game.piles[x].getBottomCard().getRank() +  " == " + game.piles[y].getTopCard().getRank() + "-1");
+                if (game.piles[x].getBottomCard().getRank() == game.piles[y].getTopCard().getRank() - 1) {
+                    Stack<Card> tmpStack = new Stack<>();
+                    for (int i = 0; i < game.piles[x].getBuildStack().size(); i++) {
+                        tmpStack.push(game.piles[x].getBuildStack().pop());
+                    }
+
+                    for (int i = 0; i < tmpStack.size(); i++) {
+                        game.piles[y].addToBuildStack(tmpStack.pop());
+                    }
+                    game.piles[x].revealCard();
+                }
+                else {
+                    System.out.println("Invalid move");
+                }
+                //Move entire build stack
+            }
+
+            else if (choice == 5) {
+                System.out.println("From which build stack would you like to move? (1-7)");
+                int x = scanner.nextInt() - 1;
+                System.out.println("Which pile would you like to move this stack to? (1-7) ");
+                int y = scanner.nextInt() - 1;
+                System.out.println("Which card in the build stack would you like to be the bottom of " +
+                        "the moved stack? (1-" + game.piles[x].getBuildStack().size() + ")");
+                int z = scanner.nextInt() - 1;
+
+                // Move partial build stack
+                if (game.piles[x].getBuildCard(z).getRank() == game.piles[y].getTopCard().getRank() - 1) {
+                    Stack<Card> tmpStack = new Stack<>();
+                    for (int i = z; i < game.piles[x].getBuildStack().size(); i++) {
+                        tmpStack.push(game.piles[x].getBuildStack().pop());
+                    }
+
+                    for (int i = 0; i < tmpStack.size(); i++) {
+                        game.piles[y].addToBuildStack(tmpStack.pop());
+                    }
+                    game.piles[x].revealCard();
+                }
+                else {
+                    System.out.println("Invalid move");
+                }
+                // Move partial build stack
+                // Very similar to full build stack move, could be modularised?
+            }
+
             else if (choice == 8) {
                 end = true;
             }
