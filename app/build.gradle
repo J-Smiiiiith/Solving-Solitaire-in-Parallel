@@ -28,13 +28,13 @@ dependencies {
 // Apply a specific Java toolchain to ease working on different environments.
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(22)
     }
 }
 
 application {
     // Define the main class for the application.
-    mainClass = 'solving.solitaire.in.parallel.App'
+    mainClass = 'SolitaireSolver.Game'
 }
 
 tasks.named('test') {
