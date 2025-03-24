@@ -181,11 +181,13 @@ public class Game {
                 // Move partial build stack
                 if (game.piles[x].getBuildCard(z).getRank() == game.piles[y].getTopCard().getRank() - 1) {
                     Stack<Card> tmpStack = new Stack<>();
-                    for (int i = z; i <= game.piles[x].getBuildStack().size(); i++) {
+                    int size = game.piles[x].getBuildStack().size();
+                    for (int i = z; i < size; i++) {
                         tmpStack.push(game.piles[x].getBuildStack().pop());
                     }
 
-                    for (int i = 0; i <= tmpStack.size(); i++) {
+                    size = tmpStack.size();
+                    for (int i = 0; i < size; i++) {
                         game.piles[y].addToBuildStack(tmpStack.pop());
                     }
                     game.piles[x].revealCard();
