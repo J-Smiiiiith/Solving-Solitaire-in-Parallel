@@ -149,17 +149,19 @@ public class Game {
                 int y = scanner.nextInt() - 1;
 
                 //Move entire build stack
-                System.out.println(game.piles[x].getBottomCard().getRank() +  " == " + game.piles[y].getTopCard().getRank() + "-1");
                 if (game.piles[x].getBottomCard().getRank() == game.piles[y].getTopCard().getRank() - 1) {
                     Stack<Card> tmpStack = new Stack<>();
-                    for (int i = 0; i < game.piles[x].getBuildStack().size(); i++) {
+                    int size = game.piles[x].getBuildStack().size();
+                    for (int i = 0; i < size; i++) {
                         tmpStack.push(game.piles[x].getBuildStack().pop());
                     }
 
-                    for (int i = 0; i < tmpStack.size(); i++) {
+                    size = tmpStack.size();
+                    for (int i = 0; i < size; i++) {
                         game.piles[y].addToBuildStack(tmpStack.pop());
                     }
                     game.piles[x].revealCard();
+                    game.piles[x].setBottomCard();
                 }
                 else {
                     System.out.println("Invalid move");
@@ -179,14 +181,15 @@ public class Game {
                 // Move partial build stack
                 if (game.piles[x].getBuildCard(z).getRank() == game.piles[y].getTopCard().getRank() - 1) {
                     Stack<Card> tmpStack = new Stack<>();
-                    for (int i = z; i < game.piles[x].getBuildStack().size(); i++) {
+                    for (int i = z; i <= game.piles[x].getBuildStack().size(); i++) {
                         tmpStack.push(game.piles[x].getBuildStack().pop());
                     }
 
-                    for (int i = 0; i < tmpStack.size(); i++) {
+                    for (int i = 0; i <= tmpStack.size(); i++) {
                         game.piles[y].addToBuildStack(tmpStack.pop());
                     }
                     game.piles[x].revealCard();
+                    game.piles[x].setBottomCard();
                 }
                 else {
                     System.out.println("Invalid move");
