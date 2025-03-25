@@ -15,7 +15,7 @@ public class Game {
         suits = new char[] {'C', 'S', 'H', 'D'};
         deck = buildDeck();
         this.shuffleDeck();
-        piles = new Pile[] {new Pile(), new Pile(), new Pile(), new Pile(), new Pile(), new Pile(), new Pile()};
+        piles = new Pile[] {new Pile(), new Pile(), new Pile(), new Pile(), new Pile(), new Pile(), new Pile(), new Pile()};
         foundation = new Foundation();
 
         this.buildDeck();
@@ -111,7 +111,17 @@ public class Game {
     }
 
     private void moveEntireBuildStack(Pile src, Pile dst) {
-        if (src.getBottomCard().getRank() == dst.getTopCard().getRank() - 1) {
+        int rankCheck;
+
+        if (dst.getPile().isEmpty()) {
+            rankCheck = 0;
+        }
+        else {
+            rankCheck = dst.getTopCard().getRank() - 1;
+        }
+
+        if ((src.getBottomCard().getRank() == rankCheck) ||
+                ((src.getBottomCard().getRank() == 13) && (rankCheck == 0))) {
             Stack<Card> tmpStack = new Stack<>();
             while (!src.getBuildStack().isEmpty()) {
                 tmpStack.push(src.getBuildStack().pop());
