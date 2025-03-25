@@ -47,8 +47,8 @@ public class Game {
         }
     }
 
-    private void stockToPile(int pileIndex) {
-        if (this.piles[pileIndex].addToBuildStack(this.stockWaste.getTopCard())) {
+    private void stockToPile(Pile pile) {
+        if (pile.addToBuildStack(this.stockWaste.getTopCard())) {
             this.stockWaste.removeTopCard();
         }
         else {
@@ -57,42 +57,57 @@ public class Game {
     }
 
     private void stockToFoundation() {
-        if (this.stockWaste.getTopCard().getSuit() == 'C') {
-            if (this.stockWaste.getTopCard().getRank() == this.foundation.getClubs() - 1) {
+        if (this.toFoundation(this.stockWaste.getTopCard())) {
+            this.stockWaste.removeTopCard();
+        }
+        else {
+            System.out.println("Invalid move");
+        }
+    }
+
+    private void pileToFoundation(Pile pile) {
+        if (this.toFoundation(pile.getTopCard())) {
+            pile.removeTopCard();
+        }
+        else {
+            System.out.println("Invalid move");
+        }
+    }
+
+    private boolean toFoundation(Card card) {
+        if (card.getSuit() == 'C') {
+            if (card.getRank() == this.foundation.getClubs() + 1) {
                 this.foundation.incrementClubs();
-                this.stockWaste.removeTopCard();
             }
             else {
-                System.out.println("Invalid move");
+                return false;
             }
         }
-        else if (this.stockWaste.getTopCard().getSuit() == 'S') {
-            if (this.stockWaste.getTopCard().getRank() == this.foundation.getSpades() - 1) {
+        else if (card.getSuit() == 'S') {
+            if (card.getRank() == this.foundation.getSpades() + 1) {
                 this.foundation.incrementSpades();
-                this.stockWaste.removeTopCard();
             }
             else {
-                System.out.println("Invalid move");
+                return false;
             }
         }
-        else if (this.stockWaste.getTopCard().getSuit() == 'H') {
-            if (this.stockWaste.getTopCard().getRank() == this.foundation.getHearts() - 1) {
+        else if (card.getSuit() == 'H') {
+            if (card.getRank() == this.foundation.getHearts() + 1) {
                 this.foundation.incrementHearts();
-                this.stockWaste.removeTopCard();
             }
             else {
-                System.out.println("Invalid move");
+                return false;
             }
         }
-        else if (this.stockWaste.getTopCard().getSuit() == 'D') {
-            if (this.stockWaste.getTopCard().getRank() == this.foundation.getDiamonds() - 1) {
+        else if (card.getSuit() == 'D') {
+            if (card.getRank() == this.foundation.getDiamonds() + 1) {
                 this.foundation.incrementDiamonds();
-                this.stockWaste.removeTopCard();
             }
             else {
-                System.out.println("Invalid move");
+                return false;
             }
         }
+        return true;
     }
 
     private void moveEntireBuildStack(Pile src, Pile dst) {
@@ -158,6 +173,7 @@ public class Game {
             System.out.println("3. Move card from stock to foundation");
             System.out.println("4. Move entire build stack");
             System.out.println("5. Move partial build stack");
+            System.out.println("6. Move card from build stack to foundation");
             System.out.println("8. Exit");
 
             int choice = scanner.nextInt();
@@ -168,7 +184,7 @@ public class Game {
                 System.out.println("Which pile are you moving the card to? (1-7) ");
                 int i = scanner.nextInt() - 1;
 
-                game.stockToPile(i);
+                game.stockToPile(game.piles[i]);
             }
             else if (choice == 3) {
                 game.stockToFoundation();
@@ -192,6 +208,13 @@ public class Game {
                 int z = scanner.nextInt() - 1;
 
                 game.movePartialBuildStack(game.piles[x], game.piles[y], z);
+            }
+
+            else if (choice == 6) {
+                System.out.println("From which build stack would you like to move? (1-7)");
+                int x = scanner.nextInt() - 1;
+
+                game.pileToFoundation(game.piles[x]);
             }
 
             else if (choice == 8) {

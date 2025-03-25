@@ -55,6 +55,15 @@ public class Pile {
         return pile;
     }
 
+    public boolean removeTopCard() {
+        if (!buildStack.isEmpty()) {
+            buildStack.pop();
+            this.revealCard();
+            return true;
+        }
+        return false;
+    }
+
     public Card getTopCard() {
         return topCard;
     }
