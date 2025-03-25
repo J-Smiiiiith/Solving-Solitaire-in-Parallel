@@ -47,6 +47,88 @@ public class Game {
         }
     }
 
+    private void stockToPile(int pileIndex) {
+        if (this.piles[pileIndex].addToBuildStack(this.stockWaste.getTopCard())) {
+            this.stockWaste.removeTopCard();
+        }
+        else {
+            System.out.println("Invalid move");
+        }
+    }
+
+    private void stockToFoundation() {
+        if (this.stockWaste.getTopCard().getSuit() == 'C') {
+            if (this.stockWaste.getTopCard().getRank() == this.foundation.getClubs() - 1) {
+                this.foundation.incrementClubs();
+                this.stockWaste.removeTopCard();
+            }
+            else {
+                System.out.println("Invalid move");
+            }
+        }
+        else if (this.stockWaste.getTopCard().getSuit() == 'S') {
+            if (this.stockWaste.getTopCard().getRank() == this.foundation.getSpades() - 1) {
+                this.foundation.incrementSpades();
+                this.stockWaste.removeTopCard();
+            }
+            else {
+                System.out.println("Invalid move");
+            }
+        }
+        else if (this.stockWaste.getTopCard().getSuit() == 'H') {
+            if (this.stockWaste.getTopCard().getRank() == this.foundation.getHearts() - 1) {
+                this.foundation.incrementHearts();
+                this.stockWaste.removeTopCard();
+            }
+            else {
+                System.out.println("Invalid move");
+            }
+        }
+        else if (this.stockWaste.getTopCard().getSuit() == 'D') {
+            if (this.stockWaste.getTopCard().getRank() == this.foundation.getDiamonds() - 1) {
+                this.foundation.incrementDiamonds();
+                this.stockWaste.removeTopCard();
+            }
+            else {
+                System.out.println("Invalid move");
+            }
+        }
+    }
+
+    private void moveEntireBuildStack(Pile src, Pile dst) {
+        if (src.getBottomCard().getRank() == dst.getTopCard().getRank() - 1) {
+            Stack<Card> tmpStack = new Stack<>();
+            while (!src.getBuildStack().isEmpty()) {
+                tmpStack.push(src.getBuildStack().pop());
+            }
+            addStackToBuildStack(tmpStack, dst);
+            src.revealCard();
+            src.setBottomCard();
+        }
+        else {
+            System.out.println("Invalid move");
+        }
+    }
+
+    private void movePartialBuildStack(Pile src, Pile dst, int cardNum) {
+        if (src.getBuildCard(cardNum).getRank() == dst.getTopCard().getRank() - 1) {
+            Stack<Card> tmpStack = new Stack<>();
+            int size = src.getBuildStack().size();
+            for (int i = cardNum; i < size; i++) {
+                tmpStack.push(src.getBuildStack().pop());
+            }
+            addStackToBuildStack(tmpStack, dst);
+            src.revealCard();
+            src.setBottomCard();
+        }
+    }
+
+    private void addStackToBuildStack(Stack<Card> stack, Pile dst) {
+        while (!stack.isEmpty()) {
+            dst.addToBuildStack(stack.pop());
+        }
+    }
+
     @Override
     public String toString() {
         String output = "";
@@ -90,57 +172,10 @@ public class Game {
                 System.out.println("Which pile are you moving the card to? (1-7) ");
                 int i = scanner.nextInt() - 1;
 
-                System.out.println("Top Card: " + game.piles[i].getTopCard());
-                //Stock to pile
-                if (!game.piles[i].addToBuildStack(game.stockWaste.getTopCard())) {
-                    System.out.println("Invalid move");
-                }
-                else {
-                    game.stockWaste.removeTopCard();
-                    System.out.println("New Top Card: " + game.piles[i].getTopCard());
-                }
-                //Stock to pile
+                game.stockToPile(i);
             }
             else if (choice == 3) {
-
-                //Stock to foundation
-                if (game.stockWaste.getTopCard().getSuit() == 'C') {
-                    if (game.stockWaste.getTopCard().getRank() == game.foundation.getClubs() - 1) {
-                        game.foundation.incrementClubs();
-                        game.stockWaste.removeTopCard();
-                    }
-                    else {
-                        System.out.println("Invalid move");
-                    }
-                }
-                else if (game.stockWaste.getTopCard().getSuit() == 'S') {
-                    if (game.stockWaste.getTopCard().getRank() == game.foundation.getSpades() - 1) {
-                        game.foundation.incrementSpades();
-                        game.stockWaste.removeTopCard();
-                    }
-                    else {
-                        System.out.println("Invalid move");
-                    }
-                }
-                else if (game.stockWaste.getTopCard().getSuit() == 'H') {
-                    if (game.stockWaste.getTopCard().getRank() == game.foundation.getHearts() - 1) {
-                        game.foundation.incrementHearts();
-                        game.stockWaste.removeTopCard();
-                    }
-                    else {
-                        System.out.println("Invalid move");
-                    }
-                }
-                else if (game.stockWaste.getTopCard().getSuit() == 'D') {
-                    if (game.stockWaste.getTopCard().getRank() == game.foundation.getDiamonds() - 1) {
-                        game.foundation.incrementDiamonds();
-                        game.stockWaste.removeTopCard();
-                    }
-                    else {
-                        System.out.println("Invalid move");
-                    }
-                }
-                //Stock to foundation
+                game.stockToFoundation();
             }
             else if (choice == 4) {
                 System.out.println("Which build stack would you like to move? (1-7)");
@@ -148,25 +183,7 @@ public class Game {
                 System.out.println("Which pile would you like to move this stack to? (1-7) ");
                 int y = scanner.nextInt() - 1;
 
-                //Move entire build stack
-                if (game.piles[x].getBottomCard().getRank() == game.piles[y].getTopCard().getRank() - 1) {
-                    Stack<Card> tmpStack = new Stack<>();
-                    int size = game.piles[x].getBuildStack().size();
-                    for (int i = 0; i < size; i++) {
-                        tmpStack.push(game.piles[x].getBuildStack().pop());
-                    }
-
-                    size = tmpStack.size();
-                    for (int i = 0; i < size; i++) {
-                        game.piles[y].addToBuildStack(tmpStack.pop());
-                    }
-                    game.piles[x].revealCard();
-                    game.piles[x].setBottomCard();
-                }
-                else {
-                    System.out.println("Invalid move");
-                }
-                //Move entire build stack
+                game.moveEntireBuildStack(game.piles[x], game.piles[y]);
             }
 
             else if (choice == 5) {
@@ -178,26 +195,7 @@ public class Game {
                         "the moved stack? (1-" + game.piles[x].getBuildStack().size() + ")");
                 int z = scanner.nextInt() - 1;
 
-                // Move partial build stack
-                if (game.piles[x].getBuildCard(z).getRank() == game.piles[y].getTopCard().getRank() - 1) {
-                    Stack<Card> tmpStack = new Stack<>();
-                    int size = game.piles[x].getBuildStack().size();
-                    for (int i = z; i < size; i++) {
-                        tmpStack.push(game.piles[x].getBuildStack().pop());
-                    }
-
-                    size = tmpStack.size();
-                    for (int i = 0; i < size; i++) {
-                        game.piles[y].addToBuildStack(tmpStack.pop());
-                    }
-                    game.piles[x].revealCard();
-                    game.piles[x].setBottomCard();
-                }
-                else {
-                    System.out.println("Invalid move");
-                }
-                // Move partial build stack
-                // Very similar to full build stack move, could be modularised?
+                game.movePartialBuildStack(game.piles[x], game.piles[y], z);
             }
 
             else if (choice == 8) {
