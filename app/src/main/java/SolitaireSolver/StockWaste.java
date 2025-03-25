@@ -34,7 +34,7 @@ public class StockWaste {
 
     public boolean replenish() {
         if (stock.isEmpty()) {
-            for (int i = 0; i < waste.size(); i++) {
+            while (!waste.isEmpty()) {
                 stock.push(waste.pop());
             }
             this.draw();
