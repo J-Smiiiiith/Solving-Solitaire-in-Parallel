@@ -156,10 +156,6 @@ public class Game {
         Scanner scanner = new Scanner(System.in);
 
         while (!end) {
-            if (game.stockWaste.getStockSize() == 0) {
-                game.stockWaste.replenish();
-            }
-
             System.out.println(game + "\n");
 
             System.out.println("Select option:");
@@ -206,6 +202,10 @@ public class Game {
 
             else if (choice == 8) {
                 end = true;
+            }
+
+            if (game.stockWaste.getStockSize() == 0) {
+                game.stockWaste.replenish();
             }
         }
     }
