@@ -72,7 +72,12 @@ public class Pile {
         return bottomCard;
     }
     public void setBottomCard() {
-        bottomCard = buildStack.firstElement();
+        if (!buildStack.isEmpty()) {
+            bottomCard = buildStack.firstElement();
+        }
+        else {
+            bottomCard = null;
+        }
     }
 
     public Card getBuildCard(int index) {
