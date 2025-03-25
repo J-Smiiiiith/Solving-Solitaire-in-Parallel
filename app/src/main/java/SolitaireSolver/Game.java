@@ -57,42 +57,48 @@ public class Game {
     }
 
     private void stockToFoundation() {
-        if (this.stockWaste.getTopCard().getSuit() == 'C') {
-            if (this.stockWaste.getTopCard().getRank() == this.foundation.getClubs() - 1) {
+        if (this.toFoundation(this.stockWaste.getTopCard())) {
+            this.stockWaste.removeTopCard();
+        }
+        else {
+            System.out.println("Invalid move");
+        }
+    }
+
+    private boolean toFoundation(Card card) {
+        if (card.getSuit() == 'C') {
+            if (card.getRank() == this.foundation.getClubs() - 1) {
                 this.foundation.incrementClubs();
-                this.stockWaste.removeTopCard();
             }
             else {
-                System.out.println("Invalid move");
+                return false;
             }
         }
-        else if (this.stockWaste.getTopCard().getSuit() == 'S') {
-            if (this.stockWaste.getTopCard().getRank() == this.foundation.getSpades() - 1) {
+        else if (card.getSuit() == 'S') {
+            if (card.getRank() == this.foundation.getSpades() - 1) {
                 this.foundation.incrementSpades();
-                this.stockWaste.removeTopCard();
             }
             else {
-                System.out.println("Invalid move");
+                return false;
             }
         }
-        else if (this.stockWaste.getTopCard().getSuit() == 'H') {
-            if (this.stockWaste.getTopCard().getRank() == this.foundation.getHearts() - 1) {
+        else if (card.getSuit() == 'H') {
+            if (card.getRank() == this.foundation.getHearts() - 1) {
                 this.foundation.incrementHearts();
-                this.stockWaste.removeTopCard();
             }
             else {
-                System.out.println("Invalid move");
+                return false;
             }
         }
-        else if (this.stockWaste.getTopCard().getSuit() == 'D') {
-            if (this.stockWaste.getTopCard().getRank() == this.foundation.getDiamonds() - 1) {
+        else if (card.getSuit() == 'D') {
+            if (card.getRank() == this.foundation.getDiamonds() - 1) {
                 this.foundation.incrementDiamonds();
-                this.stockWaste.removeTopCard();
             }
             else {
-                System.out.println("Invalid move");
+                return false;
             }
         }
+        return true;
     }
 
     private void moveEntireBuildStack(Pile src, Pile dst) {
