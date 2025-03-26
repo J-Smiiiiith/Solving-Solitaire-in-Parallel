@@ -1,5 +1,7 @@
 package SolitaireSolver;
 
+import SolitaireSolver.Exceptions.EmptyStackException;
+
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -41,18 +43,7 @@ public class Pile {
             topCard = buildStack.peek();
             return true;
         }
-        return false;
-    }
-
-    public ArrayList<String> getPile() {
-        ArrayList<String> pile = new ArrayList<>();
-        for (Card card : hiddenCards) {
-            pile.add("-");
-        }
-        for (Card card : buildStack) {
-            pile.add(card.toString());
-        }
-        return pile;
+        throw new EmptyStackException("hiddenCards is empty, cannot reveal card.");
     }
 
     public boolean removeTopCard() {
@@ -61,7 +52,7 @@ public class Pile {
             this.revealCard();
             return true;
         }
-        return false;
+        throw new EmptyStackException("buildStack is empty, cannot remove card.");
     }
 
     public Card getTopCard() {
@@ -86,5 +77,16 @@ public class Pile {
 
     public Stack<Card> getBuildStack() {
         return buildStack;
+    }
+
+    public ArrayList<String> getPile() {
+        ArrayList<String> pile = new ArrayList<>();
+        for (Card card : hiddenCards) {
+            pile.add("-");
+        }
+        for (Card card : buildStack) {
+            pile.add(card.toString());
+        }
+        return pile;
     }
 }
