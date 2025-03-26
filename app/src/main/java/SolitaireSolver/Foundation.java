@@ -3,6 +3,9 @@
  */
 package SolitaireSolver;
 
+import SolitaireSolver.Exceptions.InvalidMoveException;
+import SolitaireSolver.Exceptions.InvalidRankException;
+
 public class Foundation {
     int spades, hearts, clubs, diamonds;
 
@@ -43,6 +46,46 @@ public class Foundation {
             return true;
         }
         return false;
+    }
+
+    public boolean toFoundation(Card card) {
+        if (card.getSuit() == 'C') {
+            if (card.getRank() == this.getClubs() + 1) {
+                this.incrementClubs();
+            }
+            else {
+                throw new InvalidMoveException("Incorrect rank, cannot add card with rank " + card.getRank() +
+                        " to foundation with top card rank " + this.getClubs());
+            }
+        }
+        else if (card.getSuit() == 'S') {
+            if (card.getRank() == this.getSpades() + 1) {
+                this.incrementSpades();
+            }
+            else {
+                throw new InvalidRankException("Incorrect rank, cannot add card with rank " + card.getRank() +
+                        " to foundation with top card rank " + this.getSpades());
+            }
+        }
+        else if (card.getSuit() == 'H') {
+            if (card.getRank() == this.getHearts() + 1) {
+                this.incrementHearts();
+            }
+            else {
+                throw new InvalidRankException("Incorrect rank, cannot add card with rank " + card.getRank() +
+                        " to foundation with top card rank " + this.getHearts());
+            }
+        }
+        else if (card.getSuit() == 'D') {
+            if (card.getRank() == this.getDiamonds() + 1) {
+                this.incrementDiamonds();
+            }
+            else {
+                throw new InvalidRankException("Incorrect rank, cannot add card with rank " + card.getRank() +
+                        " to foundation with top card rank " + this.getDiamonds());
+            }
+        }
+        return true;
     }
 
     public int getSpades() {
