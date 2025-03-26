@@ -3,6 +3,7 @@ package SolitaireSolver;
 import java.util.Collections;
 import java.util.Scanner;
 import java.util.Stack;
+import SolitaireSolver.Exceptions.InvalidMoveException;
 
 public class Game {
     char[] suits;
@@ -52,7 +53,7 @@ public class Game {
             this.stockWaste.removeTopCard();
         }
         else {
-            System.out.println("Invalid move");
+            throw new InvalidMoveException("Invalid move: Cannot move card from stock to pile");
         }
     }
 
@@ -61,7 +62,7 @@ public class Game {
             this.stockWaste.removeTopCard();
         }
         else {
-            System.out.println("Invalid move");
+            throw new InvalidMoveException("");
         }
     }
 
@@ -71,7 +72,7 @@ public class Game {
             pile.setBottomCard();
         }
         else {
-            System.out.println("Invalid move");
+            throw new InvalidMoveException("Invalid move: Cannot move card from pile to foundation");
         }
     }
 
@@ -131,7 +132,7 @@ public class Game {
             src.setBottomCard();
         }
         else {
-            System.out.println("Invalid move");
+            throw new InvalidMoveException("Invalid move: Cannot move build stack");
         }
     }
 
@@ -145,6 +146,9 @@ public class Game {
             addStackToBuildStack(tmpStack, dst);
             src.revealCard();
             src.setBottomCard();
+        }
+        else {
+            throw new InvalidMoveException("Invalid move: Cannot move partial build stack");
         }
     }
 
@@ -187,57 +191,54 @@ public class Game {
             System.out.println("8. Exit");
 
             int choice = scanner.nextInt();
-            if (choice == 1) {
-                game.stockWaste.draw();
+
+            try {
+                if (choice == 1) {
+                    game.stockWaste.draw();
+                }
+                else if (choice == 2) {
+                    System.out.println("Which pile are you moving the card to? (1-7) ");
+                    int i = scanner.nextInt() - 1;
+                    game.stockToPile(game.piles[i]);
+                }
+                else if (choice == 3) {
+                    game.stockToFoundation();
+                }
+                else if (choice == 4) {
+                    System.out.println("Which build stack would you like to move? (1-7)");
+                    int x = scanner.nextInt() - 1;
+                    System.out.println("Which pile would you like to move this stack to? (1-7) ");
+                    int y = scanner.nextInt() - 1;
+                    game.moveEntireBuildStack(game.piles[x], game.piles[y]);
+                }
+                else if (choice == 5) {
+                    System.out.println("From which build stack would you like to move? (1-7)");
+                    int x = scanner.nextInt() - 1;
+                    System.out.println("Which pile would you like to move this stack to? (1-7) ");
+                    int y = scanner.nextInt() - 1;
+                    System.out.println("Which card in the build stack would you like to be the bottom of " +
+                            "the moved stack? (1-" + game.piles[x].getBuildStack().size() + ")");
+                    int z = scanner.nextInt() - 1;
+                    game.movePartialBuildStack(game.piles[x], game.piles[y], z);
+                }
+                else if (choice == 6) {
+                    System.out.println("From which build stack would you like to move? (1-7)");
+                    int x = scanner.nextInt() - 1;
+                    game.pileToFoundation(game.piles[x]);
+                }
+                else if (choice == 8) {
+                    end = true;
+                }
+                if (game.stockWaste.getStockSize() == 0) {
+                    game.stockWaste.replenish();
+                }
+                if (game.foundation.checkWin()) {
+                    System.out.println("You win");
+                    end = true;
+                }
             }
-            else if (choice == 2) {
-                System.out.println("Which pile are you moving the card to? (1-7) ");
-                int i = scanner.nextInt() - 1;
-
-                game.stockToPile(game.piles[i]);
-            }
-            else if (choice == 3) {
-                game.stockToFoundation();
-            }
-            else if (choice == 4) {
-                System.out.println("Which build stack would you like to move? (1-7)");
-                int x = scanner.nextInt() - 1;
-                System.out.println("Which pile would you like to move this stack to? (1-7) ");
-                int y = scanner.nextInt() - 1;
-
-                game.moveEntireBuildStack(game.piles[x], game.piles[y]);
-            }
-
-            else if (choice == 5) {
-                System.out.println("From which build stack would you like to move? (1-7)");
-                int x = scanner.nextInt() - 1;
-                System.out.println("Which pile would you like to move this stack to? (1-7) ");
-                int y = scanner.nextInt() - 1;
-                System.out.println("Which card in the build stack would you like to be the bottom of " +
-                        "the moved stack? (1-" + game.piles[x].getBuildStack().size() + ")");
-                int z = scanner.nextInt() - 1;
-
-                game.movePartialBuildStack(game.piles[x], game.piles[y], z);
-            }
-
-            else if (choice == 6) {
-                System.out.println("From which build stack would you like to move? (1-7)");
-                int x = scanner.nextInt() - 1;
-
-                game.pileToFoundation(game.piles[x]);
-            }
-
-            else if (choice == 8) {
-                end = true;
-            }
-
-            if (game.stockWaste.getStockSize() == 0) {
-                game.stockWaste.replenish();
-            }
-
-            if (game.foundation.checkWin()) {
-                System.out.println("You win");
-                end = true;
+            catch (InvalidMoveException e) {
+                System.out.println(e.getMessage());
             }
         }
     }
