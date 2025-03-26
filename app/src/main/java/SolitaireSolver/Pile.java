@@ -1,6 +1,7 @@
 package SolitaireSolver;
 
 import SolitaireSolver.Exceptions.EmptyStackException;
+import SolitaireSolver.Exceptions.InvalidColourException;
 import SolitaireSolver.Exceptions.InvalidRankException;
 
 import java.util.ArrayList;
@@ -34,7 +35,8 @@ public class Pile {
                     return true;
                 }
                 else {
-                    return false;
+                    throw new InvalidColourException("Incorrect colour, cannot put two " +
+                            (card.isBlack() ? "black" : "red") + " cards on top of each other.");
                 }
             }
             else {
