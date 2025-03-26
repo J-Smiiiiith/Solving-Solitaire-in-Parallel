@@ -18,7 +18,7 @@ public class Pile {
     }
 
     public boolean addToBuildStack(Card card) {
-        if (buildStack.isEmpty()) {
+        if (buildStack.isEmpty() || (this.getPile().isEmpty() && card.getRank() == 13)) {
             buildStack.push(card);
             topCard = buildStack.peek();
             return true;
