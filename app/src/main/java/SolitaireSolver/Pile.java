@@ -1,6 +1,7 @@
 package SolitaireSolver;
 
 import SolitaireSolver.Exceptions.EmptyStackException;
+import SolitaireSolver.Exceptions.InvalidRankException;
 
 import java.util.ArrayList;
 import java.util.Stack;
@@ -32,8 +33,14 @@ public class Pile {
                     topCard = buildStack.peek();
                     return true;
                 }
+                else {
+                    return false;
+                }
             }
-            return false;
+            else {
+                throw new InvalidRankException("Incorrect rank, cannot add card with rank " + card.getRank() +
+                        " to build stack with top card rank " + topCard.getRank());
+            }
         }
     }
 

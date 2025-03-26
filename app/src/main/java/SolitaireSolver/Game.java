@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Scanner;
 import java.util.Stack;
 import SolitaireSolver.Exceptions.InvalidMoveException;
+import SolitaireSolver.Exceptions.InvalidRankException;
 
 public class Game {
     char[] suits;
@@ -82,7 +83,8 @@ public class Game {
                 this.foundation.incrementClubs();
             }
             else {
-                return false;
+                throw new InvalidMoveException("Incorrect rank, cannot add card with rank " + card.getRank() +
+                        " to foundation with top card rank " + this.foundation.getClubs());
             }
         }
         else if (card.getSuit() == 'S') {
@@ -90,7 +92,8 @@ public class Game {
                 this.foundation.incrementSpades();
             }
             else {
-                return false;
+                throw new InvalidRankException("Incorrect rank, cannot add card with rank " + card.getRank() +
+                        " to foundation with top card rank " + this.foundation.getSpades());
             }
         }
         else if (card.getSuit() == 'H') {
@@ -98,7 +101,8 @@ public class Game {
                 this.foundation.incrementHearts();
             }
             else {
-                return false;
+                throw new InvalidRankException("Incorrect rank, cannot add card with rank " + card.getRank() +
+                        " to foundation with top card rank " + this.foundation.getHearts());
             }
         }
         else if (card.getSuit() == 'D') {
@@ -106,7 +110,8 @@ public class Game {
                 this.foundation.incrementDiamonds();
             }
             else {
-                return false;
+                throw new InvalidRankException("Incorrect rank, cannot add card with rank " + card.getRank() +
+                        " to foundation with top card rank " + this.foundation.getDiamonds());
             }
         }
         return true;
