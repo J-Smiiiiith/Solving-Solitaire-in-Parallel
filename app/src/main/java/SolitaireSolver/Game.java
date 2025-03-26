@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.Scanner;
 import java.util.Stack;
 import SolitaireSolver.Exceptions.InvalidMoveException;
-import SolitaireSolver.Exceptions.InvalidRankException;
 
 public class Game {
     char[] suits;
@@ -59,7 +58,7 @@ public class Game {
     }
 
     private void stockToFoundation() {
-        if (this.toFoundation(this.stockWaste.getTopCard())) {
+        if (this.foundation.toFoundation(this.stockWaste.getTopCard())) {
             this.stockWaste.removeTopCard();
         }
         else {
@@ -68,53 +67,13 @@ public class Game {
     }
 
     private void pileToFoundation(Pile pile) {
-        if (this.toFoundation(pile.getTopCard())) {
+        if (this.foundation.toFoundation(pile.getTopCard())) {
             pile.removeTopCard();
             pile.setBottomCard();
         }
         else {
             throw new InvalidMoveException("Invalid move: Cannot move card from pile to foundation");
         }
-    }
-
-    private boolean toFoundation(Card card) {
-        if (card.getSuit() == 'C') {
-            if (card.getRank() == this.foundation.getClubs() + 1) {
-                this.foundation.incrementClubs();
-            }
-            else {
-                throw new InvalidMoveException("Incorrect rank, cannot add card with rank " + card.getRank() +
-                        " to foundation with top card rank " + this.foundation.getClubs());
-            }
-        }
-        else if (card.getSuit() == 'S') {
-            if (card.getRank() == this.foundation.getSpades() + 1) {
-                this.foundation.incrementSpades();
-            }
-            else {
-                throw new InvalidRankException("Incorrect rank, cannot add card with rank " + card.getRank() +
-                        " to foundation with top card rank " + this.foundation.getSpades());
-            }
-        }
-        else if (card.getSuit() == 'H') {
-            if (card.getRank() == this.foundation.getHearts() + 1) {
-                this.foundation.incrementHearts();
-            }
-            else {
-                throw new InvalidRankException("Incorrect rank, cannot add card with rank " + card.getRank() +
-                        " to foundation with top card rank " + this.foundation.getHearts());
-            }
-        }
-        else if (card.getSuit() == 'D') {
-            if (card.getRank() == this.foundation.getDiamonds() + 1) {
-                this.foundation.incrementDiamonds();
-            }
-            else {
-                throw new InvalidRankException("Incorrect rank, cannot add card with rank " + card.getRank() +
-                        " to foundation with top card rank " + this.foundation.getDiamonds());
-            }
-        }
-        return true;
     }
 
     private void moveEntireBuildStack(Pile src, Pile dst) {
