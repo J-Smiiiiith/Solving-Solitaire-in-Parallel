@@ -19,7 +19,6 @@ public class Game {
         piles = new Pile[] {new Pile(), new Pile(), new Pile(), new Pile(), new Pile(), new Pile(), new Pile()};
         foundation = new Foundation();
 
-        this.buildDeck();
         this.dealCards();
         stockWaste = new StockWaste(deck);
     }
