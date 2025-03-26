@@ -68,6 +68,7 @@ public class Game {
     private void pileToFoundation(Pile pile) {
         if (this.toFoundation(pile.getTopCard())) {
             pile.removeTopCard();
+            pile.setBottomCard();
         }
         else {
             System.out.println("Invalid move");
@@ -115,8 +116,7 @@ public class Game {
 
         if (dst.getPile().isEmpty()) {
             rankCheck = 0;
-        }
-        else {
+        } else {
             rankCheck = dst.getTopCard().getRank() - 1;
         }
 
