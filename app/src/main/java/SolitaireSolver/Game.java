@@ -234,6 +234,11 @@ public class Game {
             if (game.stockWaste.getStockSize() == 0) {
                 game.stockWaste.replenish();
             }
+
+            if (game.foundation.checkWin()) {
+                System.out.println("You win");
+                end = true;
+            }
         }
     }
 }

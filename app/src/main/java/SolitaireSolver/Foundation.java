@@ -143,4 +143,8 @@ public class Foundation {
         }
         return diamondCard;
     }
+
+    public boolean checkWin() {
+        return spades == 13 && hearts == 13 && clubs == 13 && diamonds == 13;
+    }
 }
