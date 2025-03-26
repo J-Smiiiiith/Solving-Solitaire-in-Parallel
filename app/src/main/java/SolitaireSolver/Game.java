@@ -15,7 +15,7 @@ public class Game {
         suits = new char[] {'C', 'S', 'H', 'D'};
         deck = buildDeck();
         this.shuffleDeck();
-        piles = new Pile[] {new Pile(), new Pile(), new Pile(), new Pile(), new Pile(), new Pile(), new Pile(), new Pile()};
+        piles = new Pile[] {new Pile(), new Pile(), new Pile(), new Pile(), new Pile(), new Pile(), new Pile()};
         foundation = new Foundation();
 
         this.buildDeck();
