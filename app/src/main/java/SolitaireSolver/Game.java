@@ -195,13 +195,13 @@ public class Game {
                 if (game.stockWaste.getStockSize() == 0) {
                     game.stockWaste.replenish();
                 }
-                if (game.foundation.checkWin()) {
-                    System.out.println("You win");
-                    end = true;
-                }
             }
             catch (InvalidMoveException e) {
                 System.out.println(e.getMessage());
+            }
+            if (game.foundation.checkWin()) {
+                System.out.println("You win");
+                end = true;
             }
         }
     }
