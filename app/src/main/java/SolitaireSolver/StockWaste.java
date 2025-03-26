@@ -1,6 +1,8 @@
 package SolitaireSolver;
 
 import java.util.Stack;
+import SolitaireSolver.Exceptions.EmptyStackException;
+import SolitaireSolver.Exceptions.NonEmptyStackException;
 
 public class StockWaste {
     Stack<Card> stock;
@@ -29,7 +31,7 @@ public class StockWaste {
             topCard = waste.peek();
             return true;
         }
-        return false;
+        throw new EmptyStackException("Stock is empty, cannot draw.");
     }
 
     public boolean replenish() {
@@ -40,16 +42,16 @@ public class StockWaste {
             this.draw();
             return true;
         }
-        return false;
+        throw new NonEmptyStackException("Stock is not empty, cannot replenish.");
     }
 
     public boolean removeTopCard() {
         if (!waste.isEmpty()) {
             waste.pop();
-            topCard = waste.peek();
+            topCard = waste.isEmpty() ? null : waste.peek();
             return true;
         }
-        return false;
+        throw new EmptyStackException("Waste is empty, cannot remove top card.");
     }
 
     public Card getTopCard() {
