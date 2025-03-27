@@ -5,14 +5,14 @@ import java.util.Scanner;
 import java.util.Stack;
 import SolitaireSolver.Exceptions.InvalidMoveException;
 
-public class Game {
+public class Solitaire {
     char[] suits;
     Stack<Card> deck;
     Pile[] piles;
     Foundation foundation;
     StockWaste stockWaste;
 
-    private Game() {
+    public Solitaire() {
         suits = new char[] {'C', 'S', 'H', 'D'};
         deck = buildDeck();
         this.shuffleDeck();
@@ -121,28 +121,12 @@ public class Game {
         }
     }
 
-    @Override
-    public String toString() {
-        String output = "";
-
-        output += stockWaste.getTopCard() + "\t\t\t" + foundation.getClubCard() + " " + foundation.getSpadeCard() + " " +
-                foundation.getHeartCard() + " " + foundation.getDiamondCard() + "\n\n";
-
-        for (Pile pile : piles) {
-            output += pile.getPile() + "\n";
-        }
-        return output;
-    }
-
-    public static void main(String[] args) {
-        Game game = new Game();
-
+    public boolean runGame() {
         boolean end = false;
-
         Scanner scanner = new Scanner(System.in);
 
         while (!end) {
-            System.out.println(game + "\n");
+            System.out.println(this + "\n");
 
             System.out.println("Select option:");
             System.out.println("1. Draw Cards from stock");
@@ -157,22 +141,22 @@ public class Game {
 
             try {
                 if (choice == 1) {
-                    game.stockWaste.draw();
+                    this.stockWaste.draw();
                 }
                 else if (choice == 2) {
                     System.out.println("Which pile are you moving the card to? (1-7) ");
                     int i = scanner.nextInt() - 1;
-                    game.stockToPile(game.piles[i]);
+                    this.stockToPile(this.piles[i]);
                 }
                 else if (choice == 3) {
-                    game.stockToFoundation();
+                    this.stockToFoundation();
                 }
                 else if (choice == 4) {
                     System.out.println("Which build stack would you like to move? (1-7)");
                     int x = scanner.nextInt() - 1;
                     System.out.println("Which pile would you like to move this stack to? (1-7) ");
                     int y = scanner.nextInt() - 1;
-                    game.moveEntireBuildStack(game.piles[x], game.piles[y]);
+                    this.moveEntireBuildStack(this.piles[x], this.piles[y]);
                 }
                 else if (choice == 5) {
                     System.out.println("From which build stack would you like to move? (1-7)");
@@ -180,29 +164,44 @@ public class Game {
                     System.out.println("Which pile would you like to move this stack to? (1-7) ");
                     int y = scanner.nextInt() - 1;
                     System.out.println("Which card in the build stack would you like to be the bottom of " +
-                            "the moved stack? (1-" + game.piles[x].getBuildStack().size() + ")");
+                            "the moved stack? (1-" + this.piles[x].getBuildStack().size() + ")");
                     int z = scanner.nextInt() - 1;
-                    game.movePartialBuildStack(game.piles[x], game.piles[y], z);
+                    this.movePartialBuildStack(this.piles[x], this.piles[y], z);
                 }
                 else if (choice == 6) {
                     System.out.println("From which build stack would you like to move? (1-7)");
                     int x = scanner.nextInt() - 1;
-                    game.pileToFoundation(game.piles[x]);
+                    this.pileToFoundation(this.piles[x]);
                 }
                 else if (choice == 8) {
                     end = true;
                 }
-                if (game.stockWaste.getStockSize() == 0) {
-                    game.stockWaste.replenish();
+                if (this.stockWaste.getStockSize() == 0) {
+                    this.stockWaste.replenish();
                 }
             }
             catch (InvalidMoveException e) {
                 System.out.println(e.getMessage());
             }
-            if (game.foundation.checkWin()) {
+            if (this.foundation.checkWin()) {
                 System.out.println("You win");
-                end = true;
+                return true;
             }
         }
+        System.out.println("You lose");
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        String output = "";
+
+        output += stockWaste.getTopCard() + "\t\t\t" + foundation.getClubCard() + " " + foundation.getSpadeCard() + " " +
+                foundation.getHeartCard() + " " + foundation.getDiamondCard() + "\n\n";
+
+        for (Pile pile : piles) {
+            output += pile.getPile() + "\n";
+        }
+        return output;
     }
 }
