@@ -62,7 +62,7 @@ public class Solitaire {
     }
 
     private void stockToFoundation() {
-        if (this.foundation.toFoundation(this.stock.getTopCard())) {
+        if (this.foundation.toFoundation(this.stock.getCard())) {
             this.stock.removeTopCard();
         }
         else {

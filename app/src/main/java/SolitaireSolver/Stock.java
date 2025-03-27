@@ -5,8 +5,6 @@ import SolitaireSolver.Exceptions.EmptyStackException;
 import SolitaireSolver.Exceptions.EmptyStockException;
 
 public class Stock {
-    Card topCard;
-
     ArrayList<Card> stock;
     int cardIndex;
 
@@ -38,14 +36,9 @@ public class Stock {
         if (!stock.isEmpty()) {
             stock.remove(cardIndex);
             this.setCardIndex(this.getCardIndex() - 1);
-            topCard = stock.isEmpty() ? null : this.getCard();
             return true;
         }
         throw new EmptyStackException("Waste is empty, cannot remove top card.");
-    }
-
-    public Card getTopCard() {
-        return topCard;
     }
 
     public int getCardIndex() {
@@ -57,9 +50,5 @@ public class Stock {
 
     public Card getCard() {
         return stock.get(cardIndex);
-    }
-
-    public int getSize() {
-        return stock.size();
     }
 }
