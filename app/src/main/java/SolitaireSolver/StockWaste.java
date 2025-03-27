@@ -15,21 +15,22 @@ public class StockWaste {
     int cardIndex;
 
     public StockWaste(Stack<Card> cards) {
+        //System.out.println("Old: " + cards);
         stock = cards;
         waste = new Stack<>();
         this.draw();
     }
 
     public StockWaste(ArrayList<Card> cards) {
+        //System.out.println("New: " + cards);
         newStock = cards;
         cardIndex = 2;
-        this.newDraw();
     }
 
     public Card newDraw() {
-        if (this.getSize() != 0) {
+        if (!newStock.isEmpty()) {
             Card card;
-            if (newStock.size() - 1 < cardIndex) {
+            if (newStock.size() - 1 <= cardIndex) {
                 this.setCardIndex(newStock.size() - 1);
                 card = this.getCard();
                 this.setCardIndex(2);

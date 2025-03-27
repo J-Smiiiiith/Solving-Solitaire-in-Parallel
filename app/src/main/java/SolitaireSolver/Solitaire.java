@@ -11,7 +11,7 @@ public class Solitaire {
     Stack<Card> deck;
     Pile[] piles;
     Foundation foundation;
-    StockWaste stockWaste;
+    StockWaste stockWaste, newStockWaste;
 
     public Solitaire() {
         suits = new char[] {'C', 'S', 'H', 'D'};
@@ -21,6 +21,11 @@ public class Solitaire {
         foundation = new Foundation();
 
         this.dealCards();
+
+        ArrayList<Card> newDeck = new ArrayList<>(deck);
+        Collections.reverse(newDeck);
+
+        newStockWaste = new StockWaste(newDeck);
         stockWaste = new StockWaste(deck);
     }
 
@@ -127,6 +132,7 @@ public class Solitaire {
         Scanner scanner = new Scanner(System.in);
 
         while (!end) {
+            System.out.println("New: " + newStockWaste.newStock + " " + newStockWaste.cardIndex);
             System.out.println(this + "\n");
 
             System.out.println("Select option:");
@@ -143,6 +149,7 @@ public class Solitaire {
             try {
                 if (choice == 1) {
                     this.stockWaste.draw();
+                    this.newStockWaste.newDraw();
                 }
                 else if (choice == 2) {
                     System.out.println("Which pile are you moving the card to? (1-7) ");
@@ -197,8 +204,8 @@ public class Solitaire {
     public String toString() {
         String output = "";
 
-        output += stockWaste.getTopCard() + "\t\t\t" + foundation.getClubCard() + " " + foundation.getSpadeCard() + " " +
-                foundation.getHeartCard() + " " + foundation.getDiamondCard() + "\n\n";
+        output += newStockWaste.getCard() + "\t\t\t" + foundation.getClubCard() + " " + foundation.getSpadeCard() +
+                " " + foundation.getHeartCard() + " " + foundation.getDiamondCard() + "\n" + "\n\n";
 
         for (Pile pile : piles) {
             output += pile.getPile() + "\n";
