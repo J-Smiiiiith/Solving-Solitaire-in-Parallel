@@ -1,5 +1,6 @@
 package SolitaireSolver;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 import java.util.Stack;
@@ -10,7 +11,7 @@ public class Solitaire {
     Stack<Card> deck;
     Pile[] piles;
     Foundation foundation;
-    StockWaste stockWaste;
+    Stock stock;
 
     public Solitaire() {
         suits = new char[] {'C', 'S', 'H', 'D'};
@@ -20,7 +21,11 @@ public class Solitaire {
         foundation = new Foundation();
 
         this.dealCards();
-        stockWaste = new StockWaste(deck);
+
+        ArrayList<Card> newDeck = new ArrayList<>(deck);
+        Collections.reverse(newDeck);
+
+        stock = new Stock(newDeck);
     }
 
     private Stack<Card> buildDeck() {
@@ -48,8 +53,8 @@ public class Solitaire {
     }
 
     private void stockToPile(Pile pile) {
-        if (pile.addToBuildStack(this.stockWaste.getTopCard())) {
-            this.stockWaste.removeTopCard();
+        if (pile.addToBuildStack(this.stock.getCard())) {
+            this.stock.removeTopCard();
         }
         else {
             throw new InvalidMoveException("Invalid move: Cannot move card from stock to pile");
@@ -57,8 +62,8 @@ public class Solitaire {
     }
 
     private void stockToFoundation() {
-        if (this.foundation.toFoundation(this.stockWaste.getTopCard())) {
-            this.stockWaste.removeTopCard();
+        if (this.foundation.toFoundation(this.stock.getCard())) {
+            this.stock.removeTopCard();
         }
         else {
             throw new InvalidMoveException("");
@@ -141,7 +146,7 @@ public class Solitaire {
 
             try {
                 if (choice == 1) {
-                    this.stockWaste.draw();
+                    this.stock.draw();
                 }
                 else if (choice == 2) {
                     System.out.println("Which pile are you moving the card to? (1-7) ");
@@ -176,9 +181,6 @@ public class Solitaire {
                 else if (choice == 8) {
                     end = true;
                 }
-                if (this.stockWaste.getStockSize() == 0) {
-                    this.stockWaste.replenish();
-                }
             }
             catch (InvalidMoveException e) {
                 System.out.println(e.getMessage());
@@ -196,8 +198,8 @@ public class Solitaire {
     public String toString() {
         String output = "";
 
-        output += stockWaste.getTopCard() + "\t\t\t" + foundation.getClubCard() + " " + foundation.getSpadeCard() + " " +
-                foundation.getHeartCard() + " " + foundation.getDiamondCard() + "\n\n";
+        output += stock.getCard() + "\t\t\t" + foundation.getClubCard() + " " + foundation.getSpadeCard() +
+                " " + foundation.getHeartCard() + " " + foundation.getDiamondCard() + "\n" + "\n\n";
 
         for (Pile pile : piles) {
             output += pile.getPile() + "\n";
