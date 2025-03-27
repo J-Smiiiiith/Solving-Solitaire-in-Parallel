@@ -1,7 +1,9 @@
 package SolitaireSolver;
 
+import java.util.ArrayList;
 import java.util.Stack;
 import SolitaireSolver.Exceptions.EmptyStackException;
+import SolitaireSolver.Exceptions.EmptyStockException;
 import SolitaireSolver.Exceptions.NonEmptyStackException;
 
 public class StockWaste {
@@ -9,10 +11,38 @@ public class StockWaste {
     Stack<Card> waste;
     Card topCard;
 
+    ArrayList<Card> newStock;
+    int cardIndex;
+
     public StockWaste(Stack<Card> cards) {
         stock = cards;
         waste = new Stack<>();
         this.draw();
+    }
+
+    public StockWaste(ArrayList<Card> cards) {
+        newStock = cards;
+        cardIndex = 2;
+        this.newDraw();
+    }
+
+    public Card newDraw() {
+        if (this.getSize() != 0) {
+            Card card;
+            if (newStock.size() - 1 < cardIndex) {
+                this.setCardIndex(newStock.size() - 1);
+                card = this.getCard();
+                this.setCardIndex(2);
+                return card;
+            }
+            else {
+                this.setCardIndex(this.getCardIndex() + 3);
+                return this.getCard();
+            }
+        }
+        else {
+            throw new EmptyStockException("Stock is empty, cannot draw.");
+        }
     }
 
     public boolean draw() {
@@ -64,5 +94,20 @@ public class StockWaste {
 
     public int getWasteSize() {
         return waste.size();
+    }
+
+    public int getCardIndex() {
+        return cardIndex;
+    }
+    public void setCardIndex(int cardIndex) {
+        this.cardIndex = cardIndex;
+    }
+
+    public Card getCard() {
+        return newStock.get(cardIndex);
+    }
+
+    public int getSize() {
+        return newStock.size();
     }
 }
