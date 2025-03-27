@@ -131,7 +131,6 @@ public class Solitaire {
         Scanner scanner = new Scanner(System.in);
 
         while (!end) {
-            System.out.println("New: " + stock.stock + " " + stock.cardIndex);
             System.out.println(this + "\n");
 
             System.out.println("Select option:");
