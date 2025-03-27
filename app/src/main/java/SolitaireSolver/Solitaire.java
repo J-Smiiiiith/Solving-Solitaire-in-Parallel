@@ -121,7 +121,7 @@ public class Solitaire {
         }
     }
 
-    public boolean game() {
+    public boolean runGame() {
         boolean end = false;
         Scanner scanner = new Scanner(System.in);
 
