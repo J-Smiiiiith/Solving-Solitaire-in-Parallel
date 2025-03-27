@@ -38,7 +38,7 @@ public class Stock {
             this.setCardIndex(this.getCardIndex() - 1);
             return true;
         }
-        throw new EmptyStackException("Waste is empty, cannot remove top card.");
+        throw new EmptyStockException("Stock is empty, cannot remove top card.");
     }
 
     public int getCardIndex() {
