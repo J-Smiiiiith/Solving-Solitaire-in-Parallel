@@ -34,7 +34,7 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = 'solving.solitaire.in.parallel.App'
+    mainClass = 'SolitaireSolver.Run'
 }
 
 tasks.named('test') {
