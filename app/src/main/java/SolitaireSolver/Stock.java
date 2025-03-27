@@ -37,6 +37,7 @@ public class Stock {
     public boolean removeTopCard() {
         if (!stock.isEmpty()) {
             stock.remove(cardIndex);
+            this.setCardIndex(this.getCardIndex() - 1);
             topCard = stock.isEmpty() ? null : this.getCard();
             return true;
         }

@@ -53,7 +53,7 @@ public class Solitaire {
     }
 
     private void stockToPile(Pile pile) {
-        if (pile.addToBuildStack(this.stock.getTopCard())) {
+        if (pile.addToBuildStack(this.stock.getCard())) {
             this.stock.removeTopCard();
         }
         else {
