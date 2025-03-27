@@ -8,9 +8,11 @@ public class Stock {
     ArrayList<Card> stock;
     int cardIndex;
 
+    int STARTING_INDEX = 2;
+
     public Stock(ArrayList<Card> cards) {
         stock = cards;
-        cardIndex = 2;
+        cardIndex = STARTING_INDEX;
     }
 
     public Card draw() {
@@ -19,7 +21,7 @@ public class Stock {
             if (stock.size() - 1 <= cardIndex) {
                 this.setCardIndex(stock.size() - 1);
                 card = this.getCard();
-                this.setCardIndex(2);
+                this.setCardIndex(STARTING_INDEX);
                 return card;
             }
             else {
