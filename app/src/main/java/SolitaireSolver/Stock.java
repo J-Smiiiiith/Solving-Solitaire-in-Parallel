@@ -21,7 +21,12 @@ public class Stock {
             if (stock.size() - 1 <= cardIndex) {
                 this.setCardIndex(stock.size() - 1);
                 card = this.getCard();
-                this.setCardIndex(STARTING_INDEX);
+                if (stock.size() - 1 < STARTING_INDEX) {
+                    this.setCardIndex(stock.size() - 1);
+                }
+                else {
+                    this.setCardIndex(STARTING_INDEX);
+                }
                 return card;
             }
             else {
