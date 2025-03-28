@@ -47,6 +47,7 @@ public class Solitaire {
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j <= i; j++) {
                 piles[i].dealCard(deck.pop());
+                piles[i].getTopHiddenCard().setLocation(i);
             }
             piles[i].revealCard();
             piles[i].setBottomCard();
