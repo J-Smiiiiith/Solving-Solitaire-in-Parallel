@@ -15,4 +15,9 @@ public class Move {
         this.card = card;
         this.dst = dst;
     }
+
+    @Override
+    public String toString() {
+        return card.toString();
+    }
 }
