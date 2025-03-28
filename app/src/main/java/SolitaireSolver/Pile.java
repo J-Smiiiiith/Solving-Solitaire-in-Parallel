@@ -68,6 +68,15 @@ public class Pile {
         return topCard;
     }
 
+    public Card getTopHiddenCard() {
+        if (!hiddenCards.isEmpty()) {
+            return hiddenCards.peek();
+        }
+        else {
+            return null;
+        }
+    }
+
     public Card getBottomCard() {
         return bottomCard;
     }

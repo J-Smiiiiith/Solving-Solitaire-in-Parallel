@@ -1,9 +1,11 @@
 package SolitaireSolver;
 
 public class Card {
-    int rank;
+    int rank, location;
+    // Location: 7 : Stock, 0-6: Piles
     char suit;
     boolean black;
+
 
     public Card(int rank, char suit) {
         this.rank = rank;
@@ -14,19 +16,19 @@ public class Card {
     @Override
     public String toString() {
         if (rank == 1) {
-            return "A" + suit;
+            return "A" + suit + " " + location;
         }
         else if (rank == 11) {
-            return "J" + suit;
+            return "J" + suit + " " + location;
         }
         else if (rank == 12) {
-            return "Q" + suit;
+            return "Q" + suit + " " + location;
         }
         else if (rank == 13) {
-            return "K" + suit;
+            return "K" + suit + " " + location;
         }
         else {
-            return rank + "" + suit;
+            return rank + "" + suit + " " + location;
         }
     }
 
@@ -40,5 +42,12 @@ public class Card {
 
     public boolean isBlack() {
         return black;
+    }
+
+    public int getLocation() {
+        return location;
+    }
+    public void setLocation(int location) {
+        this.location = location;
     }
 }

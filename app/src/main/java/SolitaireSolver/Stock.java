@@ -8,11 +8,15 @@ public class Stock {
     ArrayList<Card> stock;
     int cardIndex;
 
-    int STARTING_INDEX = 2;
+    final int STARTING_INDEX = 2;
 
     public Stock(ArrayList<Card> cards) {
         stock = cards;
         cardIndex = STARTING_INDEX;
+
+        for (Card card : stock) {
+            card.setLocation(7);
+        }
     }
 
     public Card draw() {
