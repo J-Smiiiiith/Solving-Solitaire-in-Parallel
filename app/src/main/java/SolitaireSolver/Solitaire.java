@@ -156,10 +156,14 @@ public class Solitaire {
             } //pile to foundation
             else {
                 stock.removeCard(move.getCard().getLocation());
-            }
+            } //stock to foundation
         } //Moves to foundation
         else {
-            if (piles[move.getCard().getLocation()].getBottomCard().equals(move.getCard())) {
+            if (move.getCard().getLocation() == 7) {
+                piles[move.getCard().getLocation()].addToBuildStack(move.getCard());
+                stock.removeCard(move.getCard().getLocation());
+            } //stock to pile
+            else if (piles[move.getCard().getLocation()].getBottomCard().equals(move.getCard())) {
                 this.moveEntireBuildStack(piles[move.getCard().getLocation()], move.getDst());
             } // Move entire pile
             else {
