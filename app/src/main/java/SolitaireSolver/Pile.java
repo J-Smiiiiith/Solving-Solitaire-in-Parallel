@@ -107,4 +107,8 @@ public class Pile {
         }
         return pile;
     }
+
+    public int getCardIndex(Card card) {
+        return buildStack.indexOf(card);
+    }
 }
