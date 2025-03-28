@@ -53,15 +53,6 @@ public class Solitaire {
         }
     }
 
-    private void stockToPile(Pile pile) {
-        if (pile.addToBuildStack(this.stock.getCard())) {
-            this.stock.removeTopCard();
-        }
-        else {
-            throw new InvalidMoveException("Invalid move: Cannot move card from stock to pile");
-        }
-    }
-
     private void moveEntireBuildStack(Pile src, Pile dst) {
         int rankCheck;
 
