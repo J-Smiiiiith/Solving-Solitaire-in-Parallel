@@ -55,8 +55,8 @@ public class Solitaire {
     }
 
     private void stockToPile(Pile pile) {
-        if (pile.addToBuildStack(this.stock.getCard())) {
-            this.stock.removeTopCard();
+        if (pile.addToBuildStack(stock.getCard())) {
+            stock.removeCard(stock.getCard().getLocation());
         }
         else {
             throw new InvalidMoveException("Invalid move: Cannot move card from stock to pile");
@@ -160,7 +160,13 @@ public class Solitaire {
     public void makeMove(Move move) {
         if (move.getDst() == null) {
             foundation.toFoundation(move.getCard());
-        }
+            if (move.getCard().getLocation() != 7) {
+                piles[move.getCard().getLocation()].removeTopCard();
+            } //pile to foundation
+            else {
+                stock.removeCard(move.getCard().getLocation());
+            }
+        } //Moves to foundation
     }
 
     public boolean solitaireSolver() {
