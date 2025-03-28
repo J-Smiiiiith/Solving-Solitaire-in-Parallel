@@ -156,6 +156,12 @@ public class Solitaire {
         return possibleMoves;
     }
 
+    public void makeMove(Move move) {
+        if (move.getDst() == null) {
+            foundation.toFoundation(move.getCard());
+        }
+    }
+
     public boolean solitaireSolver() {
         System.out.println(this + "\n");
         System.out.println("Stock: \t\t\t\t" + this.stock.stock);
