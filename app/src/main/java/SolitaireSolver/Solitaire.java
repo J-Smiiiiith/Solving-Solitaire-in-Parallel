@@ -126,6 +126,22 @@ public class Solitaire {
         }
     }
 
+    public ArrayList<Card> getUsableCards() {
+        ArrayList<Card> usableCards = new ArrayList<>();
+        Card card = stock.getCard();
+
+        while (!usableCards.contains(card)) {
+            usableCards.add(card);
+            card = stock.draw();;
+        }
+        for (Pile pile : piles) {
+            if (!pile.getBuildStack().isEmpty()) {
+                usableCards.addAll(pile.getBuildStack());
+            }
+        }
+        return usableCards;
+    }
+
     public boolean runGame() {
         boolean end = false;
         Scanner scanner = new Scanner(System.in);
@@ -192,6 +208,13 @@ public class Solitaire {
         }
         System.out.println("You lose");
         return false;
+    }
+
+    public boolean solitaireSolver() {
+        System.out.println("Stock: \t\t\t\t" + this.stock.stock);
+        System.out.println("Usable Cards: \t\t" + this.getUsableCards());
+
+        return true;
     }
 
     @Override
