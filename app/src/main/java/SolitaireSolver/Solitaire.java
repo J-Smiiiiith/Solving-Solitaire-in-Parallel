@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Scanner;
 import java.util.Stack;
 import SolitaireSolver.Exceptions.InvalidMoveException;
+import SolitaireSolver.Exceptions.InvalidSuitException;
 
 public class Solitaire {
     char[] suits;
@@ -126,7 +127,7 @@ public class Solitaire {
         }
     }
 
-    public ArrayList<Card> getUsableCards() {
+    private ArrayList<Card> getUsableCards() {
         ArrayList<Card> usableCards = new ArrayList<>();
         Card card = stock.getCard();
 
@@ -140,6 +141,38 @@ public class Solitaire {
             }
         }
         return usableCards;
+    }
+
+    private ArrayList<Move> getPossibleMoves() {
+        ArrayList<Move> possibleMoves = new ArrayList<>();
+        ArrayList<Card> usableCards = getUsableCards();
+        int rank;
+
+        for (Card card : usableCards) {
+            rank = switch (card.getSuit()) {
+                case 'C' -> foundation.getClubs();
+                case 'S' -> foundation.getSpades();
+                case 'D' -> foundation.getDiamonds();
+                case 'H' -> foundation.getHearts();
+                default -> throw new InvalidSuitException("Invalid suit: Valid suits include ['H', 'D', 'C', 'S'], not "
+                        + card.getSuit());
+            };
+            if (card.getRank() == rank + 1) {
+                possibleMoves.add(new Move(card));
+            }
+            //Check eligibility for a foundation move
+
+            for (Pile pile : piles) {
+                Card topCard = pile.getTopCard();
+                if (topCard.isBlack() != card.isBlack()) {
+                    if (card.getRank() == topCard.getRank() - 1) {
+                        possibleMoves.add(new Move(card));
+                    }
+                }
+            }
+            //Check eligibility for a pile move
+        }
+        return possibleMoves;
     }
 
     public boolean runGame() {
@@ -211,8 +244,10 @@ public class Solitaire {
     }
 
     public boolean solitaireSolver() {
+        System.out.println(this + "\n");
         System.out.println("Stock: \t\t\t\t" + this.stock.stock);
         System.out.println("Usable Cards: \t\t" + this.getUsableCards());
+        System.out.println("Possible Moves: \t" + this.getPossibleMoves());
 
         return true;
     }
