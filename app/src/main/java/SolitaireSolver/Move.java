@@ -20,4 +20,12 @@ public class Move {
     public String toString() {
         return card.toString();
     }
+
+    public Pile getDst() {
+        return dst;
+    }
+
+    public Card getCard() {
+        return card;
+    }
 }

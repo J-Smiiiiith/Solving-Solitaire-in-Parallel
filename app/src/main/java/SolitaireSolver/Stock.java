@@ -43,9 +43,9 @@ public class Stock {
         }
     }
 
-    public boolean removeTopCard() {
+    public boolean removeCard(int index) {
         if (!stock.isEmpty()) {
-            stock.remove(cardIndex);
+            stock.remove(index);
             this.setCardIndex(this.getCardIndex() - 1);
             return true;
         }
@@ -61,5 +61,9 @@ public class Stock {
 
     public Card getCard() {
         return stock.get(cardIndex);
+    }
+
+    public int getCardIndex(Card card) {
+        return stock.indexOf(card);
     }
 }
