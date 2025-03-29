@@ -58,7 +58,12 @@ public class Pile {
     public boolean removeTopCard() {
         if (!buildStack.isEmpty()) {
             buildStack.pop();
-            this.revealCard();
+            try {
+                this.revealCard();
+            } catch (EmptyStackException e) {
+                topCard = null;
+            }
+
             return true;
         }
         throw new EmptyStackException("buildStack is empty, cannot remove card.");
@@ -95,6 +100,10 @@ public class Pile {
 
     public Stack<Card> getBuildStack() {
         return buildStack;
+    }
+
+    public Stack<Card> getHiddenCards() {
+        return hiddenCards;
     }
 
     public ArrayList<String> getPile() {
