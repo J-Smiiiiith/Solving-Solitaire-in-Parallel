@@ -54,34 +54,6 @@ public class Solitaire {
         }
     }
 
-    private void stockToPile(Pile pile) {
-        if (pile.addToBuildStack(this.stock.getCard())) {
-            this.stock.removeTopCard();
-        }
-        else {
-            throw new InvalidMoveException("Invalid move: Cannot move card from stock to pile");
-        }
-    }
-
-    private void stockToFoundation() {
-        if (this.foundation.toFoundation(this.stock.getCard())) {
-            this.stock.removeTopCard();
-        }
-        else {
-            throw new InvalidMoveException("");
-        }
-    }
-
-    private void pileToFoundation(Pile pile) {
-        if (this.foundation.toFoundation(pile.getTopCard())) {
-            pile.removeTopCard();
-            pile.setBottomCard();
-        }
-        else {
-            throw new InvalidMoveException("Invalid move: Cannot move card from pile to foundation");
-        }
-    }
-
     private void moveEntireBuildStack(Pile src, Pile dst) {
         int rankCheck;
 
@@ -98,10 +70,11 @@ public class Solitaire {
                 tmpStack.push(src.getBuildStack().pop());
             }
             addStackToBuildStack(tmpStack, dst);
-            src.revealCard();
-            src.setBottomCard();
-        }
-        else {
+            if (!src.getHiddenCards().isEmpty()) {
+                src.revealCard();
+                src.setBottomCard();
+            }
+        } else {
             throw new InvalidMoveException("Invalid move: Cannot move build stack");
         }
     }
@@ -114,8 +87,10 @@ public class Solitaire {
                 tmpStack.push(src.getBuildStack().pop());
             }
             addStackToBuildStack(tmpStack, dst);
-            src.revealCard();
-            src.setBottomCard();
+            if (!src.getHiddenCards().isEmpty()) {
+                src.revealCard();
+                src.setBottomCard();
+            }
         }
         else {
             throw new InvalidMoveException("Invalid move: Cannot move partial build stack");
@@ -167,7 +142,7 @@ public class Solitaire {
                 Card topCard = pile.getTopCard();
                 if (topCard.isBlack() != card.isBlack()) {
                     if (card.getRank() == topCard.getRank() - 1) {
-                        possibleMoves.add(new Move(card));
+                        possibleMoves.add(new Move(card, pile));
                     }
                 }
             }
@@ -176,11 +151,43 @@ public class Solitaire {
         return possibleMoves;
     }
 
+    public void makeMove(Move move) {
+        if (move.getDst() == null) {
+            foundation.toFoundation(move.getCard());
+            if (move.getCard().getLocation() != 7) {
+                piles[move.getCard().getLocation()].removeTopCard();
+            } //pile to foundation
+            else {
+                stock.removeCard(move.getCard().getLocation());
+            } //stock to foundation
+        } //Moves to foundation
+        else {
+            if (move.getCard().getLocation() == 7) {
+                move.getDst().addToBuildStack(move.getCard());
+                stock.removeCard(stock.getCardIndex(move.getCard()));
+            } // Stock to pile
+            else if (move.getDst().getBottomCard().getRank() == (move.getCard().getRank() + 1)) {
+                this.moveEntireBuildStack(piles[move.getCard().getLocation()], move.getDst());
+            } // Pile to pile: Move entire pile
+            else {
+                this.movePartialBuildStack(piles[move.getCard().getLocation()], move.getDst(),
+                        move.getDst().getCardIndex(move.getCard()));
+            } // Pile to pile: Move partial pile
+        } //Moves to pile
+    }
+
     public boolean solitaireSolver() {
         System.out.println(this + "\n");
         System.out.println("Stock: \t\t\t\t" + this.stock.stock);
         System.out.println("Usable Cards: \t\t" + this.getUsableCards());
-        System.out.println("Possible Moves: \t" + this.getPossibleMoves());
+        System.out.println("Possible Moves: \t" + this.getPossibleMoves() + "\n");
+
+        System.out.println("Pick a move: (0 - " + (getPossibleMoves().size() - 1) + ") ");
+        Scanner scanner = new Scanner(System.in);
+        int choice = scanner.nextInt();
+
+        this.makeMove(getPossibleMoves().get(choice));
+        System.out.println(this + "\n");
 
         return true;
     }
