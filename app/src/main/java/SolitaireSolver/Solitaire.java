@@ -170,7 +170,7 @@ public class Solitaire {
                 this.moveEntireBuildStack(piles[move.getCard().getLocation()], move.getDst());
             } // Pile to pile: Move entire pile
             else {
-                this.movePartialBuildStack(move.getDst(), move.getDst(), move.getDst().getCardIndex(move.getCard()));
+                this.movePartialBuildStack(piles[move.getCard().getLocation()], move.getDst(), move.getDst().getCardIndex(move.getCard()));
             } // Pile to pile: Move partial pile
         } //Moves to pile
     }
