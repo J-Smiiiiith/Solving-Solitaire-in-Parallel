@@ -47,7 +47,7 @@ public class Pile {
     }
 
     public boolean revealCard() {
-        if (!hiddenCards.isEmpty()) {
+        if (!hiddenCards.isEmpty() && buildStack.isEmpty()) {
             buildStack.push(hiddenCards.pop());
             topCard = buildStack.peek();
             return true;
