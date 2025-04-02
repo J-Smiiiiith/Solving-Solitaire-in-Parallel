@@ -21,24 +21,18 @@ public class Stock {
 
     public Card draw() {
         if (!stock.isEmpty()) {
+            this.setCardIndex(this.getCardIndex() + 3);
             Card card;
             if (stock.size() - 1 <= cardIndex) {
                 this.setCardIndex(stock.size() - 1);
                 card = this.getCard();
-                if (stock.size() - 1 < STARTING_INDEX) {
-                    this.setCardIndex(stock.size() - 1);
-                }
-                else {
-                    this.setCardIndex(STARTING_INDEX);
-                }
+                this.setCardIndex(Math.min(stock.size() - 1, STARTING_INDEX));
+                return card;
+            } else {
+                card = this.getCard();
                 return card;
             }
-            else {
-                this.setCardIndex(this.getCardIndex() + 3);
-                return this.getCard();
-            }
-        }
-        else {
+        } else {
             throw new EmptyStockException("Stock is empty, cannot draw.");
         }
     }
@@ -46,7 +40,11 @@ public class Stock {
     public boolean removeCard(int index) {
         if (!stock.isEmpty()) {
             stock.remove(index);
-            this.setCardIndex(this.getCardIndex() - 1);
+            if (index > 0) {
+                this.setCardIndex(index - 1);
+            } else {
+                this.setCardIndex(0);
+            }
             return true;
         }
         throw new EmptyStockException("Stock is empty, cannot remove top card.");
