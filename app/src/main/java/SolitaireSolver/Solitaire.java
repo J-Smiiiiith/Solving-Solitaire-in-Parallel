@@ -194,25 +194,6 @@ public class Solitaire {
         } //Moves to pile
     }
 
-    public boolean solitaireSolver() {
-        boolean end = false;
-        ArrayList<Move> possibleMoves;
-        while (!end) {
-            System.out.println(this + "\n");
-            //System.out.println("Usable Cards: \t\t" + this.getUsableCards());
-
-            possibleMoves = this.getPossibleMoves();
-            System.out.println("Usable Cards: \t" + this.getUsableCards());
-            System.out.println("Possible Moves: \t\t" + possibleMoves);
-            int randomMove = (int) (Math.random() * possibleMoves.size());
-            System.out.println(randomMove);
-            this.makeMove(possibleMoves.get(randomMove));
-            System.out.println();
-        }
-
-        return true;
-    }
-
     @Override
     public String toString() {
         String output = "";
