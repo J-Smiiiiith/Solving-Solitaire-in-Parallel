@@ -40,7 +40,11 @@ public class Stock {
     public boolean removeCard(int index) {
         if (!stock.isEmpty()) {
             stock.remove(index);
-            this.setCardIndex(index - 1);
+            if (index > 0) {
+                this.setCardIndex(index - 1);
+            } else {
+                this.setCardIndex(0);
+            }
             return true;
         }
         throw new EmptyStockException("Stock is empty, cannot remove top card.");
