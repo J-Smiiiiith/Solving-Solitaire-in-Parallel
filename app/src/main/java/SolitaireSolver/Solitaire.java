@@ -194,6 +194,18 @@ public class Solitaire {
         } //Moves to pile
     }
 
+    public String getGameState() {
+        String gameState = "";
+        for (Card card : stock.getStock()) {
+            gameState += card;
+        }
+        for (Pile pile : piles) {
+            gameState += pile.getPileState();
+        }
+        gameState += foundation.getFoundationState();
+        return gameState;
+    }
+
     @Override
     public String toString() {
         String output = "";

@@ -119,6 +119,17 @@ public class Pile {
         return pile;
     }
 
+    public String getPileState() {
+        String piles = "";
+        for (Card card : hiddenCards) {
+            piles += card.toString();
+        }
+        for (Card card : buildStack) {
+            piles += card.toString();
+        }
+        return piles;
+    }
+
     public int getCardIndex(Card card) {
         return buildStack.indexOf(card);
     }

@@ -187,6 +187,10 @@ public class Foundation {
         return diamondCard;
     }
 
+    public String getFoundationState() {
+        return getSpadeCard() + getHeartCard() + getClubCard() + getDiamondCard();
+    }
+
     public boolean checkWin() {
         return spades == 13 && hearts == 13 && clubs == 13 && diamonds == 13;
     }
