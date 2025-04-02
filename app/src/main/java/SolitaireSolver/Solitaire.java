@@ -78,7 +78,14 @@ public class Solitaire {
     }
 
     private void movePartialBuildStack(Pile src, Pile dst, int cardNum) {
-        if (src.getBuildCard(cardNum).getRank() == dst.getTopCard().getRank() - 1) {
+        int rankCheck;
+        if (dst.getPile().isEmpty()) {
+            rankCheck = 0;
+        } else {
+            rankCheck = dst.getTopCard().getRank() - 1;
+        }
+        if ((src.getBuildCard(cardNum).getRank() == rankCheck) ||
+                ((src.getBuildCard(cardNum).getRank() == 13) && (rankCheck == 0))) {
             Stack<Card> tmpStack = new Stack<>();
             int size = src.getBuildStack().size();
             for (int i = cardNum; i < size; i++) {
@@ -185,22 +192,6 @@ public class Solitaire {
                         piles[move.getCard().getLocation()].getCardIndex(move.getCard()));
             } // Pile to pile: Move partial pile
         } //Moves to pile
-    }
-
-    public boolean solitaireSolver() {
-        System.out.println(this + "\n");
-        System.out.println("Stock: \t\t\t\t" + this.stock.stock);
-        System.out.println("Usable Cards: \t\t" + this.getUsableCards());
-        System.out.println("Possible Moves: \t" + this.getPossibleMoves() + "\n");
-
-        System.out.println("Pick a move: (0 - " + (getPossibleMoves().size() - 1) + ") ");
-        Scanner scanner = new Scanner(System.in);
-        int choice = scanner.nextInt();
-
-        this.makeMove(getPossibleMoves().get(choice));
-        System.out.println(this + "\n");
-
-        return true;
     }
 
     @Override
