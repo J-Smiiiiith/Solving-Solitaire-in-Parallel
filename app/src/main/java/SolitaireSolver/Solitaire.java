@@ -99,8 +99,18 @@ public class Solitaire {
 
     private void addStackToBuildStack(Stack<Card> stack, Pile dst) {
         while (!stack.isEmpty()) {
+            stack.peek().setLocation(this.getPileNum(dst));
             dst.addToBuildStack(stack.pop());
         }
+    }
+
+    public int getPileNum(Pile p) {
+        for (int i = 0; i < piles.length; i++) {
+            if (piles[i] == p) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     private ArrayList<Card> getUsableCards() {
@@ -151,15 +161,6 @@ public class Solitaire {
         return possibleMoves;
     }
 
-    public int getPileNum(Pile p) {
-        for (int i = 0; i < piles.length; i++) {
-            if (piles[i] == p) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
     public void makeMove(Move move) {
         if (move.getDst() == null) {
             foundation.toFoundation(move.getCard());
@@ -173,9 +174,10 @@ public class Solitaire {
         else {
             if (move.getCard().getLocation() == 7) {
                 move.getDst().addToBuildStack(move.getCard());
+                move.getCard().setLocation(this.getPileNum(move.getDst()));
                 stock.removeCard(stock.getCardIndex(move.getCard()));
             } // Stock to pile
-            else if (move.getDst().getBottomCard().getRank() == (move.getCard().getRank() + 1)) {
+            else if (piles[move.getCard().getLocation()].getBottomCard() == move.getCard()) {
                 this.moveEntireBuildStack(piles[move.getCard().getLocation()], move.getDst());
             } // Pile to pile: Move entire pile
             else {
