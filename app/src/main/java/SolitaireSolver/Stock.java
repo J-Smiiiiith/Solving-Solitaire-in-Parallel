@@ -20,25 +20,29 @@ public class Stock {
     }
 
     public Card draw() {
+        System.out.println("\nStarting draw method");
+        System.out.println(stock + " Stock Size: " + (stock.size()-1) + " Card Index: " + cardIndex);
         if (!stock.isEmpty()) {
+            System.out.println("Stock is not empty");
             Card card;
             if (stock.size() - 1 <= cardIndex) {
+                System.out.println("Card index is at or beyond the end of the stock");
                 this.setCardIndex(stock.size() - 1);
                 card = this.getCard();
-                if (stock.size() - 1 < STARTING_INDEX) {
-                    this.setCardIndex(stock.size() - 1);
-                }
-                else {
-                    this.setCardIndex(STARTING_INDEX);
-                }
+                System.out.println("Drawing card: " + card);
+                this.setCardIndex(Math.min(stock.size() - 1, STARTING_INDEX));
+                System.out.println("Resetting card index to: " + this.getCardIndex());
+                return card;
+            } else {
+                System.out.println("Card index is within the stock range");
+                this.setCardIndex(this.getCardIndex() + 3);
+                System.out.println("Card index is now: " + this.getCardIndex());
+                card = this.getCard();
+                System.out.println("Drawing card: " + card);
                 return card;
             }
-            else {
-                this.setCardIndex(this.getCardIndex() + 3);
-                return this.getCard();
-            }
-        }
-        else {
+        } else {
+            System.out.println("Stock is empty, throwing EmptyStockException");
             throw new EmptyStockException("Stock is empty, cannot draw.");
         }
     }
@@ -46,7 +50,8 @@ public class Stock {
     public boolean removeCard(int index) {
         if (!stock.isEmpty()) {
             stock.remove(index);
-            this.setCardIndex(this.getCardIndex() - 1);
+            System.out.println("Stock: " + stock);
+            this.setCardIndex(index - 1);
             return true;
         }
         throw new EmptyStockException("Stock is empty, cannot remove top card.");

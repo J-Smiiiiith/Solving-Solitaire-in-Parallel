@@ -16,19 +16,19 @@ public class Card {
     @Override
     public String toString() {
         if (rank == 1) {
-            return "A" + suit + " " + location;
+            return "A" + suit;
         }
         else if (rank == 11) {
-            return "J" + suit + " " + location;
+            return "J" + suit;
         }
         else if (rank == 12) {
-            return "Q" + suit + " " + location;
+            return "Q" + suit;
         }
         else if (rank == 13) {
-            return "K" + suit + " " + location;
+            return "K" + suit;
         }
         else {
-            return rank + "" + suit + " " + location;
+            return rank + "" + suit;
         }
     }
 
