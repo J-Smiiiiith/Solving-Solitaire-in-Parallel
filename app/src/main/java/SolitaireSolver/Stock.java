@@ -20,7 +20,8 @@ public class Stock {
     }
 
     public Card draw() {
-        System.out.println("\nStarting draw method");
+        System.out.println("Starting draw method");
+        this.setCardIndex(this.getCardIndex() + 3);
         System.out.println(stock + " Stock Size: " + (stock.size()-1) + " Card Index: " + cardIndex);
         if (!stock.isEmpty()) {
             System.out.println("Stock is not empty");
@@ -35,8 +36,6 @@ public class Stock {
                 return card;
             } else {
                 System.out.println("Card index is within the stock range");
-                this.setCardIndex(this.getCardIndex() + 3);
-                System.out.println("Card index is now: " + this.getCardIndex());
                 card = this.getCard();
                 System.out.println("Drawing card: " + card);
                 return card;
