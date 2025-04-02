@@ -20,8 +20,8 @@ public class Stock {
     }
 
     public Card draw() {
-        this.setCardIndex(this.getCardIndex() + 3);
         if (!stock.isEmpty()) {
+            this.setCardIndex(this.getCardIndex() + 3);
             Card card;
             if (stock.size() - 1 <= cardIndex) {
                 this.setCardIndex(stock.size() - 1);
