@@ -56,13 +56,11 @@ public class Solitaire {
 
     private void moveEntireBuildStack(Pile src, Pile dst) {
         int rankCheck;
-
         if (dst.getPile().isEmpty()) {
             rankCheck = 0;
         } else {
             rankCheck = dst.getTopCard().getRank() - 1;
         }
-
         if ((src.getBottomCard().getRank() == rankCheck) ||
                 ((src.getBottomCard().getRank() == 13) && (rankCheck == 0))) {
             Stack<Card> tmpStack = new Stack<>();

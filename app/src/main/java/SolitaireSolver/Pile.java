@@ -60,6 +60,7 @@ public class Pile {
             buildStack.pop();
             try {
                 this.revealCard();
+                this.setBottomCard();
             } catch (EmptyStackException e) {
                 topCard = null;
             }
@@ -67,20 +68,6 @@ public class Pile {
             return true;
         }
         throw new EmptyStackException("buildStack is empty, cannot remove card.");
-    }
-
-    public boolean changePileLocation(int location) {
-        System.out.println("Changing pile location for card");
-        if (!buildStack.isEmpty()) {
-            for (Card card : buildStack) {
-                System.out.println("Card: " + card);
-                System.out.println("Old location: " + card.getLocation());
-                card.setLocation(location);
-                System.out.println("New location: " + card.getLocation());
-            }
-            return true;
-        }
-        return false;
     }
 
     public Card getTopCard() {
@@ -132,13 +119,6 @@ public class Pile {
     }
 
     public int getCardIndex(Card card) {
-        System.out.println("Card: " + card + " Build stack: " + buildStack + " Index: " + buildStack.indexOf(card));
-        if (buildStack.contains(card)) {
-            System.out.println("Card found in build stack");
-        }
-        else {
-            System.out.println("Card not found in build stack");
-        }
         return buildStack.indexOf(card);
     }
 }
