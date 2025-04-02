@@ -15,21 +15,13 @@ public class Card {
 
     @Override
     public String toString() {
-        if (rank == 1) {
-            return "A" + suit;
-        }
-        else if (rank == 11) {
-            return "J" + suit;
-        }
-        else if (rank == 12) {
-            return "Q" + suit;
-        }
-        else if (rank == 13) {
-            return "K" + suit;
-        }
-        else {
-            return rank + "" + suit;
-        }
+        return switch (rank) {
+            case 1 -> "A" + suit + " " + location;
+            case 11 -> "J" + suit + " " + location;
+            case 12 -> "Q" + suit + " " + location;
+            case 13 -> "K" + suit + " " + location;
+            default -> rank + "" + suit + " " + location;
+        };
     }
 
     public int getRank() {

@@ -69,6 +69,20 @@ public class Pile {
         throw new EmptyStackException("buildStack is empty, cannot remove card.");
     }
 
+    public boolean changePileLocation(int location) {
+        System.out.println("Changing pile location for card");
+        if (!buildStack.isEmpty()) {
+            for (Card card : buildStack) {
+                System.out.println("Card: " + card);
+                System.out.println("Old location: " + card.getLocation());
+                card.setLocation(location);
+                System.out.println("New location: " + card.getLocation());
+            }
+            return true;
+        }
+        return false;
+    }
+
     public Card getTopCard() {
         return topCard;
     }
