@@ -64,4 +64,8 @@ public class Stock {
     public int getCardIndex(Card card) {
         return stock.indexOf(card);
     }
+
+    public ArrayList<Card> getStock() {
+        return stock;
+    }
 }
