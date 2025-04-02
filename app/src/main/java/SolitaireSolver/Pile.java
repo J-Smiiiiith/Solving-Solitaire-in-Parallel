@@ -132,6 +132,13 @@ public class Pile {
     }
 
     public int getCardIndex(Card card) {
+        System.out.println("Card: " + card + " Build stack: " + buildStack + " Index: " + buildStack.indexOf(card));
+        if (buildStack.contains(card)) {
+            System.out.println("Card found in build stack");
+        }
+        else {
+            System.out.println("Card not found in build stack");
+        }
         return buildStack.indexOf(card);
     }
 }

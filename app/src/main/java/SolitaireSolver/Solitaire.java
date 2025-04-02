@@ -87,12 +87,7 @@ public class Solitaire {
                 tmpStack.push(src.getBuildStack().pop());
             }
             addStackToBuildStack(tmpStack, dst);
-            if (!src.getHiddenCards().isEmpty()) {
-                src.revealCard();
-                src.setBottomCard();
-            }
-        }
-        else {
+        } else {
             throw new InvalidMoveException("Invalid move: Cannot move partial build stack");
         }
     }
@@ -182,7 +177,7 @@ public class Solitaire {
             } // Pile to pile: Move entire pile
             else {
                 this.movePartialBuildStack(piles[move.getCard().getLocation()], move.getDst(),
-                        move.getDst().getCardIndex(move.getCard()));
+                        piles[move.getCard().getLocation()].getCardIndex(move.getCard()));
             } // Pile to pile: Move partial pile
         } //Moves to pile
     }
