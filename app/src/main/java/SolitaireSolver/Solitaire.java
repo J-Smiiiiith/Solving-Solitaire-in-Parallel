@@ -151,6 +151,15 @@ public class Solitaire {
         return possibleMoves;
     }
 
+    public int getPileNum(Pile p) {
+        for (int i = 0; i < piles.length; i++) {
+            if (piles[i] == p) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     public void makeMove(Move move) {
         if (move.getDst() == null) {
             foundation.toFoundation(move.getCard());
