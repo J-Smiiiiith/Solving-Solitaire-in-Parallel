@@ -143,9 +143,11 @@ public class Solitaire {
 
             for (Pile pile : piles) {
                 Card topCard = pile.getTopCard();
-                if (topCard.isBlack() != card.isBlack()) {
-                    if (card.getRank() == topCard.getRank() - 1) {
-                        possibleMoves.add(new Move(card, pile));
+                if (topCard != null) {
+                    if (topCard.isBlack() != card.isBlack()) {
+                        if (card.getRank() == topCard.getRank() - 1) {
+                            possibleMoves.add(new Move(card, pile));
+                        }
                     }
                 }
             }
