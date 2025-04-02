@@ -56,13 +56,11 @@ public class Solitaire {
 
     private void moveEntireBuildStack(Pile src, Pile dst) {
         int rankCheck;
-
         if (dst.getPile().isEmpty()) {
             rankCheck = 0;
         } else {
             rankCheck = dst.getTopCard().getRank() - 1;
         }
-
         if ((src.getBottomCard().getRank() == rankCheck) ||
                 ((src.getBottomCard().getRank() == 13) && (rankCheck == 0))) {
             Stack<Card> tmpStack = new Stack<>();
@@ -87,20 +85,25 @@ public class Solitaire {
                 tmpStack.push(src.getBuildStack().pop());
             }
             addStackToBuildStack(tmpStack, dst);
-            if (!src.getHiddenCards().isEmpty()) {
-                src.revealCard();
-                src.setBottomCard();
-            }
-        }
-        else {
+        } else {
             throw new InvalidMoveException("Invalid move: Cannot move partial build stack");
         }
     }
 
     private void addStackToBuildStack(Stack<Card> stack, Pile dst) {
         while (!stack.isEmpty()) {
+            stack.peek().setLocation(this.getPileNum(dst));
             dst.addToBuildStack(stack.pop());
         }
+    }
+
+    public int getPileNum(Pile p) {
+        for (int i = 0; i < piles.length; i++) {
+            if (piles[i] == p) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     private ArrayList<Card> getUsableCards() {
@@ -140,8 +143,15 @@ public class Solitaire {
 
             for (Pile pile : piles) {
                 Card topCard = pile.getTopCard();
-                if (topCard.isBlack() != card.isBlack()) {
-                    if (card.getRank() == topCard.getRank() - 1) {
+                if (!pile.getBuildStack().isEmpty()) {
+                    if (topCard.isBlack() != card.isBlack()) {
+                        if (card.getRank() == topCard.getRank() - 1) {
+                            possibleMoves.add(new Move(card, pile));
+                        }
+                    }
+                }
+                else {
+                    if (card.getRank() == 13) {
                         possibleMoves.add(new Move(card, pile));
                     }
                 }
@@ -164,14 +174,15 @@ public class Solitaire {
         else {
             if (move.getCard().getLocation() == 7) {
                 move.getDst().addToBuildStack(move.getCard());
+                move.getCard().setLocation(this.getPileNum(move.getDst()));
                 stock.removeCard(stock.getCardIndex(move.getCard()));
             } // Stock to pile
-            else if (move.getDst().getBottomCard().getRank() == (move.getCard().getRank() + 1)) {
+            else if (piles[move.getCard().getLocation()].getBottomCard() == move.getCard()) {
                 this.moveEntireBuildStack(piles[move.getCard().getLocation()], move.getDst());
             } // Pile to pile: Move entire pile
             else {
                 this.movePartialBuildStack(piles[move.getCard().getLocation()], move.getDst(),
-                        move.getDst().getCardIndex(move.getCard()));
+                        piles[move.getCard().getLocation()].getCardIndex(move.getCard()));
             } // Pile to pile: Move partial pile
         } //Moves to pile
     }

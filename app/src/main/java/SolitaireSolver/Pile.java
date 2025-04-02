@@ -47,7 +47,7 @@ public class Pile {
     }
 
     public boolean revealCard() {
-        if (!hiddenCards.isEmpty()) {
+        if (!hiddenCards.isEmpty() && buildStack.isEmpty()) {
             buildStack.push(hiddenCards.pop());
             topCard = buildStack.peek();
             return true;
@@ -60,10 +60,10 @@ public class Pile {
             buildStack.pop();
             try {
                 this.revealCard();
+                this.setBottomCard();
             } catch (EmptyStackException e) {
-                topCard = null;
+                System.out.println(e);
             }
-
             return true;
         }
         throw new EmptyStackException("buildStack is empty, cannot remove card.");
