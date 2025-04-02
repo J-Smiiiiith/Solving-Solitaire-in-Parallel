@@ -10,7 +10,7 @@ import java.util.Stack;
 public class Pile {
     Stack<Card> hiddenCards;
     Stack<Card> buildStack;
-    Card topCard, bottomCard;
+    Card bottomCard;
 
     public Pile() {
         hiddenCards = new Stack<>();
@@ -24,14 +24,12 @@ public class Pile {
     public boolean addToBuildStack(Card card) {
         if (buildStack.isEmpty() || (this.getPile().isEmpty() && card.getRank() == 13)) {
             buildStack.push(card);
-            topCard = buildStack.peek();
             return true;
         }
         else {
-            if (topCard.getRank() == card.getRank() + 1) {
-                if (topCard.isBlack() != card.isBlack()) {
+            if (this.getTopCard().getRank() == card.getRank() + 1) {
+                if (this.getTopCard().isBlack() != card.isBlack()) {
                     buildStack.push(card);
-                    topCard = buildStack.peek();
                     return true;
                 }
                 else {
@@ -41,7 +39,7 @@ public class Pile {
             }
             else {
                 throw new InvalidRankException("Incorrect rank, cannot add card with rank " + card.getRank() +
-                        " to build stack with top card rank " + topCard.getRank());
+                        " to build stack with top card rank " + this.getTopCard().getRank());
             }
         }
     }
@@ -49,7 +47,6 @@ public class Pile {
     public boolean revealCard() {
         if (!hiddenCards.isEmpty() && buildStack.isEmpty()) {
             buildStack.push(hiddenCards.pop());
-            topCard = buildStack.peek();
             return true;
         }
         throw new EmptyStackException("hiddenCards is empty, cannot reveal card.");
@@ -70,7 +67,12 @@ public class Pile {
     }
 
     public Card getTopCard() {
-        return topCard;
+        if (!buildStack.isEmpty()) {
+            return buildStack.peek();
+        }
+        else {
+            return null;
+        }
     }
 
     public Card getTopHiddenCard() {
