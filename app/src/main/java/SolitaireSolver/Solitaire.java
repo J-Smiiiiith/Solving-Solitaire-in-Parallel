@@ -150,6 +150,11 @@ public class Solitaire {
                         }
                     }
                 }
+                else {
+                    if (card.getRank() == 13) {
+                        possibleMoves.add(new Move(card, pile));
+                    }
+                }
             }
             //Check eligibility for a pile move
         }
