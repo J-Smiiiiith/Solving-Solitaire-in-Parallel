@@ -205,6 +205,14 @@ public class Solitaire {
         return gameState;
     }
 
+    public String getMoveState(ArrayList<Move> moves) {
+        String moveState = "";
+        for (Move move : moves) {
+            moveState += move.getCard().toString();
+        }
+        return moveState;
+    }
+
     @Override
     public String toString() {
         String output = "";
@@ -221,16 +229,17 @@ public class Solitaire {
     public boolean randomSolitaireSolver() {
         boolean end = false;
         Queue<String> gameStates = new LinkedList<>();
+        String prevMoveState = "";
+        String moveState;
         gameStates.add(this.getGameState());
+        ArrayList<Move> possibleMoves;
 
         while (!end) {
             System.out.println(this + "\n");
             System.out.println("Stock: \t\t\t\t" + stock.getStock());
-            ArrayList<Move> possibleMoves = this.getPossibleMoves();
-            System.out.println("Possible Moves: \t" + possibleMoves + "\n");
-            for (String state : gameStates) {
-                System.out.println(state);
-            }
+            possibleMoves = this.getPossibleMoves();
+            moveState = this.getMoveState(possibleMoves);
+            System.out.println("Possible Moves: \t" + possibleMoves);
 
             if (possibleMoves.isEmpty()) {
                 System.out.println("Game lost: No possible moves");
@@ -239,13 +248,15 @@ public class Solitaire {
 
             int randomInt = (int) (Math.random() * possibleMoves.size());
             makeMove(possibleMoves.get(randomInt));
+            System.out.println("Making move: \t\t" + randomInt + "\n");
 
             String currentState = this.getGameState();
 
-            if (gameStates.contains(currentState)) {
+            if (gameStates.contains(currentState) && (prevMoveState.equals(moveState))) {
                 System.out.println("Game lost: Repeated game state detected.");
                 return false;
-            } else if (foundation.checkWin()) {
+            } else
+            if (foundation.checkWin()) {
                 System.out.println("Game lost: Foundation win.");
                 return true;
             } else {
@@ -253,6 +264,7 @@ public class Solitaire {
                     gameStates.poll();
                 }
                 gameStates.add(currentState);
+                prevMoveState = moveState;
             }
         }
         return end;
