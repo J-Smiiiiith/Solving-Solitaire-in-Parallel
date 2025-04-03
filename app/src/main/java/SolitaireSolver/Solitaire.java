@@ -162,6 +162,11 @@ public class Solitaire {
             }
             //Check eligibility for a pile move
         }
+
+        for (Move move : possibleMoves) {
+            move.determineMoveType(piles);
+        }
+        // Determine move type for each possible move
         return possibleMoves;
     }
 
@@ -245,6 +250,42 @@ public class Solitaire {
             } else
             if (foundation.checkWin()) {
 //                System.out.println("Game Won");
+                return true;
+            } else {
+                if (gameStates.size() > 4) {
+                    gameStates.poll();
+                }
+                gameStates.add(currentState);
+            }
+        }
+        return end;
+    }
+
+    public boolean greedyHeuristicSolitaireSolver() {
+        Queue<String> gameStates = new LinkedList<>();
+        gameStates.add(this.getGameState());
+        ArrayList<Move> possibleMoves;
+
+        boolean end = false;
+        while (!end) {
+            System.out.println(this + "\n");
+            System.out.println("Stock: \t\t\t\t" + stock.getStock());
+            possibleMoves = this.getPossibleMoves();
+            System.out.println("Possible Moves: \t" + possibleMoves);
+
+            if (possibleMoves.isEmpty()) {
+                System.out.println("Game lost: No possible moves");
+                return false;
+            }
+
+            String currentState = this.getGameState();
+
+            if (gameStates.contains(currentState)) {
+                System.out.println("Game lost: Repeated game state detected.");
+                return false;
+            } else
+            if (foundation.checkWin()) {
+                System.out.println("Game Won");
                 return true;
             } else {
                 if (gameStates.size() > 4) {
