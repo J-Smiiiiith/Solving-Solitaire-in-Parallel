@@ -221,6 +221,7 @@ public class Solitaire {
         gameStates.add(this.getGameState());
         ArrayList<Move> possibleMoves;
 
+        boolean end = false;
         while (!end) {
 //            System.out.println(this + "\n");
 //            System.out.println("Stock: \t\t\t\t" + stock.getStock());
