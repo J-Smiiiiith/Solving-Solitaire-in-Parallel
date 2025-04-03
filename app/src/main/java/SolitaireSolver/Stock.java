@@ -58,7 +58,7 @@ public class Stock {
         return stock.get(cardIndex);
     }
 
-    public int getCardIndex(Card card) {
+    public int getCardStockIndex(Card card) {
         return stock.indexOf(card);
     }
 
