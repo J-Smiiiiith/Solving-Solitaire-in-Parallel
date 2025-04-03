@@ -1,9 +1,7 @@
 package SolitaireSolver;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Scanner;
-import java.util.Stack;
+import java.util.*;
+
 import SolitaireSolver.Exceptions.InvalidMoveException;
 import SolitaireSolver.Exceptions.InvalidSuitException;
 
@@ -15,10 +13,10 @@ public class Solitaire {
     Stock stock;
 
     public Solitaire() {
-        suits = new char[] {'C', 'S', 'H', 'D'};
+        suits = new char[]{'C', 'S', 'H', 'D'};
         deck = buildDeck();
         this.shuffleDeck();
-        piles = new Pile[] {new Pile(), new Pile(), new Pile(), new Pile(), new Pile(), new Pile(), new Pile()};
+        piles = new Pile[]{new Pile(), new Pile(), new Pile(), new Pile(), new Pile(), new Pile(), new Pile()};
         foundation = new Foundation();
 
         this.dealCards();
@@ -119,7 +117,8 @@ public class Solitaire {
 
         while (!usableCards.contains(card)) {
             usableCards.add(card);
-            card = stock.draw();;
+            card = stock.draw();
+            ;
         }
         for (Pile pile : piles) {
             if (!pile.getBuildStack().isEmpty()) {
@@ -156,8 +155,7 @@ public class Solitaire {
                             possibleMoves.add(new Move(card, pile));
                         }
                     }
-                }
-                else {
+                } else {
                     if (card.getRank() == 13) {
                         possibleMoves.add(new Move(card, pile));
                     }
@@ -217,5 +215,46 @@ public class Solitaire {
             output += pile.getPile() + "\n";
         }
         return output;
+    }
+
+    public boolean randomSolitaireSolver() {
+        boolean end = false;
+        Queue<String> gameStates = new LinkedList<>();
+        gameStates.add(this.getGameState());
+
+        while (!end) {
+            System.out.println(this + "\n");
+            System.out.println("Stock: \t\t\t\t" + stock.getStock());
+            System.out.println("Usable Cards: \t\t" + this.getUsableCards());
+            ArrayList<Move> possibleMoves = this.getPossibleMoves();
+            System.out.println("Possible Moves: \t" + this.getPossibleMoves() + "\n");
+            for (String state : gameStates) {
+                System.out.println(state);
+            }
+
+            if (possibleMoves.isEmpty()) {
+                System.out.println("Game lost: No possible moves");
+                return false;
+            }
+
+            int randomInt = (int) (Math.random() * possibleMoves.size());
+            makeMove(possibleMoves.get(randomInt));
+
+            String currentState = this.getGameState();
+
+            if (gameStates.contains(currentState)) {
+                System.out.println("Game lost: Repeated game state detected.");
+                return false;
+            } else if (foundation.checkWin()) {
+                System.out.println("Game lost: Foundation win.");
+                return true;
+            } else {
+                if (gameStates.size() > 4) {
+                    gameStates.poll();
+                }
+                gameStates.add(currentState);
+            }
+        }
+        return end;
     }
 }
