@@ -2,7 +2,7 @@ package SolitaireSolver;
 
 public class Run {
 
-    public static void main(String[] args) {
+    public static void randomGame() {
         int numGames = 0;
         int numWins = 0;
         int numRuns = 1000;
@@ -15,5 +15,9 @@ public class Run {
 
         }
         System.out.println("\nWon " + numWins + "/" + numGames + " games.");
+    }
+
+    public static void main(String[] args) {
+        randomGame();
     }
 }
