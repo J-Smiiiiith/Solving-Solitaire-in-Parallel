@@ -21,18 +21,15 @@ public class Stock {
 
     public Card draw() {
         if (!stock.isEmpty()) {
-            this.setCardIndex(this.getCardIndex() + 3);
             Card card;
-            if (stock.size() - 1 <= cardIndex) {
-                this.setCardIndex(stock.size() - 1);
-                card = this.getCard();
-                this.setCardIndex(Math.min(stock.size() - 1, STARTING_INDEX));
-                return card;
-            } else {
-                card = this.getCard();
-                return card;
+            card = this.getCard();
+            if (this.getCardIndex() == stock.size() - 1) {
+                this.setCardIndex(STARTING_INDEX);
             }
-        } else {
+            else this.setCardIndex(Math.min(this.getCardIndex() + 3, stock.size() - 1));
+            return card;
+        }
+        else {
             throw new EmptyStockException("Stock is empty, cannot draw.");
         }
     }

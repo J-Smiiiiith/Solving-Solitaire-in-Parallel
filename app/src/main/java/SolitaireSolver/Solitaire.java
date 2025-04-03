@@ -113,13 +113,13 @@ public class Solitaire {
 
     private ArrayList<Card> getUsableCards() {
         ArrayList<Card> usableCards = new ArrayList<>();
-        Card card = stock.getCard();
+        Card card = stock.draw();
 
         while (!usableCards.contains(card)) {
             usableCards.add(card);
             card = stock.draw();
-            ;
         }
+
         for (Pile pile : piles) {
             if (!pile.getBuildStack().isEmpty()) {
                 usableCards.addAll(pile.getBuildStack());
@@ -131,6 +131,7 @@ public class Solitaire {
     private ArrayList<Move> getPossibleMoves() {
         ArrayList<Move> possibleMoves = new ArrayList<>();
         ArrayList<Card> usableCards = getUsableCards();
+        System.out.println("Usable Cards: \t\t" + usableCards);
         int rank;
 
         for (Card card : usableCards) {
@@ -225,9 +226,8 @@ public class Solitaire {
         while (!end) {
             System.out.println(this + "\n");
             System.out.println("Stock: \t\t\t\t" + stock.getStock());
-            System.out.println("Usable Cards: \t\t" + this.getUsableCards());
             ArrayList<Move> possibleMoves = this.getPossibleMoves();
-            System.out.println("Possible Moves: \t" + this.getPossibleMoves() + "\n");
+            System.out.println("Possible Moves: \t" + possibleMoves + "\n");
             for (String state : gameStates) {
                 System.out.println(state);
             }
