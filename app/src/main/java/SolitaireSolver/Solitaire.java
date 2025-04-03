@@ -131,7 +131,7 @@ public class Solitaire {
     private ArrayList<Move> getPossibleMoves() {
         ArrayList<Move> possibleMoves = new ArrayList<>();
         ArrayList<Card> usableCards = getUsableCards();
-        System.out.println("Usable Cards: \t\t" + usableCards);
+//        System.out.println("Usable Cards: \t\t" + usableCards);
         int rank;
 
         for (Card card : usableCards) {
@@ -222,31 +222,31 @@ public class Solitaire {
         boolean end = false;
         Queue<String> gameStates = new LinkedList<>();
         gameStates.add(this.getGameState());
+        ArrayList<Move> possibleMoves;
 
         while (!end) {
-            System.out.println(this + "\n");
-            System.out.println("Stock: \t\t\t\t" + stock.getStock());
-            ArrayList<Move> possibleMoves = this.getPossibleMoves();
-            System.out.println("Possible Moves: \t" + possibleMoves + "\n");
-            for (String state : gameStates) {
-                System.out.println(state);
-            }
+//            System.out.println(this + "\n");
+//            System.out.println("Stock: \t\t\t\t" + stock.getStock());
+            possibleMoves = this.getPossibleMoves();
+//            System.out.println("Possible Moves: \t" + possibleMoves);
 
             if (possibleMoves.isEmpty()) {
-                System.out.println("Game lost: No possible moves");
+//                System.out.println("Game lost: No possible moves");
                 return false;
             }
 
             int randomInt = (int) (Math.random() * possibleMoves.size());
             makeMove(possibleMoves.get(randomInt));
+//            System.out.println("Making move: \t\t" + randomInt + "\n");
 
             String currentState = this.getGameState();
 
             if (gameStates.contains(currentState)) {
-                System.out.println("Game lost: Repeated game state detected.");
+//                System.out.println("Game lost: Repeated game state detected.");
                 return false;
-            } else if (foundation.checkWin()) {
-                System.out.println("Game lost: Foundation win.");
+            } else
+            if (foundation.checkWin()) {
+//                System.out.println("Game Won");
                 return true;
             } else {
                 if (gameStates.size() > 4) {
