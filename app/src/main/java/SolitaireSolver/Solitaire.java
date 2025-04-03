@@ -205,14 +205,6 @@ public class Solitaire {
         return gameState;
     }
 
-    public String getMoveState(ArrayList<Move> moves) {
-        String moveState = "";
-        for (Move move : moves) {
-            moveState += move.getCard().toString();
-        }
-        return moveState;
-    }
-
     @Override
     public String toString() {
         String output = "";
@@ -229,10 +221,7 @@ public class Solitaire {
     public boolean randomSolitaireSolver() {
         boolean end = false;
         Queue<String> gameStates = new LinkedList<>();
-        String prevMoveState = "";
-        String moveState;
         gameStates.add(this.getGameState());
-        ArrayList<Move> possibleMoves;
         ArrayList<Move> possibleMoves;
 
         while (!end) {
@@ -264,7 +253,6 @@ public class Solitaire {
                     gameStates.poll();
                 }
                 gameStates.add(currentState);
-                prevMoveState = moveState;
             }
         }
         return end;
