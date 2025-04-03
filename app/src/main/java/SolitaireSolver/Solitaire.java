@@ -171,29 +171,32 @@ public class Solitaire {
     }
 
     public void makeMove(Move move) {
-        if (move.getDst() == null) {
-            foundation.toFoundation(move.getCard());
-            if (move.getCard().getLocation() != 7) {
-                piles[move.getCard().getLocation()].removeTopCard();
-            } //pile to foundation
-            else {
-                stock.removeCard(stock.getCardStockIndex(move.getCard()));
-            } //stock to foundation
-        } //Moves to foundation
-        else {
-            if (move.getCard().getLocation() == 7) {
+        switch (move.getMoveType()) {
+            case 0:
+                foundation.toFoundation(move.getCard());
+                if (move.getCard().getLocation() != 7) {
+                    piles[move.getCard().getLocation()].removeTopCard();
+                } //pile to foundation
+                else {
+                    stock.removeCard(stock.getCardStockIndex(move.getCard()));
+                } //stock to foundation
+                break;
+            case 1:
                 move.getDst().addToBuildStack(move.getCard());
                 move.getCard().setLocation(this.getPileNum(move.getDst()));
                 stock.removeCard(stock.getCardStockIndex(move.getCard()));
-            } // Stock to pile
-            else if (piles[move.getCard().getLocation()].getBottomCard() == move.getCard()) {
+                break;
+                //stock to pile
+            case 2:
                 this.moveEntireBuildStack(piles[move.getCard().getLocation()], move.getDst());
-            } // Pile to pile: Move entire pile
-            else {
+                break;
+                //pile to pile: Move entire pile
+            case 3:
                 this.movePartialBuildStack(piles[move.getCard().getLocation()], move.getDst(),
                         piles[move.getCard().getLocation()].getCardIndex(move.getCard()));
-            } // Pile to pile: Move partial pile
-        } //Moves to pile
+                break;
+                //pile to pile: Move partial pile
+        }
     }
 
     public String getGameState() {
@@ -228,28 +231,28 @@ public class Solitaire {
 
         boolean end = false;
         while (!end) {
-//            System.out.println(this + "\n");
-//            System.out.println("Stock: \t\t\t\t" + stock.getStock());
+            System.out.println(this + "\n");
+            System.out.println("Stock: \t\t\t\t" + stock.getStock());
             possibleMoves = this.getPossibleMoves();
-//            System.out.println("Possible Moves: \t" + possibleMoves);
+            System.out.println("Possible Moves: \t" + possibleMoves);
 
             if (possibleMoves.isEmpty()) {
-//                System.out.println("Game lost: No possible moves");
+                System.out.println("Game lost: No possible moves");
                 return false;
             }
 
             int randomInt = (int) (Math.random() * possibleMoves.size());
             makeMove(possibleMoves.get(randomInt));
-//            System.out.println("Making move: \t\t" + randomInt + "\n");
+            System.out.println("Making move: \t\t" + randomInt + "\n");
 
             String currentState = this.getGameState();
 
             if (gameStates.contains(currentState)) {
-//                System.out.println("Game lost: Repeated game state detected.");
+                System.out.println("Game lost: Repeated game state detected.");
                 return false;
             } else
             if (foundation.checkWin()) {
-//                System.out.println("Game Won");
+                System.out.println("Game Won");
                 return true;
             } else {
                 if (gameStates.size() > 4) {
