@@ -10,7 +10,6 @@ import java.util.Stack;
 public class Pile {
     Stack<Card> hiddenCards;
     Stack<Card> buildStack;
-    Card bottomCard;
 
     public Pile() {
         hiddenCards = new Stack<>();
@@ -57,7 +56,6 @@ public class Pile {
             buildStack.pop();
             try {
                 this.revealCard();
-                this.setBottomCard();
             } catch (EmptyStackException e) {
                 System.out.println(e);
             }
@@ -85,15 +83,10 @@ public class Pile {
     }
 
     public Card getBottomCard() {
-        return bottomCard;
-    }
-    public void setBottomCard() {
-        if (!buildStack.isEmpty()) {
-            bottomCard = buildStack.firstElement();
+        if (buildStack.isEmpty()) {
+            return null;
         }
-        else {
-            bottomCard = null;
-        }
+        return buildStack.getFirst();
     }
 
     public Card getBuildCard(int index) {

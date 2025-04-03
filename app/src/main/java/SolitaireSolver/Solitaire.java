@@ -48,7 +48,6 @@ public class Solitaire {
                 piles[i].getTopHiddenCard().setLocation(i);
             }
             piles[i].revealCard();
-            piles[i].setBottomCard();
         }
     }
 
@@ -68,7 +67,6 @@ public class Solitaire {
             addStackToBuildStack(tmpStack, dst);
             if (!src.getHiddenCards().isEmpty()) {
                 src.revealCard();
-                src.setBottomCard();
             }
         } else {
             throw new InvalidMoveException("Invalid move: Cannot move build stack");
