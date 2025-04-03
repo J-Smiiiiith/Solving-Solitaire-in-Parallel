@@ -217,7 +217,6 @@ public class Solitaire {
     }
 
     public boolean randomSolitaireSolver() {
-        boolean end = false;
         Queue<String> gameStates = new LinkedList<>();
         gameStates.add(this.getGameState());
         ArrayList<Move> possibleMoves;
