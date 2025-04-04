@@ -2,6 +2,7 @@ package SolitaireSolver;
 
 import java.util.*;
 
+import SolitaireSolver.Exceptions.EmptyStockException;
 import SolitaireSolver.Exceptions.InvalidMoveException;
 import SolitaireSolver.Exceptions.InvalidSuitException;
 
@@ -111,17 +112,16 @@ public class Solitaire {
 
     private ArrayList<Card> getUsableCards() {
         ArrayList<Card> usableCards = new ArrayList<>();
+
         try {
             Card card = stock.draw();
-
             while (!usableCards.contains(card)) {
                 usableCards.add(card);
                 card = stock.draw();
             }
-        } catch (EmptyStackException e) {
+        } catch (EmptyStockException e) {
             // Do nothing, stock is empty
         }
-
 
         for (Pile pile : piles) {
             if (!pile.getBuildStack().isEmpty()) {
