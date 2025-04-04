@@ -111,12 +111,17 @@ public class Solitaire {
 
     private ArrayList<Card> getUsableCards() {
         ArrayList<Card> usableCards = new ArrayList<>();
-        Card card = stock.draw();
+        try {
+            Card card = stock.draw();
 
-        while (!usableCards.contains(card)) {
-            usableCards.add(card);
-            card = stock.draw();
+            while (!usableCards.contains(card)) {
+                usableCards.add(card);
+                card = stock.draw();
+            }
+        } catch (EmptyStackException e) {
+            // Do nothing, stock is empty
         }
+
 
         for (Pile pile : piles) {
             if (!pile.getBuildStack().isEmpty()) {
