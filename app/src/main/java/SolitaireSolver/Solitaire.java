@@ -138,7 +138,7 @@ public class Solitaire {
         int rank;
 
         for (Card card : usableCards) {
-            if (card == piles[card.getLocation()].getTopCard()) {
+            if (card.equals(piles[card.getLocation()].getTopCard())) {
                 rank = switch (card.getSuit()) {
                     case 'C' -> foundation.getClubs();
                     case 'S' -> foundation.getSpades();
