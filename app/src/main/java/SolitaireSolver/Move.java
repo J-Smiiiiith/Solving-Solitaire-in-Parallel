@@ -81,10 +81,12 @@ public class Move {
                 Card nextCard = piles[card.getLocation()].getBottomCard();
                 if (nextCard.getRank() == card.getRank() + 1) {
                     for (Pile pile : piles) {
-                        if (pile.getTopCard().getRank() == nextCard.getRank() + 1) {
-                            if (pile.getTopCard().isBlack() != nextCard.isBlack()) {
-                                this.updateHeuristic(5);
-                            } // Partial build stack move could reveal another card on the next turn.
+                        if (!pile.getPile().isEmpty()) {
+                            if (pile.getTopCard().getRank() == nextCard.getRank() + 1) {
+                                if (pile.getTopCard().isBlack() != nextCard.isBlack()) {
+                                    this.updateHeuristic(5);
+                                } // Partial build stack move could reveal another card on the next turn.
+                            }
                         }
                     }
                 } else {

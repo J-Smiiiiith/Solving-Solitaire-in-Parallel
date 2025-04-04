@@ -129,7 +129,7 @@ public class Solitaire {
     private ArrayList<Move> getPossibleMoves() {
         ArrayList<Move> possibleMoves = new ArrayList<>();
         ArrayList<Card> usableCards = getUsableCards();
-//        System.out.println("Usable Cards: \t\t" + usableCards);
+        System.out.println("Usable Cards: \t\t" + usableCards);
         int rank;
 
         for (Card card : usableCards) {
@@ -197,6 +197,16 @@ public class Solitaire {
                 break;
                 //pile to pile: Move partial pile
         }
+    }
+
+    public Move getBestMove(ArrayList<Move> moves) {
+        Move bestMove = moves.getFirst();
+        for (Move move : moves) {
+            if (move.getHeuristic() > bestMove.getHeuristic()) {
+                bestMove = move;
+            }
+        }
+        return bestMove;
     }
 
     public String getGameState() {
@@ -281,12 +291,14 @@ public class Solitaire {
                 return false;
             }
 
+            this.makeMove(this.getBestMove(possibleMoves));
+
             String currentState = this.getGameState();
 
             if (gameStates.contains(currentState)) {
                 System.out.println("Game lost: Repeated game state detected.");
                 return false;
-            } else
+            }
             if (foundation.checkWin()) {
                 System.out.println("Game Won");
                 return true;
