@@ -134,7 +134,7 @@ public class Solitaire {
     private ArrayList<Move> getPossibleMoves() {
         ArrayList<Move> possibleMoves = new ArrayList<>();
         ArrayList<Card> usableCards = getUsableCards();
-//        System.out.println("Usable Cards: \t\t" + usableCards);
+//        //System.out.println("Usable Cards: \t\t" + usableCards);
         int rank;
 
         for (Card card : usableCards) {
@@ -272,28 +272,28 @@ public class Solitaire {
 
         boolean end = false;
         while (!end) {
-//            System.out.println(this + "\n");
-//            System.out.println("Stock: \t\t\t\t" + stock.getStock());
+//            //System.out.println(this + "\n");
+//            //System.out.println("Stock: \t\t\t\t" + stock.getStock());
             possibleMoves = this.getPossibleMoves();
-//            System.out.println("Possible Moves: \t" + possibleMoves);
+//            //System.out.println("Possible Moves: \t" + possibleMoves);
 
             if (possibleMoves.isEmpty()) {
-//                System.out.println("Game lost: No possible moves");
+//                //System.out.println("Game lost: No possible moves");
                 return false;
             }
 
             int randomInt = (int) (Math.random() * possibleMoves.size());
             makeMove(possibleMoves.get(randomInt));
-//            System.out.println("Making move: \t\t" + randomInt + "\n");
+//            //System.out.println("Making move: \t\t" + randomInt + "\n");
 
             String currentState = this.getGameState();
 
             if (gameStates.contains(currentState)) {
-//                System.out.println("Game lost: Repeated game state detected.");
+//                //System.out.println("Game lost: Repeated game state detected.");
                 return false;
             } else
             if (foundation.checkWin()) {
-//                System.out.println("Game Won");
+//                //System.out.println("Game Won");
                 return true;
             } else {
                 if (gameStates.size() > 4) {
@@ -312,28 +312,28 @@ public class Solitaire {
 
         boolean end = false;
         while (!end) {
-//            System.out.println(this + "\n");
-//            System.out.println("Stock: \t\t\t\t" + stock.getStock());
+//            //System.out.println(this + "\n");
+//            //System.out.println("Stock: \t\t\t\t" + stock.getStock());
             possibleMoves = this.getPossibleMoves();
-//            System.out.println("Possible Moves: \t" + possibleMoves);
+//            //System.out.println("Possible Moves: \t" + possibleMoves);
 
             if (possibleMoves.isEmpty()) {
-//                System.out.println("Game lost: No possible moves");
+//                //System.out.println("Game lost: No possible moves");
                 return false;
             }
 
-//            System.out.println("Making Move: " + this.getBestMove(possibleMoves));
+//            //System.out.println("Making Move: " + this.getBestMove(possibleMoves));
             this.makeMove(this.getBestMove(possibleMoves));
 
             String currentState = this.getGameState();
 
             if (gameStates.contains(currentState)) {
-//                System.out.println("Game lost: Repeated game state detected.");
+//                //System.out.println("Game lost: Repeated game state detected.");
                 return false;
             }
             if (foundation.checkWin()) {
-//                System.out.println("Game Won");
-//                System.out.println(this + "\n");
+//                //System.out.println("Game Won");
+//                //System.out.println(this + "\n");
                 return true;
             } else {
                 if (gameStates.size() > 4) {
@@ -346,39 +346,36 @@ public class Solitaire {
     }
 
     public boolean greedyHeuristicPrioritySolitaireSolver() {
-        Queue<String> gameStates = new LinkedList<>();
+        ArrayList<String> gameStates = new ArrayList<>();
         gameStates.add(this.getGameState());
         ArrayList<Move> possibleMoves;
 
         boolean end = false;
         while (!end) {
-//            System.out.println(this + "\n");
-//            System.out.println("Stock: \t\t\t\t" + stock.getStock());
+            //System.out.println(this + "\n");
+            //System.out.println("Stock: \t\t\t\t" + stock.getStock());
             possibleMoves = this.getPossibleMoves();
-//            System.out.println("Possible Moves: \t" + possibleMoves);
+            //System.out.println("Possible Moves: \t" + possibleMoves);
 
             if (possibleMoves.isEmpty()) {
-//                System.out.println("Game lost: No possible moves");
+                //System.out.println("Game lost: No possible moves");
                 return false;
             }
 
-//            System.out.println("Making Move: " + this.getBestMoveWithPriority(possibleMoves) + "\n");
+            //System.out.println("Making Move: " + this.getBestMoveWithPriority(possibleMoves) + "\n");
             this.makeMove(this.getBestMoveWithPriority(possibleMoves));
 
             String currentState = this.getGameState();
 
-            if (gameStates.contains(currentState)) {
-//                System.out.println("Game lost: Repeated game state detected.");
+            if (Collections.frequency(gameStates, currentState) > 3) {
+                //System.out.println("Game lost: Repeated game state detected.");
                 return false;
             }
             if (foundation.checkWin()) {
-//                System.out.println("Game Won");
-//                System.out.println(this + "\n");
+                //System.out.println("Game Won");
+                //System.out.println(this + "\n");
                 return true;
             } else {
-                if (gameStates.size() > 4) {
-                    gameStates.poll();
-                }
                 gameStates.add(currentState);
             }
         }
