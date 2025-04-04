@@ -23,14 +23,14 @@ public class Stock {
         if (!stock.isEmpty()) {
             Card card;
             card = this.getCard();
-            if (this.getCardIndex() == stock.size() - 1) {
+            if ((this.getCardIndex() == stock.size() - 1) && (stock.size() > 2)) {
                 this.setCardIndex(STARTING_INDEX);
+            } else {
+                this.setCardIndex(Math.min(this.getCardIndex() + 3, stock.size() - 1));
             }
-            else this.setCardIndex(Math.min(this.getCardIndex() + 3, stock.size() - 1));
             return card;
-        }
-        else {
-            throw new EmptyStockException("Stock is empty, cannot draw.");
+        } else {
+            throw new EmptyStockException("Stock is empty, cannot draw card.");
         }
     }
 

@@ -2,6 +2,7 @@ package SolitaireSolver;
 
 import java.util.*;
 
+import SolitaireSolver.Exceptions.EmptyStockException;
 import SolitaireSolver.Exceptions.InvalidMoveException;
 import SolitaireSolver.Exceptions.InvalidSuitException;
 
@@ -111,11 +112,15 @@ public class Solitaire {
 
     private ArrayList<Card> getUsableCards() {
         ArrayList<Card> usableCards = new ArrayList<>();
-        Card card = stock.draw();
 
-        while (!usableCards.contains(card)) {
-            usableCards.add(card);
-            card = stock.draw();
+        try {
+            Card card = stock.draw();
+            while (!usableCards.contains(card)) {
+                usableCards.add(card);
+                card = stock.draw();
+            }
+        } catch (EmptyStockException e) {
+            // Do nothing, stock is empty
         }
 
         for (Pile pile : piles) {
@@ -133,16 +138,18 @@ public class Solitaire {
         int rank;
 
         for (Card card : usableCards) {
-            rank = switch (card.getSuit()) {
-                case 'C' -> foundation.getClubs();
-                case 'S' -> foundation.getSpades();
-                case 'D' -> foundation.getDiamonds();
-                case 'H' -> foundation.getHearts();
-                default -> throw new InvalidSuitException("Invalid suit: Valid suits include ['H', 'D', 'C', 'S'], not "
-                        + card.getSuit());
-            };
-            if (card.getRank() == rank + 1) {
-                possibleMoves.add(new Move(card));
+            if (card.equals(piles[card.getLocation()].getTopCard())) {
+                rank = switch (card.getSuit()) {
+                    case 'C' -> foundation.getClubs();
+                    case 'S' -> foundation.getSpades();
+                    case 'D' -> foundation.getDiamonds();
+                    case 'H' -> foundation.getHearts();
+                    default -> throw new InvalidSuitException("Invalid suit: Valid suits include ['H', 'D', 'C', 'S'], not "
+                            + card.getSuit());
+                };
+                if (card.getRank() == rank + 1) {
+                    possibleMoves.add(new Move(card));
+                }
             }
             //Check eligibility for a foundation move
 
