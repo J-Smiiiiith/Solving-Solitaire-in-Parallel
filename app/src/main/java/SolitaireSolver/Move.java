@@ -55,6 +55,10 @@ public class Move {
                         this.updateHeuristic(10);
                     } // Pile to foundation move will reveal a hidden card
                 }
+                if (card.getRank() == 1) {
+                    this.updateHeuristic(10);
+                    // Aces should always be moved to foundation
+                }
                 this.updateHeuristic(10);
                 break;
             case 1:
