@@ -138,16 +138,18 @@ public class Solitaire {
         int rank;
 
         for (Card card : usableCards) {
-            rank = switch (card.getSuit()) {
-                case 'C' -> foundation.getClubs();
-                case 'S' -> foundation.getSpades();
-                case 'D' -> foundation.getDiamonds();
-                case 'H' -> foundation.getHearts();
-                default -> throw new InvalidSuitException("Invalid suit: Valid suits include ['H', 'D', 'C', 'S'], not "
-                        + card.getSuit());
-            };
-            if (card.getRank() == rank + 1) {
-                possibleMoves.add(new Move(card));
+            if (card == piles[card.getLocation()].getTopCard()) {
+                rank = switch (card.getSuit()) {
+                    case 'C' -> foundation.getClubs();
+                    case 'S' -> foundation.getSpades();
+                    case 'D' -> foundation.getDiamonds();
+                    case 'H' -> foundation.getHearts();
+                    default -> throw new InvalidSuitException("Invalid suit: Valid suits include ['H', 'D', 'C', 'S'], not "
+                            + card.getSuit());
+                };
+                if (card.getRank() == rank + 1) {
+                    possibleMoves.add(new Move(card));
+                }
             }
             //Check eligibility for a foundation move
 
