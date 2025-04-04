@@ -57,7 +57,7 @@ public class Pile {
             try {
                 this.revealCard();
             } catch (EmptyStackException e) {
-                System.out.println(e);
+                // Do nothing
             }
             return true;
         }
