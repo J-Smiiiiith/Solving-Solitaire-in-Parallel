@@ -5,10 +5,10 @@ public class Run {
     public static void game() {
         int numGames = 0;
         int numWins = 0;
-        int numRuns = 500000;
+        int numRuns = 10000;
         for (int i = 0; i < numRuns; i++) {
             Solitaire game = new Solitaire();
-            if (game.greedyHeuristicSolitaireSolver()) {
+            if (game.greedyHeuristicPrioritySolitaireSolver()) {
                 numWins++;
             }
             numGames++;
