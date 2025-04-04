@@ -134,21 +134,23 @@ public class Solitaire {
     private ArrayList<Move> getPossibleMoves() {
         ArrayList<Move> possibleMoves = new ArrayList<>();
         ArrayList<Card> usableCards = getUsableCards();
-        System.out.println("Usable Cards: \t\t" + usableCards);
+//        System.out.println("Usable Cards: \t\t" + usableCards);
         int rank;
 
         for (Card card : usableCards) {
-            if (card.equals(piles[card.getLocation()].getTopCard())) {
-                rank = switch (card.getSuit()) {
-                    case 'C' -> foundation.getClubs();
-                    case 'S' -> foundation.getSpades();
-                    case 'D' -> foundation.getDiamonds();
-                    case 'H' -> foundation.getHearts();
-                    default -> throw new InvalidSuitException("Invalid suit: Valid suits include ['H', 'D', 'C', 'S'], not "
-                            + card.getSuit());
-                };
-                if (card.getRank() == rank + 1) {
-                    possibleMoves.add(new Move(card));
+            if (card.getLocation() != 7) {
+                if (card.equals(piles[card.getLocation()].getTopCard())) {
+                    rank = switch (card.getSuit()) {
+                        case 'C' -> foundation.getClubs();
+                        case 'S' -> foundation.getSpades();
+                        case 'D' -> foundation.getDiamonds();
+                        case 'H' -> foundation.getHearts();
+                        default -> throw new InvalidSuitException("Invalid suit: Valid suits include ['H', 'D', 'C', 'S'], not "
+                                + card.getSuit());
+                    };
+                    if (card.getRank() == rank + 1) {
+                        possibleMoves.add(new Move(card));
+                    }
                 }
             }
             //Check eligibility for a foundation move
@@ -232,7 +234,7 @@ public class Solitaire {
     public String toString() {
         String output = "";
 
-        output += stock.getCard() + "\t\t\t" + foundation.getClubCard() + " " + foundation.getSpadeCard() +
+        output += stock.getStock() + "\n" + foundation.getClubCard() + " " + foundation.getSpadeCard() +
                 " " + foundation.getHeartCard() + " " + foundation.getDiamondCard() + "\n" + "\n\n";
 
         for (Pile pile : piles) {
@@ -288,26 +290,28 @@ public class Solitaire {
 
         boolean end = false;
         while (!end) {
-            System.out.println(this + "\n");
-            System.out.println("Stock: \t\t\t\t" + stock.getStock());
+//            System.out.println(this + "\n");
+//            System.out.println("Stock: \t\t\t\t" + stock.getStock());
             possibleMoves = this.getPossibleMoves();
-            System.out.println("Possible Moves: \t" + possibleMoves);
+//            System.out.println("Possible Moves: \t" + possibleMoves);
 
             if (possibleMoves.isEmpty()) {
-                System.out.println("Game lost: No possible moves");
+//                System.out.println("Game lost: No possible moves");
                 return false;
             }
 
+//            System.out.println("Making Move: " + this.getBestMove(possibleMoves));
             this.makeMove(this.getBestMove(possibleMoves));
 
             String currentState = this.getGameState();
 
             if (gameStates.contains(currentState)) {
-                System.out.println("Game lost: Repeated game state detected.");
+//                System.out.println("Game lost: Repeated game state detected.");
                 return false;
             }
             if (foundation.checkWin()) {
-                System.out.println("Game Won");
+//                System.out.println("Game Won");
+//                System.out.println(this + "\n");
                 return true;
             } else {
                 if (gameStates.size() > 4) {
