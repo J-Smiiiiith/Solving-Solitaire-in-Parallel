@@ -1,15 +1,19 @@
 package SolitaireSolver;
 
+import java.util.ArrayList;
+
 public class Move {
     Card card;
     Pile dst;
     int heuristic;
+    int priority;
     int moveType;
 
     public Move(Card card) {
         //Stock to Foundation move / Pile to Foundation move
         this.card = card;
         this.heuristic = 0;
+        this.priority = 0;
     }
 
     public Move(Card card, Pile dst) {
@@ -17,6 +21,7 @@ public class Move {
         this.card = card;
         this.dst = dst;
         this.heuristic = 0;
+        this.priority = 0;
     }
 
     public void determineMoveType(Pile[] piles) {
@@ -63,13 +68,31 @@ public class Move {
                 break;
             case 1:
                 this.updateHeuristic(5);
+                if (card.getRank() != 13) {
+                    this.setPriority(1);
+                }
+                else {
+                    int priorityChange = 1;
+                    for (Pile pile : piles) {
+                        for (Card card : pile.getHiddenCards()) {
+                            if (card.getRank() == 13) {
+                                if (card.isBlack() != this.getCard().isBlack()) {
+                                    priorityChange += 1;
+                                }
+                            }
+                        }
+                    }
+                    this.setPriority(priorityChange);
+                }
                 break;
             case 2:
                 if (!piles[card.getLocation()].getHiddenCards().isEmpty()) {
                     this.updateHeuristic(10);
+                    this.setPriority(1 + piles[card.getLocation()].getHiddenCards().size());
                 } // Full build stack move will reveal a hidden card
                 else {
                     this.updateHeuristic(5);
+                    this.setPriority(1);
                 } // Full build stack move will create an empty pile
 
                 if ((card.getRank() == 13) && (dst.getPile().isEmpty())) {
@@ -127,5 +150,12 @@ public class Move {
     }
     public void updateHeuristic(int heuristic) {
         this.heuristic += heuristic;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 }
