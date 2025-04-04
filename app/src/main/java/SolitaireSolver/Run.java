@@ -8,7 +8,7 @@ public class Run {
         int numRuns = 500000;
         for (int i = 0; i < numRuns; i++) {
             Solitaire game = new Solitaire();
-            if (game.greedyHeuristicSolitaireSolver()) {
+            if (game.greedyHeuristicPrioritySolitaireSolver()) {
                 numWins++;
             }
             numGames++;

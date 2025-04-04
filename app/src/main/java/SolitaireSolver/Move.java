@@ -124,7 +124,7 @@ public class Move {
 
     @Override
     public String toString() {
-        return card.toString() + " " + this.getMoveType() + " " + this.getHeuristic();
+        return card.toString() + " T:" + this.getMoveType() + " H:" + this.getHeuristic() + " P:" + this.getPriority();
     }
 
     public Pile getDst() {
