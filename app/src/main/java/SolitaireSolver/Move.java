@@ -75,7 +75,7 @@ public class Move {
                     int priorityChange = 1;
                     for (Pile pile : piles) {
                         for (Card card : pile.getHiddenCards()) {
-                            if (card.getRank() == 13) {
+                            if (card.getRank() == 12) {
                                 if (card.isBlack() != this.getCard().isBlack()) {
                                     priorityChange += 1;
                                 }
