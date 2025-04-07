@@ -65,4 +65,13 @@ public class Stock {
     public ArrayList<Card> getStock() {
         return stock;
     }
+    public void setStock(ArrayList<Card> cards) {
+        stock = new ArrayList<>(cards);
+    }
+
+    public void updateCardLocations() {
+        for (Card card : stock) {
+            card.setLocation(7);
+        }
+    }
 }

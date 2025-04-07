@@ -267,6 +267,12 @@ public class Solitaire {
     public Foundation getFoundation() {
         return foundation;
     }
+    public Pile[] getPiles() {
+        return piles;
+    }
+    public Stock getStock() {
+        return stock;
+    }
 
     @Override
     public String toString() {

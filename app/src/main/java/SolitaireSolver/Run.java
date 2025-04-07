@@ -2,6 +2,7 @@ package SolitaireSolver;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Stack;
 
 public class Run {
 
@@ -149,11 +150,7 @@ public class Run {
                 move.resetMonteCarloScore();
                 int successCount = 0;
                 for (int i = 0; i < numSimulations; i++) {
-                    Solitaire simulatedGame = new Solitaire(game);
-                    if (greedyHeuristicPrioritySolitaireSolverWithRandom(simulatedGame)) {
-                        move.incrementMonteCarloScore();
-                        successCount++;
-                    }
+                    // Simulations go here
                 }
                 System.out.println("Move: " + move + " won " + successCount + "/" + numSimulations);
                 //System.out.println("Move: " + move + ", Monte Carlo score: " + move.getMonteCarloScore());
