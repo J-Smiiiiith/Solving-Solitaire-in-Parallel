@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Stack;
 
 public class Run {
+    private static Stack<GameStateCopy> history = new Stack<>();
 
     public static boolean randomSolitaireSolver(Solitaire game) {
         ArrayList<String> gameStates = new ArrayList<>();
@@ -100,7 +101,7 @@ public class Run {
             possibleMoves = game.getPossibleMoves();
             //System.out.println("Possible moves: " + possibleMoves);
             if (possibleMoves.isEmpty()) {
-                //System.out.println("No possible moves left.");
+                System.out.println("No possible moves left.");
                 return false;
             }
 
@@ -118,11 +119,11 @@ public class Run {
             //System.out.println("New game state: " + currentState);
 
             if (Collections.frequency(gameStates, currentState) > 3) {
-                //System.out.println("Game state repeated more than 3 times.");
+                System.out.println("Game state repeated more than 3 times.");
                 return false;
             }
             if (game.getFoundation().checkWin()) {
-                //System.out.println("Game won!");
+                System.out.println("Game won!");
                 return true;
             } else {
                 gameStates.add(currentState);
@@ -146,12 +147,23 @@ public class Run {
                 return false;
             }
 
+            // Save game state before move
             for (Move move : possibleMoves) {
-                move.resetMonteCarloScore();
+                history.push(new GameStateCopy(game));
+                game.makeMove(move);
                 int successCount = 0;
+                // Save game state after move for simulation
                 for (int i = 0; i < numSimulations; i++) {
-                    // Simulations go here
+                    history.push(new GameStateCopy(game));
+                    if (greedyHeuristicPrioritySolitaireSolverWithRandom(game)) {
+                        successCount++;
+                        move.incrementMonteCarloScore();
+                    }
+                    history.pop().restoreGameState(game);
+                    // Restore game to state after the simulated move was made
                 }
+                history.pop().restoreGameState(game);
+                // Restore game to state before move was simulated
                 System.out.println("Move: " + move + " won " + successCount + "/" + numSimulations);
                 //System.out.println("Move: " + move + ", Monte Carlo score: " + move.getMonteCarloScore());
             }
@@ -198,7 +210,7 @@ public class Run {
                     }
                     break;
                 case 'm':
-                    if (monteCarloSolitaireSolver(game, 25)) {
+                    if (monteCarloSolitaireSolver(game, 2)) {
                         numWins++;
                     }
                     break;
@@ -209,6 +221,6 @@ public class Run {
     }
 
     public static void main(String[] args) {
-        runSolver(1000, 'm');
+        runSolver(1, 'm');
     }
 }
