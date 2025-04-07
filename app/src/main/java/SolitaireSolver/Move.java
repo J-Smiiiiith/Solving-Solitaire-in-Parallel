@@ -8,12 +8,14 @@ public class Move {
     int heuristic;
     int priority;
     int moveType;
+    int monteCarloScore;
 
     public Move(Card card) {
         //Stock to Foundation move / Pile to Foundation move
         this.card = card;
         this.heuristic = 0;
         this.priority = 0;
+        this.monteCarloScore = 0;
     }
 
     public Move(Card card, Pile dst) {
@@ -157,5 +159,15 @@ public class Move {
     }
     public void setPriority(int priority) {
         this.priority = priority;
+    }
+
+    public int getMonteCarloScore() {
+        return monteCarloScore;
+    }
+    public void resetMonteCarloScore() {
+        this.monteCarloScore = 0;
+    }
+    public void incrementMonteCarloScore() {
+        this.monteCarloScore++;
     }
 }

@@ -134,7 +134,6 @@ public class Solitaire {
     public ArrayList<Move> getPossibleMoves() {
         ArrayList<Move> possibleMoves = new ArrayList<>();
         ArrayList<Card> usableCards = getUsableCards();
-//        //System.out.println("Usable Cards: \t\t" + usableCards);
         int rank;
 
         for (Card card : usableCards) {
@@ -153,7 +152,6 @@ public class Solitaire {
                     }
                 }
             }
-            //Check eligibility for a foundation move
 
             for (Pile pile : piles) {
                 Card topCard = pile.getTopCard();
@@ -169,13 +167,12 @@ public class Solitaire {
                     }
                 }
             }
-            //Check eligibility for a pile move
         }
 
         for (Move move : possibleMoves) {
             move.determineMoveType(piles);
         }
-        // Determine move type for each possible move
+
         return possibleMoves;
     }
 
@@ -195,16 +192,16 @@ public class Solitaire {
                 move.getCard().setLocation(this.getPileNum(move.getDst()));
                 stock.removeCard(stock.getCardStockIndex(move.getCard()));
                 break;
-                //stock to pile
+            //stock to pile
             case 2:
                 this.moveEntireBuildStack(piles[move.getCard().getLocation()], move.getDst());
                 break;
-                //pile to pile: Move entire pile
+            //pile to pile: Move entire pile
             case 3:
                 this.movePartialBuildStack(piles[move.getCard().getLocation()], move.getDst(),
                         piles[move.getCard().getLocation()].getCardIndex(move.getCard()));
                 break;
-                //pile to pile: Move partial pile
+            //pile to pile: Move partial pile
         }
     }
 
@@ -238,6 +235,21 @@ public class Solitaire {
             }
         }
         return bestMovePriority;
+    }
+
+    public Move getBestMoveMonetCarlo(ArrayList<Move> moves) {
+        Move bestMove = moves.getFirst();
+        for (Move move : moves) {
+            if (move.getMonteCarloScore() > bestMove.getMonteCarloScore()) {
+                bestMove = move;
+            }
+            if (move.getMonteCarloScore() == bestMove.getMonteCarloScore()) {
+                if (((int) (Math.random() * 2)) == 0) {
+                    bestMove = move;
+                } // Randomly select between two moves with the same score
+            }
+        }
+        return bestMove;
     }
 
     public String getGameState() {
