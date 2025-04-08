@@ -96,9 +96,17 @@ public class Pile {
     public Stack<Card> getBuildStack() {
         return buildStack;
     }
+    public void setBuildStack(ArrayList<Card> cards) {
+        buildStack = new Stack<>();
+        buildStack.addAll(cards);
+    }
 
     public Stack<Card> getHiddenCards() {
         return hiddenCards;
+    }
+    public void setHiddenCards(ArrayList<Card> cards) {
+        hiddenCards = new Stack<>();
+        hiddenCards.addAll(cards);
     }
 
     public ArrayList<String> getPile() {
@@ -125,5 +133,14 @@ public class Pile {
 
     public int getCardIndex(Card card) {
         return buildStack.indexOf(card);
+    }
+
+    public void updateCardLocations(int location) {
+        for (Card card : hiddenCards) {
+            card.setLocation(location);
+        }
+        for (Card card : buildStack) {
+            card.setLocation(location);
+        }
     }
 }

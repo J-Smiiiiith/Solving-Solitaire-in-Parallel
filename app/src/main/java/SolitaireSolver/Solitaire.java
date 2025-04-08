@@ -131,10 +131,9 @@ public class Solitaire {
         return usableCards;
     }
 
-    private ArrayList<Move> getPossibleMoves() {
+    public ArrayList<Move> getPossibleMoves() {
         ArrayList<Move> possibleMoves = new ArrayList<>();
         ArrayList<Card> usableCards = getUsableCards();
-//        //System.out.println("Usable Cards: \t\t" + usableCards);
         int rank;
 
         for (Card card : usableCards) {
@@ -145,15 +144,14 @@ public class Solitaire {
                         case 'S' -> foundation.getSpades();
                         case 'D' -> foundation.getDiamonds();
                         case 'H' -> foundation.getHearts();
-                        default -> throw new InvalidSuitException("Invalid suit: Valid suits include ['H', 'D', 'C', 'S'], not "
-                                + card.getSuit());
+                        default -> throw new InvalidSuitException("Invalid suit: Valid suits include " +
+                                "['H', 'D', 'C', 'S'], not " + card.getSuit());
                     };
                     if (card.getRank() == rank + 1) {
                         possibleMoves.add(new Move(card));
                     }
                 }
             }
-            //Check eligibility for a foundation move
 
             for (Pile pile : piles) {
                 Card topCard = pile.getTopCard();
@@ -169,13 +167,12 @@ public class Solitaire {
                     }
                 }
             }
-            //Check eligibility for a pile move
         }
 
         for (Move move : possibleMoves) {
             move.determineMoveType(piles);
         }
-        // Determine move type for each possible move
+
         return possibleMoves;
     }
 
@@ -195,16 +192,16 @@ public class Solitaire {
                 move.getCard().setLocation(this.getPileNum(move.getDst()));
                 stock.removeCard(stock.getCardStockIndex(move.getCard()));
                 break;
-                //stock to pile
+            //stock to pile
             case 2:
                 this.moveEntireBuildStack(piles[move.getCard().getLocation()], move.getDst());
                 break;
-                //pile to pile: Move entire pile
+            //pile to pile: Move entire pile
             case 3:
                 this.movePartialBuildStack(piles[move.getCard().getLocation()], move.getDst(),
                         piles[move.getCard().getLocation()].getCardIndex(move.getCard()));
                 break;
-                //pile to pile: Move partial pile
+            //pile to pile: Move partial pile
         }
     }
 
@@ -240,6 +237,21 @@ public class Solitaire {
         return bestMovePriority;
     }
 
+    public Move getBestMoveMonetCarlo(ArrayList<Move> moves) {
+        Move bestMove = moves.getFirst();
+        for (Move move : moves) {
+            if (move.getMonteCarloScore() > bestMove.getMonteCarloScore()) {
+                bestMove = move;
+            }
+            if (move.getMonteCarloScore() == bestMove.getMonteCarloScore()) {
+                if (((int) (Math.random() * 2)) == 0) {
+                    bestMove = move;
+                } // Randomly select between two moves with the same score
+            }
+        }
+        return bestMove;
+    }
+
     public String getGameState() {
         String gameState = "";
         for (Card card : stock.getStock()) {
@@ -250,6 +262,16 @@ public class Solitaire {
         }
         gameState += foundation.getFoundationState();
         return gameState;
+    }
+
+    public Foundation getFoundation() {
+        return foundation;
+    }
+    public Pile[] getPiles() {
+        return piles;
+    }
+    public Stock getStock() {
+        return stock;
     }
 
     @Override
@@ -263,122 +285,5 @@ public class Solitaire {
             output += pile.getPile() + "\n";
         }
         return output;
-    }
-
-    public boolean randomSolitaireSolver() {
-        Queue<String> gameStates = new LinkedList<>();
-        gameStates.add(this.getGameState());
-        ArrayList<Move> possibleMoves;
-
-        boolean end = false;
-        while (!end) {
-//            //System.out.println(this + "\n");
-//            //System.out.println("Stock: \t\t\t\t" + stock.getStock());
-            possibleMoves = this.getPossibleMoves();
-//            //System.out.println("Possible Moves: \t" + possibleMoves);
-
-            if (possibleMoves.isEmpty()) {
-//                //System.out.println("Game lost: No possible moves");
-                return false;
-            }
-
-            int randomInt = (int) (Math.random() * possibleMoves.size());
-            makeMove(possibleMoves.get(randomInt));
-//            //System.out.println("Making move: \t\t" + randomInt + "\n");
-
-            String currentState = this.getGameState();
-
-            if (gameStates.contains(currentState)) {
-//                //System.out.println("Game lost: Repeated game state detected.");
-                return false;
-            } else
-            if (foundation.checkWin()) {
-//                //System.out.println("Game Won");
-                return true;
-            } else {
-                if (gameStates.size() > 4) {
-                    gameStates.poll();
-                }
-                gameStates.add(currentState);
-            }
-        }
-        return end;
-    }
-
-    public boolean greedyHeuristicSolitaireSolver() {
-        Queue<String> gameStates = new LinkedList<>();
-        gameStates.add(this.getGameState());
-        ArrayList<Move> possibleMoves;
-
-        boolean end = false;
-        while (!end) {
-//            //System.out.println(this + "\n");
-//            //System.out.println("Stock: \t\t\t\t" + stock.getStock());
-            possibleMoves = this.getPossibleMoves();
-//            //System.out.println("Possible Moves: \t" + possibleMoves);
-
-            if (possibleMoves.isEmpty()) {
-//                //System.out.println("Game lost: No possible moves");
-                return false;
-            }
-
-//            //System.out.println("Making Move: " + this.getBestMove(possibleMoves));
-            this.makeMove(this.getBestMove(possibleMoves));
-
-            String currentState = this.getGameState();
-
-            if (gameStates.contains(currentState)) {
-//                //System.out.println("Game lost: Repeated game state detected.");
-                return false;
-            }
-            if (foundation.checkWin()) {
-//                //System.out.println("Game Won");
-//                //System.out.println(this + "\n");
-                return true;
-            } else {
-                if (gameStates.size() > 4) {
-                    gameStates.poll();
-                }
-                gameStates.add(currentState);
-            }
-        }
-        return end;
-    }
-
-    public boolean greedyHeuristicPrioritySolitaireSolver() {
-        ArrayList<String> gameStates = new ArrayList<>();
-        gameStates.add(this.getGameState());
-        ArrayList<Move> possibleMoves;
-
-        boolean end = false;
-        while (!end) {
-            //System.out.println(this + "\n");
-            //System.out.println("Stock: \t\t\t\t" + stock.getStock());
-            possibleMoves = this.getPossibleMoves();
-            //System.out.println("Possible Moves: \t" + possibleMoves);
-
-            if (possibleMoves.isEmpty()) {
-                //System.out.println("Game lost: No possible moves");
-                return false;
-            }
-
-            //System.out.println("Making Move: " + this.getBestMoveWithPriority(possibleMoves) + "\n");
-            this.makeMove(this.getBestMoveWithPriority(possibleMoves));
-
-            String currentState = this.getGameState();
-
-            if (Collections.frequency(gameStates, currentState) > 3) {
-                //System.out.println("Game lost: Repeated game state detected.");
-                return false;
-            }
-            if (foundation.checkWin()) {
-                //System.out.println("Game Won");
-                //System.out.println(this + "\n");
-                return true;
-            } else {
-                gameStates.add(currentState);
-            }
-        }
-        return end;
     }
 }

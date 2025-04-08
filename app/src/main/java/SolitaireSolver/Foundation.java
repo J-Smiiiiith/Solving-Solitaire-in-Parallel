@@ -91,17 +91,29 @@ public class Foundation {
     public int getSpades() {
         return spades;
     }
+    public void setSpades(int spades) {
+        this.spades = spades;
+    }
 
     public int getHearts() {
         return hearts;
+    }
+    public void setHearts(int hearts) {
+        this.hearts = hearts;
     }
 
     public int getClubs() {
         return clubs;
     }
+    public void setClubs(int clubs) {
+        this.clubs = clubs;
+    }
 
     public int getDiamonds() {
         return diamonds;
+    }
+    public void setDiamonds(int diamonds) {
+        this.diamonds = diamonds;
     }
 
     //Note: These getters are only to visualise the game. They will not be used in actual solution.
