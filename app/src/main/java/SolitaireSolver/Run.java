@@ -101,7 +101,7 @@ public class Run {
             possibleMoves = game.getPossibleMoves();
             //System.out.println("Possible moves: " + possibleMoves);
             if (possibleMoves.isEmpty()) {
-                System.out.println("No possible moves left.");
+//                System.out.println("No possible moves left.");
                 return false;
             }
 
@@ -119,11 +119,11 @@ public class Run {
             //System.out.println("New game state: " + currentState);
 
             if (Collections.frequency(gameStates, currentState) > 3) {
-                System.out.println("Game state repeated more than 3 times.");
+//                System.out.println("Game state repeated more than 3 times.");
                 return false;
             }
             if (game.getFoundation().checkWin()) {
-                System.out.println("Game won!");
+//                System.out.println("Game won!");
                 return true;
             } else {
                 gameStates.add(currentState);
@@ -159,12 +159,13 @@ public class Run {
                         successCount++;
                         move.incrementMonteCarloScore();
                     }
+                    move.resetMonteCarloScore();
                     history.pop().restoreGameState(game);
                     // Restore game to state after the simulated move was made
                 }
                 history.pop().restoreGameState(game);
                 // Restore game to state before move was simulated
-                System.out.println("Move: " + move + " won " + successCount + "/" + numSimulations);
+                //System.out.println("Move: " + move + " won " + successCount + "/" + numSimulations);
                 //System.out.println("Move: " + move + ", Monte Carlo score: " + move.getMonteCarloScore());
             }
 
@@ -210,7 +211,7 @@ public class Run {
                     }
                     break;
                 case 'm':
-                    if (monteCarloSolitaireSolver(game, 2)) {
+                    if (monteCarloSolitaireSolver(game, 50)) {
                         numWins++;
                     }
                     break;
@@ -221,6 +222,6 @@ public class Run {
     }
 
     public static void main(String[] args) {
-        runSolver(1, 'm');
+        runSolver(100000, 'm');
     }
 }
