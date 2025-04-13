@@ -134,6 +134,7 @@ public class Solitaire {
     public ArrayList<Move> getPossibleMoves() {
         ArrayList<Move> possibleMoves = new ArrayList<>();
         ArrayList<Card> usableCards = getUsableCards();
+        System.out.println("Usable Cards: " + usableCards);
         int rank;
 
         for (Card card : usableCards) {
@@ -278,11 +279,11 @@ public class Solitaire {
     public String toString() {
         String output = "";
 
-        output += stock.getStock() + "\n" + foundation.getClubCard() + " " + foundation.getSpadeCard() +
+        output += foundation.getClubCard() + " " + foundation.getSpadeCard() +
                 " " + foundation.getHeartCard() + " " + foundation.getDiamondCard() + "\n" + "\n\n";
 
         for (Pile pile : piles) {
-            output += pile.getPile() + "\n";
+            output += pile.getOutputPile() + "\n";
         }
         return output;
     }

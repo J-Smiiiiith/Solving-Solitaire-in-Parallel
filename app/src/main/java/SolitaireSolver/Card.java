@@ -16,11 +16,11 @@ public class Card {
     @Override
     public String toString() {
         return switch (rank) {
-            case 1 -> "A" + suit + location;
-            case 11 -> "J" + suit + location;
-            case 12 -> "Q" + suit + location;
+            case 1 -> "A" + suit;
+            case 11 -> "J" + suit;
+            case 12 -> "Q" + suit;
             case 13 -> "K" + suit + location;
-            default -> rank + "" + suit + location;
+            default -> rank + "" + suit;
         };
     }
 
