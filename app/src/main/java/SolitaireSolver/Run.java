@@ -156,9 +156,7 @@ public class Run {
 
         boolean end = false;
         while (!end) {
-            //System.out.println(game);
             possibleMoves = game.getPossibleMoves();
-            //System.out.println("Possible moves: " + possibleMoves);
             if (possibleMoves.isEmpty()) {
                 System.out.println("No possible moves left.");
                 return false;
@@ -176,24 +174,29 @@ public class Run {
                         successCount++;
                         move.incrementMonteCarloScore();
                     }
-                    move.resetMonteCarloScore();
                     history.pop().restoreGameState(game);
                     // Restore game to state after the simulated move was made
                 }
+                //System.out.println("Move: " + move + " won " + successCount + "/" + numSimulations);
                 history.pop().restoreGameState(game);
                 // Restore game to state before move was simulated
-                //System.out.println("Move: " + move + " won " + successCount + "/" + numSimulations);
                 //System.out.println("Move: " + move + ", Monte Carlo score: " + move.getMonteCarloScore());
             }
 
             Move bestMove = game.getBestMoveMonetCarlo(possibleMoves);
             //System.out.println("Best move selected: " + bestMove);
+
+            outputGame(game, possibleMoves, bestMove);
+
             game.makeMove(bestMove);
+
+            game.resetMonteCarloScores(possibleMoves);
+
             String currentState = game.getGameState();
             //System.out.println("Current game state: " + currentState);
 
-            if (Collections.frequency(gameStates, currentState) > 3) {
-                System.out.println("Game state repeated more than 3 times.");
+            if (Collections.frequency(gameStates, currentState) > MAX_REPEATS) {
+                System.out.println("Game state repeated more than 5 times.");
                 return false;
             }
             if (game.getFoundation().checkWin()) {
@@ -228,7 +231,7 @@ public class Run {
                     }
                     break;
                 case 'm':
-                    if (monteCarloSolitaireSolver(game, 50)) {
+                    if (monteCarloSolitaireSolver(game, 100)) {
                         numWins++;
                     }
                     break;
@@ -239,6 +242,6 @@ public class Run {
     }
 
     public static void main(String[] args) {
-        runSolver(10000, 'p');
+        runSolver(1, 'm');
     }
 }
