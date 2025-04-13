@@ -16,7 +16,7 @@ public class Solitaire {
     public Solitaire() {
         suits = new char[]{'C', 'S', 'H', 'D'};
         deck = buildDeck();
-        //this.shuffleDeck();
+        this.shuffleDeck();
         piles = new Pile[]{new Pile(), new Pile(), new Pile(), new Pile(), new Pile(), new Pile(), new Pile()};
         foundation = new Foundation();
 
@@ -134,8 +134,7 @@ public class Solitaire {
     public ArrayList<Move> getPossibleMoves() {
         ArrayList<Move> possibleMoves = new ArrayList<>();
         ArrayList<Card> usableCards = getUsableCards();
-        System.out.println("Usable Cards: " + usableCards);
-        int rank;
+        //System.out.println("Usable Cards: " + usableCards);
 
         for (Card card : usableCards) {
             if (card.getLocation() != 7) {

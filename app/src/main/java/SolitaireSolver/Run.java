@@ -84,12 +84,12 @@ public class Run {
         while (!end) {
             possibleMoves = game.getPossibleMoves();
             if (possibleMoves.isEmpty()) {
-                System.out.println("No possible moves left.");
+                //System.out.println("No possible moves left.");
                 return false;
             }
             Move bestMove = game.getBestMoveWithPriority(possibleMoves);
 
-            outputGame(game, possibleMoves, bestMove);
+            //outputGame(game, possibleMoves, bestMove);
 
             game.makeMove(bestMove);
             String currentState = game.getGameState();
@@ -239,6 +239,6 @@ public class Run {
     }
 
     public static void main(String[] args) {
-        runSolver(1, 'p');
+        runSolver(10000, 'p');
     }
 }
