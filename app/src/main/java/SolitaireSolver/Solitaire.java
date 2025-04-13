@@ -260,6 +260,24 @@ public class Solitaire {
         return bestMove;
     }
 
+    public void resetMonteCarloScores(ArrayList<Move> moves) {
+        for (Move move : moves) {
+            move.resetMonteCarloScore();
+        }
+    }
+
+    public boolean checkWin() {
+        if (stock.getStock().isEmpty()) {
+            for (Pile p : piles) {
+                if (!p.getHiddenCards().isEmpty()) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
     public String getGameState() {
         String gameState = "";
         for (Card card : stock.getStock()) {
