@@ -1,11 +1,24 @@
 package SolitaireSolver;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Stack;
 
 public class Run {
+    static int MAX_REPEATS = 5;
+
     private static Stack<GameStateCopy> history = new Stack<>();
+
+    public static void outputGame(Solitaire game, ArrayList<Move> moves, Move chosenMove) {
+        String output = "";
+
+        output += game + "\n" +
+                "Possible moves: " + moves + "\n" +
+                "Chosen move: " + chosenMove + "\n";
+
+        System.out.println(output);
+    }
 
     public static boolean randomSolitaireSolver(Solitaire game) {
         ArrayList<String> gameStates = new ArrayList<>();
@@ -71,13 +84,17 @@ public class Run {
         while (!end) {
             possibleMoves = game.getPossibleMoves();
             if (possibleMoves.isEmpty()) {
+                //System.out.println("No possible moves left.");
                 return false;
             }
+            Move bestMove = game.getBestMoveWithPriority(possibleMoves);
 
-            game.makeMove(game.getBestMoveWithPriority(possibleMoves));
+            //outputGame(game, possibleMoves, bestMove);
+
+            game.makeMove(bestMove);
             String currentState = game.getGameState();
 
-            if (Collections.frequency(gameStates, currentState) > 3) {
+            if (Collections.frequency(gameStates, currentState) > MAX_REPEATS) {
                 return false;
             }
             if (game.getFoundation().checkWin()) {
@@ -222,6 +239,6 @@ public class Run {
     }
 
     public static void main(String[] args) {
-        runSolver(100000, 'm');
+        runSolver(10000, 'p');
     }
 }

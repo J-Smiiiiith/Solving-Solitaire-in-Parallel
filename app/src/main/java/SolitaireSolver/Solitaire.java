@@ -134,23 +134,16 @@ public class Solitaire {
     public ArrayList<Move> getPossibleMoves() {
         ArrayList<Move> possibleMoves = new ArrayList<>();
         ArrayList<Card> usableCards = getUsableCards();
-        int rank;
+        //System.out.println("Usable Cards: " + usableCards);
 
         for (Card card : usableCards) {
             if (card.getLocation() != 7) {
                 if (card.equals(piles[card.getLocation()].getTopCard())) {
-                    rank = switch (card.getSuit()) {
-                        case 'C' -> foundation.getClubs();
-                        case 'S' -> foundation.getSpades();
-                        case 'D' -> foundation.getDiamonds();
-                        case 'H' -> foundation.getHearts();
-                        default -> throw new InvalidSuitException("Invalid suit: Valid suits include " +
-                                "['H', 'D', 'C', 'S'], not " + card.getSuit());
-                    };
-                    if (card.getRank() == rank + 1) {
-                        possibleMoves.add(new Move(card));
-                    }
+                    checkRankForFoundationMove(possibleMoves, card);
                 }
+            } //Check that card is at top of the pile for foundation move.
+            else {
+                checkRankForFoundationMove(possibleMoves, card);
             }
 
             for (Pile pile : piles) {
@@ -174,6 +167,21 @@ public class Solitaire {
         }
 
         return possibleMoves;
+    }
+
+    private void checkRankForFoundationMove(ArrayList<Move> possibleMoves, Card card) {
+        int rank;
+        rank = switch (card.getSuit()) {
+            case 'C' -> foundation.getClubs();
+            case 'S' -> foundation.getSpades();
+            case 'D' -> foundation.getDiamonds();
+            case 'H' -> foundation.getHearts();
+            default -> throw new InvalidSuitException("Invalid suit: Valid suits include " +
+                    "['H', 'D', 'C', 'S'], not " + card.getSuit());
+        };
+        if (card.getRank() == rank + 1) {
+            possibleMoves.add(new Move(card));
+        }
     }
 
     public void makeMove(Move move) {
@@ -278,11 +286,11 @@ public class Solitaire {
     public String toString() {
         String output = "";
 
-        output += stock.getStock() + "\n" + foundation.getClubCard() + " " + foundation.getSpadeCard() +
-                " " + foundation.getHeartCard() + " " + foundation.getDiamondCard() + "\n" + "\n\n";
+        output += "Stock: " + stock.stock + " \n" + foundation.getClubCard() + " " + foundation.getSpadeCard() +
+                " " + foundation.getHeartCard() + " " + foundation.getDiamondCard() + "\n\n";
 
         for (Pile pile : piles) {
-            output += pile.getPile() + "\n";
+            output += pile.getOutputPile() + "\n";
         }
         return output;
     }

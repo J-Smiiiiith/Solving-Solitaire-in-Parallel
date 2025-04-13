@@ -120,6 +120,10 @@ public class Pile {
         return pile;
     }
 
+    public String getOutputPile() {
+        return hiddenCards + "\t\t" + buildStack;
+    }
+
     public String getPileState() {
         String piles = "";
         for (Card card : hiddenCards) {
@@ -133,6 +137,13 @@ public class Pile {
 
     public int getCardIndex(Card card) {
         return buildStack.indexOf(card);
+    }
+
+    public Card getCardAtIndex(int index) {
+        if (index < buildStack.size()) {
+            return buildStack.get(index);
+        }
+        return null;
     }
 
     public void updateCardLocations(int location) {

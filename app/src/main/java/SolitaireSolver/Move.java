@@ -70,21 +70,17 @@ public class Move {
                 break;
             case 1:
                 this.updateHeuristic(5);
-                if (card.getRank() != 13) {
-                    this.setPriority(1);
-                }
-                else {
-                    int priorityChange = 1;
+                this.setPriority(1);
+                if (card.getRank() == 13) {
                     for (Pile pile : piles) {
                         for (Card card : pile.getHiddenCards()) {
                             if (card.getRank() == 12) {
                                 if (card.isBlack() != this.getCard().isBlack()) {
-                                    priorityChange += 1;
+                                    this.setPriority(-1);
                                 }
                             }
                         }
                     }
-                    this.setPriority(priorityChange);
                 }
                 break;
             case 2:
@@ -107,18 +103,17 @@ public class Move {
                 }
                 break;
             case 3:
-                Card nextCard = piles[card.getLocation()].getBottomCard();
-                if (nextCard.getRank() == card.getRank() + 1) {
-                    for (Pile pile : piles) {
-                        if (!pile.getPile().isEmpty()) {
-                            if (pile.getTopCard().getRank() == nextCard.getRank() + 1) {
-                                if (pile.getTopCard().isBlack() != nextCard.isBlack()) {
-                                    this.updateHeuristic(5);
-                                } // Partial build stack move could reveal another card on the next turn.
-                            }
+                Pile srcPile = piles[card.getLocation()];
+                Card nextCard = srcPile.getCardAtIndex(srcPile.getCardIndex(card) - 1);
+                for (Pile pile : piles) {
+                    if (!pile.getPile().isEmpty()) {
+                        if (pile.getTopCard().getRank() == nextCard.getRank() + 1) {
+                            if (pile.getTopCard().isBlack() != nextCard.isBlack()) {
+                                this.updateHeuristic(5);
+                                break;
+                            } // Partial build stack move could reveal another card on the next turn.
                         }
                     }
-                } else {
                     this.setHeuristic(0);
                 } // Partial build stack move may not reveal a hidden card so has no benefit
         }
@@ -126,8 +121,7 @@ public class Move {
 
     @Override
     public String toString() {
-        return card.toString() + " T:" + this.getMoveType() + " H:" + this.getHeuristic() + " P:" + this.getPriority() +
-                " M:" + this.getMonteCarloScore();
+        return card.toString() + " T:" + this.getMoveType() + " H:" + this.getHeuristic() + " P:" + this.getPriority();
     }
 
     public Pile getDst() {
