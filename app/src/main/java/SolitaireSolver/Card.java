@@ -19,7 +19,7 @@ public class Card {
             case 1 -> "A" + suit;
             case 11 -> "J" + suit;
             case 12 -> "Q" + suit;
-            case 13 -> "K" + suit + location;
+            case 13 -> "K" + suit;
             default -> rank + "" + suit;
         };
     }
