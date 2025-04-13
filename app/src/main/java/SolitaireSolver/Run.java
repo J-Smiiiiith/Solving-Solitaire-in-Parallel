@@ -186,7 +186,7 @@ public class Run {
             Move bestMove = game.getBestMoveMonetCarlo(possibleMoves);
             //System.out.println("Best move selected: " + bestMove);
 
-            outputGame(game, possibleMoves, bestMove);
+            //outputGame(game, possibleMoves, bestMove);
 
             game.makeMove(bestMove);
 
@@ -199,7 +199,7 @@ public class Run {
                 System.out.println("Game state repeated more than 5 times.");
                 return false;
             }
-            if (game.getFoundation().checkWin()) {
+            if (game.getFoundation().checkWin() || game.checkWin()) {
                 System.out.println("Game won!");
                 return true;
             } else {
@@ -242,6 +242,6 @@ public class Run {
     }
 
     public static void main(String[] args) {
-        runSolver(1, 'm');
+        runSolver(10, 'm');
     }
 }

@@ -266,6 +266,18 @@ public class Solitaire {
         }
     }
 
+    public boolean checkWin() {
+        if (stock.getStock().isEmpty()) {
+            for (Pile p : piles) {
+                if (!p.getHiddenCards().isEmpty()) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
     public String getGameState() {
         String gameState = "";
         for (Card card : stock.getStock()) {
