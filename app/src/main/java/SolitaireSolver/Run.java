@@ -213,7 +213,8 @@ public class Run {
         int numGames = 0;
         int numWins = 0;
         for (int i = 0; i < numRuns; i++) {
-            Solitaire game = new Solitaire();
+            Deck deck = new Deck();
+            Solitaire game = new Solitaire(deck);
             switch (solverType) {
                 case 'p':
                     if (greedyHeuristicPrioritySolitaireSolver(game)) {
@@ -242,6 +243,6 @@ public class Run {
     }
 
     public static void main(String[] args) {
-        runSolver(10, 'm');
+        runSolver(1, 'm');
     }
 }
