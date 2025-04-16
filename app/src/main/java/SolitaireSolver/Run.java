@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Stack;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Run {
     static int MAX_REPEATS = 5;
@@ -189,10 +191,11 @@ public class Run {
     }
 
     public static void runSolver(int numRuns, int numThreads, char solverType) {
-        int numGames = 0;
-        int numWins = 0;
+        int numTotalWins = 0;
         for (int i = 0; i < numRuns; i++) {
+            AtomicInteger numWins = new AtomicInteger();
             Solitaire baseGame = new Solitaire(new Deck());
+            System.out.println("Game " + (i + 1) + ": " + baseGame);
 
             ExecutorService executor = Executors.newFixedThreadPool(numThreads);
             for (int j = 0; j < numThreads; j++) {
@@ -211,6 +214,9 @@ public class Run {
                             default -> false;
                         };
                         System.out.println(Thread.currentThread().getName() + ": " + result);
+                        if (result) {
+                            numWins.getAndIncrement();
+                        }
                     } catch (Exception e) {
                         System.err.println("[" + Thread.currentThread().getName() + "] encountered an error:");
                         e.printStackTrace();
@@ -218,11 +224,23 @@ public class Run {
                 });
             }
             executor.shutdown();
+            try {
+                executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+            } catch (InterruptedException ie) {
+                executor.shutdownNow();
+                Thread.currentThread().interrupt();
+            }
+            int winsThisGame = numWins.get();
+            System.out.println("Wins: " + numWins.get() + " out of " + numThreads + " games.\n");
+
+            if (winsThisGame > 0) {
+                numTotalWins++;
+            }
         }
-        System.out.println("\nWon " + numWins + "/" + numGames + " games.");
+        System.out.println("Total wins: " + numTotalWins + "/" + numRuns);
     }
 
     public static void main(String[] args) {
-        runSolver(1, 50, 'm');
+        runSolver(5, 5, 'm');
     }
 }
