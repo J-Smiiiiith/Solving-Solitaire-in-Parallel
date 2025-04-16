@@ -7,40 +7,34 @@ import SolitaireSolver.Exceptions.InvalidMoveException;
 import SolitaireSolver.Exceptions.InvalidSuitException;
 
 public class Solitaire {
-    char[] suits;
     Stack<Card> deck;
     Pile[] piles;
     Foundation foundation;
     Stock stock;
 
-    public Solitaire() {
-        suits = new char[]{'C', 'S', 'H', 'D'};
-        deck = buildDeck();
-        this.shuffleDeck();
+    public Solitaire(Deck deck) {
+        this.deck = deck.getDeck();
         piles = new Pile[]{new Pile(), new Pile(), new Pile(), new Pile(), new Pile(), new Pile(), new Pile()};
         foundation = new Foundation();
 
         this.dealCards();
 
-        ArrayList<Card> newDeck = new ArrayList<>(deck);
+        ArrayList<Card> newDeck = new ArrayList<>(this.deck);
         Collections.reverse(newDeck);
 
         stock = new Stock(newDeck);
     }
 
-    private Stack<Card> buildDeck() {
-        deck = new Stack<>();
-        for (char suit : suits) {
-            for (int i = 1; i <= 13; i++) {
-                deck.push(new Card(i, suit));
-            }
-        }
-        return deck;
-    }
+    public Solitaire(Solitaire other) {
+        this.foundation = new Foundation(other.foundation);
 
-    private void shuffleDeck() {
-        Collections.shuffle(deck);
-    }
+        this.piles = new Pile[other.piles.length];
+        for (int i = 0; i < other.piles.length; i++) {
+            this.piles[i] = new Pile(other.piles[i]);
+        }
+
+        this.stock = new Stock(other.stock);
+    } // Deep copy for solitaire
 
     private void dealCards() {
         for (int i = 0; i < 7; i++) {

@@ -19,6 +19,15 @@ public class Stock {
         }
     }
 
+    public Stock(Stock other) {
+        this.stock = new ArrayList<>();
+        for (Card card : other.getStock()) {
+            this.stock.add(new Card(card));
+        }
+        this.cardIndex = other.getCardIndex();
+        this.updateCardLocations();
+    } // Deep copy for stock
+
     public Card draw() {
         if (!stock.isEmpty()) {
             Card card;

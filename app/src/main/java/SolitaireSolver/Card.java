@@ -2,7 +2,7 @@ package SolitaireSolver;
 
 public class Card {
     int rank, location;
-    // Location: 7 : Stock, 0-6: Piles
+    // Location: 7: Stock, 0-6: Piles
     char suit;
     boolean black;
 
@@ -12,6 +12,13 @@ public class Card {
         this.suit = suit;
         black = (suit == 'S' || suit == 'C');
     }
+
+    public Card(Card other) {
+        this.rank = other.rank;
+        this.suit = other.suit;
+        this.black = other.black;
+        this.location = other.location;
+    } // Deep copy for card
 
     @Override
     public String toString() {
