@@ -1,14 +1,13 @@
 package SolitaireSolver;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Stack;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Run {
     static int MAX_REPEATS = 5;
-
-    private static Stack<GameStateCopy> history = new Stack<>();
 
     public static void outputGame(Solitaire game, ArrayList<Move> moves, Move chosenMove) {
         String output = "";
@@ -33,10 +32,12 @@ public class Run {
             }
 
             int randomInt = (int) (Math.random() * possibleMoves.size());
-            game.makeMove(possibleMoves.get(randomInt));
+            Move move = possibleMoves.get(randomInt);
+
+            game.makeMove(move);
             String currentState = game.getGameState();
 
-            if (Collections.frequency(gameStates, currentState) > 3) {
+            if (Collections.frequency(gameStates, currentState) > MAX_REPEATS) {
                 return false;
             }
             else if (game.getFoundation().checkWin()) {
@@ -84,12 +85,10 @@ public class Run {
         while (!end) {
             possibleMoves = game.getPossibleMoves();
             if (possibleMoves.isEmpty()) {
-                //System.out.println("No possible moves left.");
                 return false;
             }
             Move bestMove = game.getBestMoveWithPriority(possibleMoves);
 
-            //outputGame(game, possibleMoves, bestMove);
 
             game.makeMove(bestMove);
             String currentState = game.getGameState();
@@ -107,40 +106,31 @@ public class Run {
     }
 
     public static boolean greedyHeuristicPrioritySolitaireSolverWithRandom(Solitaire game) {
-        //System.out.println("\nNew simulation: \n");
         ArrayList<String> gameStates = new ArrayList<>();
         gameStates.add(game.getGameState());
         ArrayList<Move> possibleMoves;
 
         boolean end = false;
         while (!end) {
-            //System.out.println("Current game state:\n" + game);
             possibleMoves = game.getPossibleMoves();
-            //System.out.println("Possible moves: " + possibleMoves);
             if (possibleMoves.isEmpty()) {
-//                System.out.println("No possible moves left.");
                 return false;
             }
 
             if (((int) (Math.random() * 3)) == 0) {
                 int randomInt = (int) (Math.random() * possibleMoves.size());
-                //System.out.println("Random move selected: " + possibleMoves.get(randomInt));
                 game.makeMove(possibleMoves.get(randomInt));
             } else {
                 Move bestMove = game.getBestMoveWithPriority(possibleMoves);
-                //System.out.println("Best move selected: " + bestMove);
                 game.makeMove(bestMove);
             }
 
             String currentState = game.getGameState();
-            //System.out.println("New game state: " + currentState);
 
             if (Collections.frequency(gameStates, currentState) > 3) {
-//                System.out.println("Game state repeated more than 3 times.");
                 return false;
             }
             if (game.getFoundation().checkWin()) {
-//                System.out.println("Game won!");
                 return true;
             } else {
                 gameStates.add(currentState);
@@ -153,54 +143,43 @@ public class Run {
         ArrayList<String> gameStates = new ArrayList<>();
         gameStates.add(game.getGameState());
         ArrayList<Move> possibleMoves;
+        Stack<GameStateCopy> history = new Stack<>();
 
         boolean end = false;
         while (!end) {
             possibleMoves = game.getPossibleMoves();
             if (possibleMoves.isEmpty()) {
-                System.out.println("No possible moves left.");
                 return false;
             }
 
-            // Save game state before move
+
             for (Move move : possibleMoves) {
                 history.push(new GameStateCopy(game));
+                // Save game state before move
                 game.makeMove(move);
-                int successCount = 0;
-                // Save game state after move for simulation
                 for (int i = 0; i < numSimulations; i++) {
                     history.push(new GameStateCopy(game));
+                    // Save game state after move for simulation
                     if (greedyHeuristicPrioritySolitaireSolverWithRandom(game)) {
-                        successCount++;
                         move.incrementMonteCarloScore();
                     }
                     history.pop().restoreGameState(game);
                     // Restore game to state after the simulated move was made
                 }
-                //System.out.println("Move: " + move + " won " + successCount + "/" + numSimulations);
                 history.pop().restoreGameState(game);
                 // Restore game to state before move was simulated
-                //System.out.println("Move: " + move + ", Monte Carlo score: " + move.getMonteCarloScore());
             }
 
             Move bestMove = game.getBestMoveMonetCarlo(possibleMoves);
-            //System.out.println("Best move selected: " + bestMove);
-
-            //outputGame(game, possibleMoves, bestMove);
-
             game.makeMove(bestMove);
-
             game.resetMonteCarloScores(possibleMoves);
 
             String currentState = game.getGameState();
-            //System.out.println("Current game state: " + currentState);
 
             if (Collections.frequency(gameStates, currentState) > MAX_REPEATS) {
-                System.out.println("Game state repeated more than 5 times.");
                 return false;
             }
             if (game.getFoundation().checkWin() || game.checkWin()) {
-                System.out.println("Game won!");
                 return true;
             } else {
                 gameStates.add(currentState);
@@ -209,40 +188,41 @@ public class Run {
         return end;
     }
 
-    public static void runSolver(int numRuns, char solverType) {
+    public static void runSolver(int numRuns, int numThreads, char solverType) {
         int numGames = 0;
         int numWins = 0;
         for (int i = 0; i < numRuns; i++) {
-            Deck deck = new Deck();
-            Solitaire game = new Solitaire(deck);
-            switch (solverType) {
-                case 'p':
-                    if (greedyHeuristicPrioritySolitaireSolver(game)) {
-                        numWins++;
+            Solitaire baseGame = new Solitaire(new Deck());
+
+            ExecutorService executor = Executors.newFixedThreadPool(numThreads);
+            for (int j = 0; j < numThreads; j++) {
+                executor.submit(() -> {
+
+                    try {
+                        boolean result;
+                        Solitaire game = new Solitaire(baseGame);
+
+                        result = switch (solverType) {
+                            case 'r' -> randomSolitaireSolver(game);
+                            case 'g' -> greedyHeuristicSolitaireSolver(game);
+                            case 'p' -> greedyHeuristicPrioritySolitaireSolver(game);
+                            case 'R' -> greedyHeuristicPrioritySolitaireSolverWithRandom(game);
+                            case 'm' -> monteCarloSolitaireSolver(game, 100);
+                            default -> false;
+                        };
+                        System.out.println(Thread.currentThread().getName() + ": " + result);
+                    } catch (Exception e) {
+                        System.err.println("[" + Thread.currentThread().getName() + "] encountered an error:");
+                        e.printStackTrace();
                     }
-                    break;
-                case 'g':
-                    if (greedyHeuristicSolitaireSolver(game)) {
-                        numWins++;
-                    }
-                    break;
-                case 'r':
-                    if (randomSolitaireSolver(game)) {
-                        numWins++;
-                    }
-                    break;
-                case 'm':
-                    if (monteCarloSolitaireSolver(game, 100)) {
-                        numWins++;
-                    }
-                    break;
+                });
             }
-            numGames++;
+            executor.shutdown();
         }
         System.out.println("\nWon " + numWins + "/" + numGames + " games.");
     }
 
     public static void main(String[] args) {
-        runSolver(1, 'm');
+        runSolver(1, 50, 'm');
     }
 }
