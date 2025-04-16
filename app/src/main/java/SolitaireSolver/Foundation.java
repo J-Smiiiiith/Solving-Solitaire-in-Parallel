@@ -16,6 +16,13 @@ public class Foundation {
         diamonds = 0;
     }
 
+    public Foundation(Foundation other) {
+        this.spades = other.spades;
+        this.hearts = other.hearts;
+        this.clubs = other.clubs;
+        this.diamonds = other.diamonds;
+    } // Deep copy for foundation
+
     public boolean incrementSpades() {
         if (spades != 13) {
             spades += 1;

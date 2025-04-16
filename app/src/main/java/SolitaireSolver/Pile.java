@@ -16,6 +16,18 @@ public class Pile {
         buildStack = new Stack<>();
     }
 
+    public Pile(Pile other) {
+        this.hiddenCards = new Stack<>();
+        for (Card c : other.getHiddenCards()) {
+            this.hiddenCards.push(new Card(c));
+        }
+
+        this.buildStack = new Stack<>();
+        for (Card c : other.getBuildStack()) {
+            this.buildStack.push(new Card(c));
+        }
+    } // Deep copy for pile
+
     public void dealCard(Card card) {
         hiddenCards.push(card);
     }

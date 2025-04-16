@@ -25,6 +25,17 @@ public class Solitaire {
         stock = new Stock(newDeck);
     }
 
+    public Solitaire(Solitaire other) {
+        this.foundation = new Foundation(other.foundation);
+
+        this.piles = new Pile[other.piles.length];
+        for (int i = 0; i < other.piles.length; i++) {
+            this.piles[i] = new Pile(other.piles[i]);
+        }
+
+        this.stock = new Stock(other.stock);
+    } // Deep copy for solitaire
+
     private void dealCards() {
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j <= i; j++) {
