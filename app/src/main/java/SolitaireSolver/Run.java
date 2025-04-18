@@ -241,6 +241,23 @@ public class Run {
     }
 
     public static void main(String[] args) {
-        runSolver(5, 10, 'm');
+        int NUM_THREADS = 10;
+        int NUM_RUNS = 10;
+        char SOLVER_TYPE = 'm';
+
+        String solver = switch (SOLVER_TYPE) {
+            case 'r' -> "Random Move Solver";
+            case 'g' -> "Greedy Heuristic Solver";
+            case 'p' -> "Greedy Heuristic Solver with Priority";
+            case 'R' -> "Greedy Heuristic Solver with Priority and Some Randomness";
+            case 'm' -> "Monte Carlo Solver";
+            default -> "";
+        };
+
+        System.out.println("Solver: " + solver);
+        System.out.println("Num threads: " + NUM_THREADS);
+        System.out.println("Num runs: " + NUM_RUNS + "\n");
+
+        runSolver(NUM_RUNS, NUM_THREADS, SOLVER_TYPE);
     }
 }
