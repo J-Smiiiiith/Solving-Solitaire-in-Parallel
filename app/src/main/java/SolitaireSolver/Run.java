@@ -241,6 +241,6 @@ public class Run {
     }
 
     public static void main(String[] args) {
-        runSolver(5, 5, 'm');
+        runSolver(5, 10, 'm');
     }
 }
