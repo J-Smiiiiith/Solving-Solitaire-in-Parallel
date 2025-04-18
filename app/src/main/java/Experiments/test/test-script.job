@@ -18,5 +18,6 @@ module load Java/21.0.2
 set -e
 
 # Run the Java program
+pwd
 javac -d test/ ../SolitaireSolver/*.java ../SolitaireSolver/Exceptions/*java
 java ../SolitaireSolver.Run
