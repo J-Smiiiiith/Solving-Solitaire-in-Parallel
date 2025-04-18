@@ -242,9 +242,9 @@ public class Run {
     }
 
     public static void main(String[] args) {
-        int NUM_THREADS = 25;
+        int NUM_THREADS = 1;
         int NUM_RUNS = 10000;
-        char SOLVER_TYPE = 'm';
+        char SOLVER_TYPE = 'r';
 
         String solver = switch (SOLVER_TYPE) {
             case 'r' -> "Random Move Solver";
