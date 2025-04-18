@@ -19,4 +19,4 @@ set -e
 
 # Run the Java program
 javac -d Solver/ ../../SolitaireSolver/*.java ../../SolitaireSolver/Exceptions/*java
-java Solver/SolitaireSolver.Run
+java Solver.SolitaireSolver.Run
