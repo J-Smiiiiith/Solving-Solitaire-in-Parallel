@@ -119,7 +119,8 @@ public class Run {
                 return false;
             }
 
-            if (((int) (Math.random() * 2)) == 0) {
+            int randInt = (int) (Math.random() * 10);
+            if ((randInt != 0) && (randInt != 1)) {
                 int randomInt = (int) (Math.random() * possibleMoves.size());
                 game.makeMove(possibleMoves.get(randomInt));
             } else {
