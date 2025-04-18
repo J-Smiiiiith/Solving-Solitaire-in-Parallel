@@ -19,5 +19,5 @@ set -e
 
 # Run the Java program
 pwd
-javac -d test/ ../../SolitaireSolver/*.java ../../SolitaireSolver/Exceptions/*java
-java ../SolitaireSolver.Run
+javac -d solver/ ../../SolitaireSolver/*.java ../../SolitaireSolver/Exceptions/*java
+java solver/SolitaireSolver.Run
