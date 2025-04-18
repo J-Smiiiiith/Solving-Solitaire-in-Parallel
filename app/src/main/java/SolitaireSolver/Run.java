@@ -163,7 +163,7 @@ public class Run {
                 for (int i = 0; i < numSimulations; i++) {
                     history.push(new GameStateCopy(game));
                     // Save game state after move for simulation
-                    if (greedyHeuristicPrioritySolitaireSolverWithRandom(game)) {
+                    if (randomSolitaireSolver(game)) {
                         move.incrementMonteCarloScore();
                     }
                     history.pop().restoreGameState(game);
