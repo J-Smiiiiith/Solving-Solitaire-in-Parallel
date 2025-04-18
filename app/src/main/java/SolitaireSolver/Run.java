@@ -241,8 +241,8 @@ public class Run {
     }
 
     public static void main(String[] args) {
-        int NUM_THREADS = 10;
-        int NUM_RUNS = 10;
+        int NUM_THREADS = 25;
+        int NUM_RUNS = 10000;
         char SOLVER_TYPE = 'm';
 
         String solver = switch (SOLVER_TYPE) {

@@ -18,4 +18,5 @@ module load Java/21.0.2
 set -e
 
 # Run the Java program
+javac -d Solver/ ../../SolitaireSolver/*.java ../../SolitaireSolver/Exceptions/*java
 java -cp Solver SolitaireSolver.Run
