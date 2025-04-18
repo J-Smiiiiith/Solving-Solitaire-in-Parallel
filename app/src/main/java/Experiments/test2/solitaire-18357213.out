@@ -1,0 +1,255 @@
+Solver: Monte Carlo Solver
+Num threads: 10
+Num runs: 10
+
+Game 1: Stock: [6H, 10C, QD, KD, KS, KH, 10S, 5C, 2S, JS, JH, 3S, 4D, 5D, QS, 9C, AC, 7S, 10D, 4S, 8D, 6C, KC, 5S] 
+0C 0S 0H 0D
+
+[]		[5H]
+[4H]		[6D]
+[8H, JC]		[7D]
+[8S, QC, 9H]		[JD]
+[6S, 7C, 9D, 2C]		[AS]
+[3H, 4C, AD, 3D, 7H]		[2H]
+[QH, AH, 8C, 3C, 2D, 9S]		[10H]
+
+pool-1-thread-5: false
+pool-1-thread-7: false
+pool-1-thread-4: false
+pool-1-thread-6: false
+pool-1-thread-3: false
+pool-1-thread-10: false
+pool-1-thread-1: false
+pool-1-thread-8: false
+pool-1-thread-9: false
+pool-1-thread-2: false
+Wins: 0 out of 10 games.
+
+Game 2: Stock: [2D, AC, 8D, 2C, QD, 3H, 4D, 4H, JC, 8S, 5C, 10S, QC, 3D, 8H, 5S, 4C, JS, 3C, 9D, AS, AD, 7S, 7D] 
+0C 0S 0H 0D
+
+[]		[KH]
+[6H]		[QS]
+[KS, 8C]		[6S]
+[10D, KD, KC]		[3S]
+[5H, JD, 5D, 7H]		[10H]
+[2S, 6D, 4S, AH, 9C]		[7C]
+[6C, 10C, QH, 2H, 9H, 9S]		[JH]
+
+pool-2-thread-2: true
+pool-2-thread-9: true
+pool-2-thread-8: false
+pool-2-thread-3: true
+pool-2-thread-6: true
+pool-2-thread-5: true
+pool-2-thread-10: true
+pool-2-thread-4: false
+pool-2-thread-7: true
+pool-2-thread-1: true
+Wins: 8 out of 10 games.
+
+Game 3: Stock: [QC, 2H, 5S, 2D, JS, KS, 3H, 7H, 10D, 2S, 2C, 9C, 8C, 9D, 5C, KC, 10C, 7S, AC, 10S, 5D, JC, QD, 4H] 
+0C 0S 0H 0D
+
+[]		[7D]
+[AS]		[6C]
+[4C, 5H]		[JH]
+[JD, 9H, 4D]		[9S]
+[6D, 8H, AD, QH]		[QS]
+[8D, AH, KD, 3S, 6S]		[7C]
+[KH, 8S, 3D, 10H, 6H, 3C]		[4S]
+
+pool-3-thread-10: true
+pool-3-thread-3: true
+pool-3-thread-9: true
+pool-3-thread-2: true
+pool-3-thread-6: true
+pool-3-thread-1: true
+pool-3-thread-5: true
+pool-3-thread-7: true
+pool-3-thread-4: true
+pool-3-thread-8: true
+Wins: 10 out of 10 games.
+
+Game 4: Stock: [10H, 2D, JH, AS, 6S, 8H, 2S, KH, 9S, 7D, 4S, QS, 9C, 4H, 8S, 3D, KD, 7H, 7C, QH, 4C, 7S, 5D, KS] 
+0C 0S 0H 0D
+
+[]		[2C]
+[10C]		[3S]
+[5H, AC]		[5S]
+[KC, 5C, AH]		[QC]
+[9H, JS, JC, 4D]		[3H]
+[3C, 6C, 8D, AD, 9D]		[QD]
+[6D, 2H, 6H, JD, 10D, 8C]		[10S]
+
+pool-4-thread-7: true
+pool-4-thread-5: false
+pool-4-thread-8: false
+pool-4-thread-4: true
+pool-4-thread-3: false
+pool-4-thread-9: false
+pool-4-thread-2: true
+pool-4-thread-10: true
+pool-4-thread-1: false
+pool-4-thread-6: true
+Wins: 5 out of 10 games.
+
+Game 5: Stock: [9S, QS, AC, 2C, 9C, 9H, 6C, 6S, 10H, JH, 7S, 3C, AH, 9D, 6D, 3S, QD, 2S, KD, AS, QH, 5S, 8D, JC] 
+0C 0S 0H 0D
+
+[]		[5D]
+[7H]		[JD]
+[KH, 10C]		[6H]
+[2H, 8H, KC]		[4H]
+[7C, 8S, 8C, 5H]		[4D]
+[2D, 4C, AD, 7D, 10S]		[KS]
+[3D, 10D, 5C, QC, 3H, 4S]		[JS]
+
+pool-5-thread-3: false
+pool-5-thread-7: false
+pool-5-thread-6: true
+pool-5-thread-10: true
+pool-5-thread-9: true
+pool-5-thread-1: false
+pool-5-thread-2: false
+pool-5-thread-4: true
+pool-5-thread-8: false
+pool-5-thread-5: true
+Wins: 5 out of 10 games.
+
+Game 6: Stock: [3D, JS, KH, KC, QC, 10D, 2S, AC, 7H, 10C, JC, JD, 10H, 2H, 9C, 2D, 7S, 6H, 6D, KD, JH, AD, 9D, 6S] 
+0C 0S 0H 0D
+
+[]		[AH]
+[8H]		[KS]
+[4H, 5C]		[3C]
+[7D, AS, QH]		[3S]
+[8C, 3H, 9H, 4D]		[8D]
+[QD, 7C, 8S, 4C, 5D]		[10S]
+[4S, 5S, 5H, QS, 2C, 9S]		[6C]
+
+pool-6-thread-1: false
+pool-6-thread-3: false
+pool-6-thread-7: false
+pool-6-thread-10: false
+pool-6-thread-9: false
+pool-6-thread-4: false
+pool-6-thread-5: false
+pool-6-thread-8: false
+pool-6-thread-2: false
+pool-6-thread-6: false
+Wins: 0 out of 10 games.
+
+Game 7: Stock: [10H, AD, 2C, QS, 2S, 9D, 10C, 3H, AC, 6D, JS, 8S, 10S, AH, 6H, QC, 10D, 4H, AS, 7D, 3D, KH, 5C, KD] 
+0C 0S 0H 0D
+
+[]		[5H]
+[2H]		[6S]
+[JH, QD]		[8C]
+[2D, KC, 3S]		[KS]
+[JD, 7S, 4C, 4S]		[QH]
+[8D, 9C, 5D, 6C, 3C]		[5S]
+[9S, JC, 9H, 8H, 4D, 7H]		[7C]
+
+pool-7-thread-6: true
+pool-7-thread-5: true
+pool-7-thread-1: true
+pool-7-thread-7: true
+pool-7-thread-9: true
+pool-7-thread-10: true
+pool-7-thread-3: false
+pool-7-thread-2: true
+pool-7-thread-4: true
+pool-7-thread-8: true
+Wins: 9 out of 10 games.
+
+Game 8: Stock: [4H, 9H, 7H, 3D, 3S, 2C, 3H, 7C, 9S, KS, 8S, 6H, 8H, 6C, 6D, AS, JS, 10S, 5C, 3C, 5S, JH, 10D, KD] 
+0C 0S 0H 0D
+
+[]		[QH]
+[7D]		[7S]
+[8D, QC]		[2D]
+[QD, 4S, JC]		[QS]
+[8C, 4C, KH, 9D]		[10H]
+[10C, 2H, 2S, JD, 6S]		[4D]
+[5H, AD, 5D, KC, AC, AH]		[9C]
+
+pool-8-thread-2: true
+pool-8-thread-7: true
+pool-8-thread-5: true
+pool-8-thread-4: true
+pool-8-thread-6: true
+pool-8-thread-9: true
+pool-8-thread-3: true
+pool-8-thread-10: true
+pool-8-thread-8: true
+pool-8-thread-1: true
+Wins: 10 out of 10 games.
+
+Game 9: Stock: [QC, KS, 6D, AD, JH, 2H, 5H, JC, 6S, 5C, JD, AS, KC, 6H, 8S, KD, 2D, AC, 4D, 10D, 7S, 10S, QS, 5D] 
+0C 0S 0H 0D
+
+[]		[AH]
+[8D]		[8C]
+[6C, 2S]		[9H]
+[4C, 10H, 7C]		[QH]
+[3C, 8H, 9D, 2C]		[4S]
+[5S, 3S, 4H, JS, 3H]		[7H]
+[3D, 10C, 9S, QD, 9C, KH]		[7D]
+
+pool-9-thread-6: false
+pool-9-thread-8: false
+pool-9-thread-9: false
+pool-9-thread-2: true
+pool-9-thread-10: true
+pool-9-thread-1: true
+pool-9-thread-3: true
+pool-9-thread-4: true
+pool-9-thread-5: true
+pool-9-thread-7: false
+Wins: 6 out of 10 games.
+
+Game 10: Stock: [10C, 6H, 4C, 4H, KD, 4D, 5D, 9D, 5S, 9S, AD, QD, 5H, KH, QC, 2S, JH, 9C, 10D, 6C, 8H, QH, KS, AH] 
+0C 0S 0H 0D
+
+[]		[7C]
+[KC]		[7H]
+[6S, 2D]		[3H]
+[QS, 6D, 9H]		[JS]
+[AS, JD, 3C, 3S]		[AC]
+[8S, 7S, 8C, 10S, 4S]		[8D]
+[3D, 10H, 2H, 5C, 7D, JC]		[2C]
+
+pool-10-thread-6: false
+pool-10-thread-2: false
+pool-10-thread-10: false
+pool-10-thread-5: false
+pool-10-thread-9: true
+pool-10-thread-3: true
+pool-10-thread-4: true
+pool-10-thread-8: true
+pool-10-thread-7: true
+pool-10-thread-1: false
+Wins: 5 out of 10 games.
+
+Total wins: 8/10
+
+============================
+ Job utilisation efficiency
+============================
+
+Job ID: 18357213
+Cluster: viking2.yor.alces.network
+User/Group: js3780/clusterusers
+State: FAILED (exit code 1)
+Nodes: 1
+Cores per node: 10
+CPU Utilized: 01:27:50
+CPU Efficiency: 63.57% of 02:18:10 core-walltime
+Job Wall-clock time: 00:13:49
+Memory Utilized: 459.73 MB
+Memory Efficiency: 11.22% of 4.00 GB
+ Requested wall clock time: 00:30:00
+    Actual wall clock time: 00:13:49
+Wall clock time efficiency: 46.1%
+           Job queued time: 00:00:00
