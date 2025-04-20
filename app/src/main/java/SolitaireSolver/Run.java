@@ -119,7 +119,8 @@ public class Run {
                 return false;
             }
 
-            if (((int) (Math.random() * 3)) == 0) {
+            int randInt = (int) (Math.random() * 10);
+            if ((randInt != 0) && (randInt != 1)) {
                 int randomInt = (int) (Math.random() * possibleMoves.size());
                 game.makeMove(possibleMoves.get(randomInt));
             } else {
@@ -162,7 +163,7 @@ public class Run {
                 for (int i = 0; i < numSimulations; i++) {
                     history.push(new GameStateCopy(game));
                     // Save game state after move for simulation
-                    if (greedyHeuristicPrioritySolitaireSolverWithRandom(game)) {
+                    if (randomSolitaireSolver(game)) {
                         move.incrementMonteCarloScore();
                     }
                     history.pop().restoreGameState(game);
@@ -241,6 +242,23 @@ public class Run {
     }
 
     public static void main(String[] args) {
-        runSolver(5, 5, 'm');
+        int NUM_THREADS = 25;
+        int NUM_RUNS = 10000;
+        char SOLVER_TYPE = 'p';
+
+        String solver = switch (SOLVER_TYPE) {
+            case 'r' -> "Random Move Solver";
+            case 'g' -> "Greedy Heuristic Solver";
+            case 'p' -> "Greedy Heuristic Solver with Priority";
+            case 'R' -> "Greedy Heuristic Solver with Priority and Some Randomness";
+            case 'm' -> "Monte Carlo Solver";
+            default -> "";
+        };
+
+        System.out.println("Solver: " + solver);
+        System.out.println("Num threads: " + NUM_THREADS);
+        System.out.println("Num runs: " + NUM_RUNS + "\n");
+
+        runSolver(NUM_RUNS, NUM_THREADS, SOLVER_TYPE);
     }
 }
