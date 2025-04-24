@@ -261,16 +261,16 @@ public class Run {
         for (long time : solverTimes) {
             totalTime += time;
         }
-        double meanTime = totalTime / solverTimes.size();
+        double meanTime = (double) totalTime / solverTimes.size();
         long minTime = Collections.min(solverTimes);
         long maxTime = Collections.max(solverTimes);
         double medianTime;
 
         if (totalRuns % 2 == 0) {
-            medianTime = (solverTimes.get((totalRuns / 2) - 1) + solverTimes.get(totalRuns / 2)) / 2;
+            medianTime = (double) (solverTimes.get((totalRuns / 2) - 1) + solverTimes.get(totalRuns / 2)) / 2;
         }
         else {
-            medianTime = solverTimes.get(totalRuns / 2);
+            medianTime = (double) solverTimes.get(totalRuns / 2);
         }
         System.out.println("=======================================");
         System.out.println("Total wins:\t\t\t" + numTotalWins + "/" + (totalRuns));
