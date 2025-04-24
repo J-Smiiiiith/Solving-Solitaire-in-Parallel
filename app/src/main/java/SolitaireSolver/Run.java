@@ -276,8 +276,10 @@ public class Run {
         System.out.println("Total wins:\t\t\t" + numTotalWins + "/" + (totalRuns));
         System.out.println("Solvability:\t\t" + (numTotalWins * 100.0 / totalRuns) + "%");
         System.out.println("---------------------------------------");
-        System.out.println("Mean thread wins per winning game:\t" + (double) (numTotalThreadWins / numTotalWins));
-        System.out.println("---------------------------------------");
+        if (numTotalWins > 0) {
+            System.out.println("Mean thread wins per winning game:\t" + (double) (numTotalThreadWins / numTotalWins));
+            System.out.println("---------------------------------------");
+        }
         System.out.println("Mean time:\t\t\t" + meanTime + "ms");
         System.out.println("Median time:\t\t" + medianTime + "ms");
         System.out.println("Min time:\t\t\t" + minTime + "ms");
