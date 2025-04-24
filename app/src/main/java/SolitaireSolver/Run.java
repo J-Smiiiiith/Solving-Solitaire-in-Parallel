@@ -201,6 +201,7 @@ public class Run {
 
     public static void runSolver(int numRuns, int numThreads, char solverType) {
         int numTotalWins = 0;
+        int numTotalThreadWins = 0;
         int totalRuns;
         ArrayList<Long> solverTimes = new ArrayList<>();
         for (totalRuns = 0; totalRuns < numRuns; totalRuns++) {
@@ -247,12 +248,13 @@ public class Run {
             solverTimes.add(durationMs);
             int winsThisGame = numWins.get();
 
-            System.out.println("Wins: " + numWins.get() + " out of " + numThreads + " games.");
+            System.out.println("Wins: " + winsThisGame + " out of " + numThreads + " games.");
             System.out.println("Time taken: " + durationMs + "ms\n");
 
             if (winsThisGame > 0) {
                 numTotalWins++;
             }
+            numTotalThreadWins += winsThisGame;
         }
         Collections.sort(solverTimes);
         long totalTime = 0;
@@ -274,16 +276,20 @@ public class Run {
         System.out.println("Total wins:\t\t\t" + numTotalWins + "/" + (totalRuns));
         System.out.println("Solvability:\t\t" + (numTotalWins * 100.0 / totalRuns) + "%");
         System.out.println("---------------------------------------");
+        System.out.println("Mean thread wins per winning game:\t" + (double) (numTotalThreadWins / numTotalWins));
+        System.out.println("---------------------------------------");
         System.out.println("Mean time:\t\t\t" + meanTime + "ms");
         System.out.println("Median time:\t\t" + medianTime + "ms");
         System.out.println("Min time:\t\t\t" + minTime + "ms");
         System.out.println("Max time:\t\t\t" + maxTime + "ms");
+        System.out.println("Total time:\t\t\t" + totalTime + "ms");
+        System.out.println("---------------------------------------");
     }
 
     public static void main(String[] args) {
         int NUM_THREADS = 10;
-        int NUM_RUNS = 11;
-        char SOLVER_TYPE = 'p';
+        int NUM_RUNS = 10;
+        char SOLVER_TYPE = 'm';
         RANDOMNESS_PERCENTAGE = 30;
         NUM_SIMULATIONS = 100;
 
