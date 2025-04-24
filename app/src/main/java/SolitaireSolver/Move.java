@@ -163,7 +163,7 @@ public class Move {
     public void resetMonteCarloScore() {
         this.monteCarloScore = 0;
     }
-    public void incrementMonteCarloScore() {
-        this.monteCarloScore++;
+    public void setMonteCarloScore(int score) {
+        this.monteCarloScore += score;
     }
 }
