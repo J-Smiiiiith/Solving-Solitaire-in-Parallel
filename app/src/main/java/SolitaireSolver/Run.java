@@ -107,7 +107,7 @@ public class Run {
         return end;
     }
 
-    public static boolean greedyHeuristicPrioritySolitaireSolverWithRandom(Solitaire game) {
+    public static int greedyHeuristicPrioritySolitaireSolverWithRandom(Solitaire game) {
         ArrayList<String> gameStates = new ArrayList<>();
         gameStates.add(game.getGameState());
         ArrayList<Move> possibleMoves;
@@ -116,7 +116,7 @@ public class Run {
         while (!end) {
             possibleMoves = game.getPossibleMoves();
             if (possibleMoves.isEmpty()) {
-                return false;
+                return game.getRemainingCards();
             }
 
             int randInt = (int) (Math.random() * 10);
@@ -131,15 +131,15 @@ public class Run {
             String currentState = game.getGameState();
 
             if (Collections.frequency(gameStates, currentState) > 3) {
-                return false;
+                return game.getRemainingCards();
             }
             if (game.getFoundation().checkWin()) {
-                return true;
+                return 0;
             } else {
                 gameStates.add(currentState);
             }
         }
-        return end;
+        return -1;
     }
 
     public static boolean monteCarloSolitaireSolver(Solitaire game, int numSimulations) {
@@ -155,7 +155,6 @@ public class Run {
                 return false;
             }
 
-
             for (Move move : possibleMoves) {
                 history.push(new GameStateCopy(game));
                 // Save game state before move
@@ -163,7 +162,7 @@ public class Run {
                 for (int i = 0; i < numSimulations; i++) {
                     history.push(new GameStateCopy(game));
                     // Save game state after move for simulation
-                    if (randomSolitaireSolver(game)) {
+                    if (greedyHeuristicPrioritySolitaireSolverWithRandom(game) == 0) {
                         move.incrementMonteCarloScore();
                     }
                     history.pop().restoreGameState(game);
@@ -210,7 +209,6 @@ public class Run {
                             case 'r' -> randomSolitaireSolver(game);
                             case 'g' -> greedyHeuristicSolitaireSolver(game);
                             case 'p' -> greedyHeuristicPrioritySolitaireSolver(game);
-                            case 'R' -> greedyHeuristicPrioritySolitaireSolverWithRandom(game);
                             case 'm' -> monteCarloSolitaireSolver(game, 100);
                             default -> false;
                         };
@@ -242,9 +240,9 @@ public class Run {
     }
 
     public static void main(String[] args) {
-        int NUM_THREADS = 25;
-        int NUM_RUNS = 10000;
-        char SOLVER_TYPE = 'r';
+        int NUM_THREADS = 5;
+        int NUM_RUNS = 1;
+        char SOLVER_TYPE = 'm';
 
         String solver = switch (SOLVER_TYPE) {
             case 'r' -> "Random Move Solver";
