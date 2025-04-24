@@ -10,7 +10,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Run {
     static int MAX_REPEATS = 5;
-    static int RANDOMNESS_PERCENTAGE = 100;
+    static int RANDOMNESS_PERCENTAGE;
+    static int NUM_SIMULATIONS;
 
     public static void outputGame(Solitaire game, ArrayList<Move> moves, Move chosenMove) {
         String output = "";
@@ -196,7 +197,7 @@ public class Run {
         return end;
     }
 
-    public static void runSolver(int numRuns, int numThreads, char solverType, int randomForMonteCarlo) {
+    public static void runSolver(int numRuns, int numThreads, char solverType) {
         int numTotalWins = 0;
         for (int i = 0; i < numRuns; i++) {
             AtomicInteger numWins = new AtomicInteger();
@@ -215,7 +216,7 @@ public class Run {
                             case 'r' -> randomSolitaireSolver(game);
                             case 'g' -> greedyHeuristicSolitaireSolver(game);
                             case 'p' -> greedyHeuristicPrioritySolitaireSolver(game);
-                            case 'm' -> monteCarloSolitaireSolver(game, 100);
+                            case 'm' -> monteCarloSolitaireSolver(game, NUM_SIMULATIONS);
                             default -> false;
                         };
 //                        System.out.println(Thread.currentThread().getName() + ": " + result);
@@ -249,6 +250,8 @@ public class Run {
         int NUM_THREADS = 10;
         int NUM_RUNS = 100;
         char SOLVER_TYPE = 'm';
+        RANDOMNESS_PERCENTAGE = 30;
+        NUM_SIMULATIONS = 100;
 
         String solver = switch (SOLVER_TYPE) {
             case 'r' -> "Random Move Solver";
