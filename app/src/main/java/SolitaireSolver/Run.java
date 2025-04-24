@@ -289,10 +289,10 @@ public class Run {
     }
 
     public static void main(String[] args) {
-        int NUM_THREADS = 5;
-        int NUM_RUNS = 50;
-        char SOLVER_TYPE = 'm';
-        RANDOMNESS_PERCENTAGE = 30;
+        int NUM_THREADS = 1;
+        int NUM_RUNS = 10000;
+        char SOLVER_TYPE = 'r';
+        RANDOMNESS_PERCENTAGE = 100;
         NUM_SIMULATIONS = 100;
 
         String solver = switch (SOLVER_TYPE) {
