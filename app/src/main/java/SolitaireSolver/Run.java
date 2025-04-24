@@ -285,12 +285,12 @@ public class Run {
         System.out.println("Min time:\t\t\t" + minTime + "ms");
         System.out.println("Max time:\t\t\t" + maxTime + "ms");
         System.out.println("Total time:\t\t\t" + totalTime + "ms");
-        System.out.println("---------------------------------------");
+        System.out.println("=======================================");
     }
 
     public static void main(String[] args) {
-        int NUM_THREADS = 10;
-        int NUM_RUNS = 10;
+        int NUM_THREADS = 5;
+        int NUM_RUNS = 50;
         char SOLVER_TYPE = 'm';
         RANDOMNESS_PERCENTAGE = 30;
         NUM_SIMULATIONS = 100;
