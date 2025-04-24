@@ -210,6 +210,11 @@ public class Foundation {
         return getSpadeCard() + getHeartCard() + getClubCard() + getDiamondCard();
     }
 
+    public int getTotalFoundationCards() {
+        return this.getClubs() + this.getDiamonds() + this.getHearts() +
+                this.getSpades();
+    }
+
     public boolean checkWin() {
         return spades == 13 && hearts == 13 && clubs == 13 && diamonds == 13;
     }

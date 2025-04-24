@@ -294,12 +294,6 @@ public class Solitaire {
         return stock;
     }
 
-    public int getRemainingCards() {
-        int foundationCards = foundation.getClubs() + foundation.getDiamonds() + foundation.getHearts() +
-                foundation.getSpades();
-        return 52 - foundationCards;
-    }
-
     @Override
     public String toString() {
         String output = "";
