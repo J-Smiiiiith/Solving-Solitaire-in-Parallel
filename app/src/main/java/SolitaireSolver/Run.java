@@ -265,6 +265,6 @@ public class Run {
         System.out.println("Num threads: " + NUM_THREADS);
         System.out.println("Num runs: " + NUM_RUNS + "\n");
 
-        runSolver(NUM_RUNS, NUM_THREADS, SOLVER_TYPE, 30);
+        runSolver(NUM_RUNS, NUM_THREADS, SOLVER_TYPE);
     }
 }
