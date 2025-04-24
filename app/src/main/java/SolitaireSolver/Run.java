@@ -116,11 +116,11 @@ public class Run {
         while (!end) {
             possibleMoves = game.getPossibleMoves();
             if (possibleMoves.isEmpty()) {
-                return game.getRemainingCards();
+                return game.getFoundation().getTotalFoundationCards();
             }
 
-            int randInt = (int) (Math.random() * 10);
-            if ((randInt != 0) && (randInt != 1)) {
+            int randInt = (int) (Math.random() * 3);
+            if ((randInt != 0)) {
                 int randomInt = (int) (Math.random() * possibleMoves.size());
                 game.makeMove(possibleMoves.get(randomInt));
             } else {
@@ -131,7 +131,7 @@ public class Run {
             String currentState = game.getGameState();
 
             if (Collections.frequency(gameStates, currentState) > 3) {
-                return game.getRemainingCards();
+                return game.getFoundation().getTotalFoundationCards();
             }
             if (game.getFoundation().checkWin()) {
                 return 0;
@@ -162,8 +162,13 @@ public class Run {
                 for (int i = 0; i < numSimulations; i++) {
                     history.push(new GameStateCopy(game));
                     // Save game state after move for simulation
-                    if (greedyHeuristicPrioritySolitaireSolverWithRandom(game) == 0) {
-                        move.setMonteCarloScore(1);
+                    int gameSim = greedyHeuristicPrioritySolitaireSolverWithRandom(game);
+                    if (gameSim == 0) {
+                        return true;
+                        // If win found in simulation, this must be a winning configuration, no need to run more sims.
+                    }
+                    else {
+                        move.setMonteCarloScore(gameSim);
                     }
                     history.pop().restoreGameState(game);
                     // Restore game to state after the simulated move was made
@@ -173,6 +178,7 @@ public class Run {
             }
 
             Move bestMove = game.getBestMoveMonetCarlo(possibleMoves);
+
             game.makeMove(bestMove);
             game.resetMonteCarloScores(possibleMoves);
 
@@ -212,7 +218,7 @@ public class Run {
                             case 'm' -> monteCarloSolitaireSolver(game, 100);
                             default -> false;
                         };
-                        System.out.println(Thread.currentThread().getName() + ": " + result);
+//                        System.out.println(Thread.currentThread().getName() + ": " + result);
                         if (result) {
                             numWins.getAndIncrement();
                         }
@@ -240,8 +246,8 @@ public class Run {
     }
 
     public static void main(String[] args) {
-        int NUM_THREADS = 5;
-        int NUM_RUNS = 1;
+        int NUM_THREADS = 10;
+        int NUM_RUNS = 100;
         char SOLVER_TYPE = 'm';
 
         String solver = switch (SOLVER_TYPE) {
