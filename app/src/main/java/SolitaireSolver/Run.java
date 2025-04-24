@@ -163,7 +163,7 @@ public class Run {
                     history.push(new GameStateCopy(game));
                     // Save game state after move for simulation
                     if (greedyHeuristicPrioritySolitaireSolverWithRandom(game) == 0) {
-                        move.incrementMonteCarloScore();
+                        move.setMonteCarloScore(1);
                     }
                     history.pop().restoreGameState(game);
                     // Restore game to state after the simulated move was made
@@ -248,7 +248,6 @@ public class Run {
             case 'r' -> "Random Move Solver";
             case 'g' -> "Greedy Heuristic Solver";
             case 'p' -> "Greedy Heuristic Solver with Priority";
-            case 'R' -> "Greedy Heuristic Solver with Priority and Some Randomness";
             case 'm' -> "Monte Carlo Solver";
             default -> "";
         };
