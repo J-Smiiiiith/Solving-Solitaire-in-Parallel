@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Run {
     static int MAX_REPEATS = 5;
+    static int RANDOMNESS_PERCENTAGE = 100;
 
     public static void outputGame(Solitaire game, ArrayList<Move> moves, Move chosenMove) {
         String output = "";
@@ -91,7 +92,6 @@ public class Run {
             }
             Move bestMove = game.getBestMoveWithPriority(possibleMoves);
 
-
             game.makeMove(bestMove);
             String currentState = game.getGameState();
 
@@ -119,8 +119,8 @@ public class Run {
                 return game.getFoundation().getTotalFoundationCards();
             }
 
-            int randInt = (int) (Math.random() * 3);
-            if ((randInt != 0)) {
+            int randInt = (int) (Math.random() * 100);
+            if ((0 <= randInt) && (randInt < RANDOMNESS_PERCENTAGE)) {
                 int randomInt = (int) (Math.random() * possibleMoves.size());
                 game.makeMove(possibleMoves.get(randomInt));
             } else {
@@ -196,7 +196,7 @@ public class Run {
         return end;
     }
 
-    public static void runSolver(int numRuns, int numThreads, char solverType) {
+    public static void runSolver(int numRuns, int numThreads, char solverType, int randomForMonteCarlo) {
         int numTotalWins = 0;
         for (int i = 0; i < numRuns; i++) {
             AtomicInteger numWins = new AtomicInteger();
@@ -262,6 +262,6 @@ public class Run {
         System.out.println("Num threads: " + NUM_THREADS);
         System.out.println("Num runs: " + NUM_RUNS + "\n");
 
-        runSolver(NUM_RUNS, NUM_THREADS, SOLVER_TYPE);
+        runSolver(NUM_RUNS, NUM_THREADS, SOLVER_TYPE, 30);
     }
 }
