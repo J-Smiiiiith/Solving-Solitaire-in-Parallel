@@ -1,5 +1,7 @@
 package SolitaireSolver;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Stack;
@@ -199,15 +201,18 @@ public class Run {
 
     public static void runSolver(int numRuns, int numThreads, char solverType) {
         int numTotalWins = 0;
-        for (int i = 0; i < numRuns; i++) {
+        int totalRuns;
+        ArrayList<Long> solverTimes = new ArrayList<>();
+        for (totalRuns = 0; totalRuns < numRuns; totalRuns++) {
+            long solverStart = System.nanoTime();
+
             AtomicInteger numWins = new AtomicInteger();
             Solitaire baseGame = new Solitaire(new Deck());
-            System.out.println("Game " + (i + 1) + ": " + baseGame);
+            System.out.println("Game " + (totalRuns + 1) + ": " + baseGame);
 
             ExecutorService executor = Executors.newFixedThreadPool(numThreads);
             for (int j = 0; j < numThreads; j++) {
                 executor.submit(() -> {
-
                     try {
                         boolean result;
                         Solitaire game = new Solitaire(baseGame);
@@ -236,20 +241,49 @@ public class Run {
                 executor.shutdownNow();
                 Thread.currentThread().interrupt();
             }
+
+            long solverEnd = System.nanoTime();
+            long durationMs = (solverEnd - solverStart) / 1_000_000;
+            solverTimes.add(durationMs);
             int winsThisGame = numWins.get();
-            System.out.println("Wins: " + numWins.get() + " out of " + numThreads + " games.\n");
+
+            System.out.println("Wins: " + numWins.get() + " out of " + numThreads + " games.");
+            System.out.println("Time taken: " + durationMs + "ms\n");
 
             if (winsThisGame > 0) {
                 numTotalWins++;
             }
         }
-        System.out.println("Total wins: " + numTotalWins + "/" + numRuns);
+        Collections.sort(solverTimes);
+        long totalTime = 0;
+        for (long time : solverTimes) {
+            totalTime += time;
+        }
+        double meanTime = totalTime / solverTimes.size();
+        long minTime = Collections.min(solverTimes);
+        long maxTime = Collections.max(solverTimes);
+        double medianTime;
+
+        if (totalRuns % 2 == 0) {
+            medianTime = (solverTimes.get((totalRuns / 2) - 1) + solverTimes.get(totalRuns / 2)) / 2;
+        }
+        else {
+            medianTime = solverTimes.get(totalRuns / 2);
+        }
+        System.out.println("=======================================");
+        System.out.println("Total wins:\t\t\t" + numTotalWins + "/" + (totalRuns));
+        System.out.println("Solvability:\t\t" + (numTotalWins * 100.0 / totalRuns) + "%");
+        System.out.println("---------------------------------------");
+        System.out.println("Mean time:\t\t\t" + meanTime + "ms");
+        System.out.println("Median time:\t\t" + medianTime + "ms");
+        System.out.println("Min time:\t\t\t" + minTime + "ms");
+        System.out.println("Max time:\t\t\t" + maxTime + "ms");
     }
 
     public static void main(String[] args) {
         int NUM_THREADS = 10;
-        int NUM_RUNS = 100;
-        char SOLVER_TYPE = 'm';
+        int NUM_RUNS = 11;
+        char SOLVER_TYPE = 'p';
         RANDOMNESS_PERCENTAGE = 30;
         NUM_SIMULATIONS = 100;
 
