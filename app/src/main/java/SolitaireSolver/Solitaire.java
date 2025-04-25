@@ -294,6 +294,14 @@ public class Solitaire {
         return stock;
     }
 
+    public int getHiddenCardsCount() {
+        int count = 0;
+        for (Pile pile : piles) {
+            count += pile.getHiddenCards().size();
+        }
+        return count;
+    }
+
     @Override
     public String toString() {
         String output = "";

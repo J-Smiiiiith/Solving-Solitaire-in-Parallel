@@ -115,6 +115,7 @@ public class Run {
     }
 
     public static int greedyHeuristicPrioritySolitaireSolverWithRandom(Solitaire game) {
+        //Returns the number of visible cards remaining in the game.
         ArrayList<String> gameStates = new ArrayList<>();
         gameStates.add(game.getGameState());
         ArrayList<Move> possibleMoves;
@@ -123,7 +124,7 @@ public class Run {
         while (!end) {
             possibleMoves = game.getPossibleMoves();
             if (possibleMoves.isEmpty()) {
-                return game.getFoundation().getTotalFoundationCards();
+                return 52 - game.getHiddenCardsCount();
             }
 
             int randInt = (int) (Math.random() * 100);
@@ -138,10 +139,10 @@ public class Run {
             String currentState = game.getGameState();
 
             if (Collections.frequency(gameStates, currentState) > 3) {
-                return game.getFoundation().getTotalFoundationCards();
+                return 52 - game.getHiddenCardsCount();
             }
             if (game.getFoundation().checkWin()) {
-                return 0;
+                return 52;
             } else {
                 gameStates.add(currentState);
             }
@@ -171,7 +172,7 @@ public class Run {
                     history.push(new GameStateCopy(game));
                     // Save game state after move for simulation
                     int gameSim = greedyHeuristicPrioritySolitaireSolverWithRandom(game);
-                    if (gameSim == 0) {
+                    if (gameSim == 52) {
                         return movesMade + 1;
                         // If win found in simulation, this must be a winning configuration, no need to run more sims.
                     }
@@ -213,6 +214,9 @@ public class Run {
         ArrayList<Double> solverTimesWins = new ArrayList<>();
         ArrayList<Double> solverTimesLosses = new ArrayList<>();
 
+        List<Integer> wonGamesMoves = Collections.synchronizedList(new ArrayList<>());
+        List<Integer> lostGameMoves = Collections.synchronizedList(new ArrayList<>());
+
         for (totalRuns = 0; totalRuns < numRuns; totalRuns++) {
             long solverStart = System.nanoTime();
 
@@ -237,6 +241,10 @@ public class Run {
 //                        System.out.println(Thread.currentThread().getName() + ": " + result);
                         if (result > 0) {
                             numWins.getAndIncrement();
+                            wonGamesMoves.add(result);
+                        }
+                        else {
+                            lostGameMoves.add(-result);
                         }
                     } catch (Exception e) {
                         System.err.println("[" + Thread.currentThread().getName() + "] encountered an error:");
@@ -269,6 +277,9 @@ public class Run {
             }
             numTotalThreadWins += winsThisGame;
         }
+
+        System.out.println(wonGamesMoves);
+        System.out.println(lostGameMoves);
 
         Map<String, Double> allAverages = getAverages(solverTimes);
         Map<String, Double> winAverages = getAverages(solverTimesWins);
@@ -335,11 +346,11 @@ public class Run {
     }
 
     public static void main(String[] args) {
-        int NUM_THREADS = 5;
-        int NUM_RUNS = 10;
+        int NUM_THREADS = 1;
+        int NUM_RUNS = 100;
         char SOLVER_TYPE = 'm';
         RANDOMNESS_PERCENTAGE = 30;
-        NUM_SIMULATIONS = 100;
+        NUM_SIMULATIONS = 25;
 
         String solver = switch (SOLVER_TYPE) {
             case 'r' -> "Random Move Solver";
