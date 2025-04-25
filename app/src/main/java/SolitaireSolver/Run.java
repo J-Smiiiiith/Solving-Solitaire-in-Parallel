@@ -1,5 +1,7 @@
 package SolitaireSolver;
 
+import SolitaireSolver.Exceptions.InvalidNumArgumentsException;
+
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -276,9 +278,6 @@ public class Run {
             numTotalThreadWins += winsThisGame;
         }
 
-        System.out.println(wonGamesMoves);
-        System.out.println(lostGameMoves);
-
         Map<String, Double> allAverages = getTimeAverages(solverTimes);
         Map<String, Double> winAverages = getTimeAverages(solverTimesWins);
         Map<String, Double> lossAverages = getTimeAverages(solverTimesLosses);
@@ -420,11 +419,28 @@ public class Run {
     }
 
     public static void main(String[] args) {
-        int NUM_THREADS = 1;
-        int NUM_RUNS = 100;
-        char SOLVER_TYPE = 'm';
-        RANDOMNESS_PERCENTAGE = 30;
-        NUM_SIMULATIONS = 25;
+        int NUM_THREADS;
+        int NUM_RUNS;
+        char SOLVER_TYPE;
+
+        try {
+            NUM_THREADS = Integer.parseInt(args[0]);
+            NUM_RUNS = Integer.parseInt(args[1]);
+            SOLVER_TYPE = args[2].charAt(0);
+        } catch (Exception e) {
+            throw new InvalidNumArgumentsException("Minimum 3 arguments required: <numThreads> <numRuns> <solverType>" +
+                    " You only provided " + args.length + ".");
+        }
+        if (SOLVER_TYPE == 'm') {
+            try {
+                RANDOMNESS_PERCENTAGE = Integer.parseInt(args[3]);
+                NUM_SIMULATIONS = Integer.parseInt(args[4]);
+            } catch (Exception e) {
+                throw new InvalidNumArgumentsException("5 arguments required for solverType 'm': <numThreads> " +
+                        "<numRuns> <solverType> <randomnessPercentage> <numSimulations> You only provided " +
+                        args.length + ".");
+            }
+        }
 
         String solver = switch (SOLVER_TYPE) {
             case 'r' -> "Random Move Solver";
