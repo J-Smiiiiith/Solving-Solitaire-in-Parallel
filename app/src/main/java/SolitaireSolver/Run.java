@@ -2,9 +2,7 @@ package SolitaireSolver;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Stack;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -203,7 +201,10 @@ public class Run {
         int numTotalWins = 0;
         int numTotalThreadWins = 0;
         int totalRuns;
-        ArrayList<Long> solverTimes = new ArrayList<>();
+        ArrayList<Double> solverTimes = new ArrayList<>();
+        ArrayList<Double> solverTimesWins = new ArrayList<>();
+        ArrayList<Double> solverTimesLosses = new ArrayList<>();
+
         for (totalRuns = 0; totalRuns < numRuns; totalRuns++) {
             long solverStart = System.nanoTime();
 
@@ -244,7 +245,7 @@ public class Run {
             }
 
             long solverEnd = System.nanoTime();
-            long durationMs = (solverEnd - solverStart) / 1_000_000;
+            double durationMs = Math.round((float) (solverEnd - solverStart) / 1_000_000);
             solverTimes.add(durationMs);
             int winsThisGame = numWins.get();
 
@@ -253,44 +254,81 @@ public class Run {
 
             if (winsThisGame > 0) {
                 numTotalWins++;
+                solverTimesWins.add(durationMs);
+            }
+            else {
+                solverTimesLosses.add(durationMs);
             }
             numTotalThreadWins += winsThisGame;
         }
-        Collections.sort(solverTimes);
-        long totalTime = 0;
-        for (long time : solverTimes) {
-            totalTime += time;
-        }
-        double meanTime = (double) totalTime / solverTimes.size();
-        long minTime = Collections.min(solverTimes);
-        long maxTime = Collections.max(solverTimes);
-        double medianTime;
 
-        if (totalRuns % 2 == 0) {
-            medianTime = (double) (solverTimes.get((totalRuns / 2) - 1) + solverTimes.get(totalRuns / 2)) / 2;
-        }
-        else {
-            medianTime = (double) solverTimes.get(totalRuns / 2);
-        }
-        System.out.println("=======================================");
+        Map<String, Double> allAverages = getAverages(solverTimes);
+        Map<String, Double> winAverages = getAverages(solverTimesWins);
+        Map<String, Double> lossAverages = getAverages(solverTimesLosses);
+
+        System.out.println("========================================");
         System.out.println("Total wins:\t\t\t" + numTotalWins + "/" + (totalRuns));
         System.out.println("Solvability:\t\t" + (numTotalWins * 100.0 / totalRuns) + "%");
-        System.out.println("---------------------------------------");
+        System.out.println("----------------------------------------");
         if (numTotalWins > 0) {
             System.out.println("Mean thread wins per winning game:\t" + (double) (numTotalThreadWins / numTotalWins));
-            System.out.println("---------------------------------------");
+            System.out.println("----------------------------------------");
         }
-        System.out.println("Mean time:\t\t\t" + meanTime + "ms");
-        System.out.println("Median time:\t\t" + medianTime + "ms");
-        System.out.println("Min time:\t\t\t" + minTime + "ms");
-        System.out.println("Max time:\t\t\t" + maxTime + "ms");
-        System.out.println("Total time:\t\t\t" + totalTime + "ms");
-        System.out.println("=======================================");
+        System.out.println("Timings:");
+        System.out.println("----------------------------------------");
+        System.out.println("Wins:\t\t\t" + numTotalWins);
+        outputAverages(winAverages);
+        System.out.println("----------------------------------------");
+
+        System.out.println("Losses:\t\t\t" + (totalRuns - numTotalWins));
+        outputAverages(lossAverages);
+        System.out.println("----------------------------------------");
+
+        System.out.println("All games:\t\t" + totalRuns);
+        outputAverages(allAverages);
+        System.out.println("----------------------------------------");
+    }
+
+    private static void outputAverages(Map<String, Double> lossAverages) {
+        System.out.println("Mean:\t\t\t" + lossAverages.get("Mean") + "ms");
+        System.out.println("Median:\t\t\t" + lossAverages.get("Median") + "ms");
+        System.out.println("Min:\t\t\t" + lossAverages.get("Min") + "ms");
+        System.out.println("Max:\t\t\t" + lossAverages.get("Max") + "ms");
+        System.out.println("Total:\t\t\t" + lossAverages.get("Total") + "ms");
+    }
+
+    public static Map<String, Double> getAverages(ArrayList<Double> times) {
+        int totalRuns = times.size();
+        Map<String, Double> averages = new HashMap<>();
+
+        if (totalRuns == 0) {
+            return averages;
+        }
+
+        double totalTime = 0;
+        for (double time : times) {
+            totalTime += time;
+        }
+
+        averages.put("Total", totalTime);
+
+        averages.put("Mean", (double) Math.round( (float) totalTime / totalRuns));
+        averages.put("Max", Collections.max(times));
+        averages.put("Min", Collections.min(times));
+
+        Collections.sort(times);
+        if (totalRuns % 2 == 0) {
+            averages.put("Median", (double) Math.round((times.get((totalRuns / 2) - 1) + times.get(totalRuns / 2)) / 2));
+        }
+        else {
+            averages.put("Median", (double) Math.round(times.get(totalRuns / 2)));
+        }
+        return averages;
     }
 
     public static void main(String[] args) {
         int NUM_THREADS = 5;
-        int NUM_RUNS = 50;
+        int NUM_RUNS = 10;
         char SOLVER_TYPE = 'm';
         RANDOMNESS_PERCENTAGE = 30;
         NUM_SIMULATIONS = 100;
