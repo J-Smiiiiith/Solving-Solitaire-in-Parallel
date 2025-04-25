@@ -1,10 +1,6 @@
 package SolitaireSolver;
 
-import java.time.Duration;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Stack;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -25,92 +21,99 @@ public class Run {
         System.out.println(output);
     }
 
-    public static boolean randomSolitaireSolver(Solitaire game) {
+    public static int randomSolitaireSolver(Solitaire game) {
         ArrayList<String> gameStates = new ArrayList<>();
         gameStates.add(game.getGameState());
         ArrayList<Move> possibleMoves;
+        int movesMade = 0;
 
         boolean end = false;
         while (!end) {
             possibleMoves = game.getPossibleMoves();
             if (possibleMoves.isEmpty()) {
-                return false;
+                return -movesMade;
             }
 
             int randomInt = (int) (Math.random() * possibleMoves.size());
             Move move = possibleMoves.get(randomInt);
 
             game.makeMove(move);
+            movesMade++;
             String currentState = game.getGameState();
 
             if (Collections.frequency(gameStates, currentState) > MAX_REPEATS) {
-                return false;
+                return -movesMade;
             }
             else if (game.getFoundation().checkWin()) {
-                return true;
+                return movesMade;
             } else {
                 gameStates.add(currentState);
             }
         }
-        return end;
+        return -movesMade;
     }
 
-    public static boolean greedyHeuristicSolitaireSolver(Solitaire game) {
+    public static int greedyHeuristicSolitaireSolver(Solitaire game) {
         ArrayList<String> gameStates = new ArrayList<>();
         gameStates.add(game.getGameState());
         ArrayList<Move> possibleMoves;
+        int movesMade = 0;
 
         boolean end = false;
         while (!end) {
             possibleMoves = game.getPossibleMoves();
             if (possibleMoves.isEmpty()) {
-                return false;
+                return -movesMade;
             }
 
             game.makeMove(game.getBestMove(possibleMoves));
+            movesMade++;
             String currentState = game.getGameState();
 
-            if (Collections.frequency(gameStates, currentState) > 3) {
-                return false;
+            if (Collections.frequency(gameStates, currentState) > MAX_REPEATS) {
+                return -movesMade;
             }
             if (game.getFoundation().checkWin()) {
-                return true;
+                return movesMade;
             } else {
                 gameStates.add(currentState);
             }
         }
-        return end;
+        return -movesMade;
     }
 
-    public static boolean greedyHeuristicPrioritySolitaireSolver(Solitaire game) {
+    public static int greedyHeuristicPrioritySolitaireSolver(Solitaire game) {
         ArrayList<String> gameStates = new ArrayList<>();
         gameStates.add(game.getGameState());
         ArrayList<Move> possibleMoves;
+        int movesMade = 0;
 
         boolean end = false;
         while (!end) {
             possibleMoves = game.getPossibleMoves();
             if (possibleMoves.isEmpty()) {
-                return false;
+                return -movesMade;
             }
             Move bestMove = game.getBestMoveWithPriority(possibleMoves);
 
             game.makeMove(bestMove);
+            movesMade++;
             String currentState = game.getGameState();
 
             if (Collections.frequency(gameStates, currentState) > MAX_REPEATS) {
-                return false;
+                return -movesMade;
             }
             if (game.getFoundation().checkWin()) {
-                return true;
+                return movesMade;
             } else {
                 gameStates.add(currentState);
             }
         }
-        return end;
+        return -movesMade;
     }
 
     public static int greedyHeuristicPrioritySolitaireSolverWithRandom(Solitaire game) {
+        //Returns the number of visible cards remaining in the game.
         ArrayList<String> gameStates = new ArrayList<>();
         gameStates.add(game.getGameState());
         ArrayList<Move> possibleMoves;
@@ -119,7 +122,7 @@ public class Run {
         while (!end) {
             possibleMoves = game.getPossibleMoves();
             if (possibleMoves.isEmpty()) {
-                return game.getFoundation().getTotalFoundationCards();
+                return 52 - game.getHiddenCardsCount();
             }
 
             int randInt = (int) (Math.random() * 100);
@@ -134,10 +137,10 @@ public class Run {
             String currentState = game.getGameState();
 
             if (Collections.frequency(gameStates, currentState) > 3) {
-                return game.getFoundation().getTotalFoundationCards();
+                return 52 - game.getHiddenCardsCount();
             }
             if (game.getFoundation().checkWin()) {
-                return 0;
+                return 52;
             } else {
                 gameStates.add(currentState);
             }
@@ -145,17 +148,18 @@ public class Run {
         return -1;
     }
 
-    public static boolean monteCarloSolitaireSolver(Solitaire game, int numSimulations) {
+    public static int monteCarloSolitaireSolver(Solitaire game, int numSimulations) {
         ArrayList<String> gameStates = new ArrayList<>();
         gameStates.add(game.getGameState());
         ArrayList<Move> possibleMoves;
         Stack<GameStateCopy> history = new Stack<>();
+        int movesMade = 0;
 
         boolean end = false;
         while (!end) {
             possibleMoves = game.getPossibleMoves();
             if (possibleMoves.isEmpty()) {
-                return false;
+                return -movesMade;
             }
 
             for (Move move : possibleMoves) {
@@ -166,8 +170,8 @@ public class Run {
                     history.push(new GameStateCopy(game));
                     // Save game state after move for simulation
                     int gameSim = greedyHeuristicPrioritySolitaireSolverWithRandom(game);
-                    if (gameSim == 0) {
-                        return true;
+                    if (gameSim == 52) {
+                        return movesMade + 1;
                         // If win found in simulation, this must be a winning configuration, no need to run more sims.
                     }
                     else {
@@ -183,27 +187,34 @@ public class Run {
             Move bestMove = game.getBestMoveMonetCarlo(possibleMoves);
 
             game.makeMove(bestMove);
+            movesMade++;
             game.resetMonteCarloScores(possibleMoves);
 
             String currentState = game.getGameState();
 
             if (Collections.frequency(gameStates, currentState) > MAX_REPEATS) {
-                return false;
+                return -movesMade;
             }
             if (game.getFoundation().checkWin() || game.checkWin()) {
-                return true;
+                return movesMade;
             } else {
                 gameStates.add(currentState);
             }
         }
-        return end;
+        return -movesMade;
     }
 
     public static void runSolver(int numRuns, int numThreads, char solverType) {
         int numTotalWins = 0;
         int numTotalThreadWins = 0;
         int totalRuns;
-        ArrayList<Long> solverTimes = new ArrayList<>();
+        ArrayList<Double> solverTimes = new ArrayList<>();
+        ArrayList<Double> solverTimesWins = new ArrayList<>();
+        ArrayList<Double> solverTimesLosses = new ArrayList<>();
+
+        List<Double> wonGamesMoves = Collections.synchronizedList(new ArrayList<>());
+        List<Double> lostGameMoves = Collections.synchronizedList(new ArrayList<>());
+
         for (totalRuns = 0; totalRuns < numRuns; totalRuns++) {
             long solverStart = System.nanoTime();
 
@@ -215,7 +226,7 @@ public class Run {
             for (int j = 0; j < numThreads; j++) {
                 executor.submit(() -> {
                     try {
-                        boolean result;
+                        int result;
                         Solitaire game = new Solitaire(baseGame);
 
                         result = switch (solverType) {
@@ -223,11 +234,15 @@ public class Run {
                             case 'g' -> greedyHeuristicSolitaireSolver(game);
                             case 'p' -> greedyHeuristicPrioritySolitaireSolver(game);
                             case 'm' -> monteCarloSolitaireSolver(game, NUM_SIMULATIONS);
-                            default -> false;
+                            default -> -1;
                         };
 //                        System.out.println(Thread.currentThread().getName() + ": " + result);
-                        if (result) {
+                        if (result > 0) {
                             numWins.getAndIncrement();
+                            wonGamesMoves.add((double) result);
+                        }
+                        else {
+                            lostGameMoves.add((double) -result);
                         }
                     } catch (Exception e) {
                         System.err.println("[" + Thread.currentThread().getName() + "] encountered an error:");
@@ -244,7 +259,7 @@ public class Run {
             }
 
             long solverEnd = System.nanoTime();
-            long durationMs = (solverEnd - solverStart) / 1_000_000;
+            double durationMs = Math.round((float) (solverEnd - solverStart) / 1_000_000);
             solverTimes.add(durationMs);
             int winsThisGame = numWins.get();
 
@@ -253,47 +268,162 @@ public class Run {
 
             if (winsThisGame > 0) {
                 numTotalWins++;
+                solverTimesWins.add(durationMs);
+            }
+            else {
+                solverTimesLosses.add(durationMs);
             }
             numTotalThreadWins += winsThisGame;
         }
-        Collections.sort(solverTimes);
-        long totalTime = 0;
-        for (long time : solverTimes) {
-            totalTime += time;
-        }
-        double meanTime = (double) totalTime / solverTimes.size();
-        long minTime = Collections.min(solverTimes);
-        long maxTime = Collections.max(solverTimes);
-        double medianTime;
 
-        if (totalRuns % 2 == 0) {
-            medianTime = (double) (solverTimes.get((totalRuns / 2) - 1) + solverTimes.get(totalRuns / 2)) / 2;
-        }
-        else {
-            medianTime = (double) solverTimes.get(totalRuns / 2);
-        }
-        System.out.println("=======================================");
+        System.out.println(wonGamesMoves);
+        System.out.println(lostGameMoves);
+
+        Map<String, Double> allAverages = getTimeAverages(solverTimes);
+        Map<String, Double> winAverages = getTimeAverages(solverTimesWins);
+        Map<String, Double> lossAverages = getTimeAverages(solverTimesLosses);
+        Map<String, Double> avMovesOnWinThreads = getMoveAverages(wonGamesMoves);
+        Map<String, Double> avMovesOnLossThreads = getMoveAverages(lostGameMoves);
+
+        System.out.println("========================================");
         System.out.println("Total wins:\t\t\t" + numTotalWins + "/" + (totalRuns));
         System.out.println("Solvability:\t\t" + (numTotalWins * 100.0 / totalRuns) + "%");
-        System.out.println("---------------------------------------");
+        System.out.println("----------------------------------------");
         if (numTotalWins > 0) {
             System.out.println("Mean thread wins per winning game:\t" + (double) (numTotalThreadWins / numTotalWins));
-            System.out.println("---------------------------------------");
+            System.out.println("----------------------------------------");
         }
-        System.out.println("Mean time:\t\t\t" + meanTime + "ms");
-        System.out.println("Median time:\t\t" + medianTime + "ms");
-        System.out.println("Min time:\t\t\t" + minTime + "ms");
-        System.out.println("Max time:\t\t\t" + maxTime + "ms");
-        System.out.println("Total time:\t\t\t" + totalTime + "ms");
-        System.out.println("=======================================");
+        System.out.println("Timings:");
+        System.out.println("----------------------------------------");
+        System.out.println("Wins:\t\t\t" + numTotalWins);
+        outputTimeAverages(winAverages);
+        System.out.println("----------------------------------------");
+
+        System.out.println("Losses:\t\t\t" + (totalRuns - numTotalWins));
+        outputTimeAverages(lossAverages);
+        System.out.println("----------------------------------------");
+
+        System.out.println("All games:\t\t" + totalRuns);
+        outputTimeAverages(allAverages);
+        System.out.println("----------------------------------------");
+
+        System.out.println("Move averages in threaded games:");
+        System.out.println("----------------------------------------");
+        System.out.println("Wins:\t\t\t" + numTotalWins);
+        outputMoveAverages(avMovesOnWinThreads);
+        System.out.println("----------------------------------------");
+        System.out.println("Losses:\t\t\t" + (totalRuns - numTotalWins));
+        outputMoveAverages(avMovesOnLossThreads);
+        System.out.println("----------------------------------------");
+    }
+
+    private static void outputTimeAverages(Map<String, Double> averages) {
+        System.out.println("Mean:\t\t\t" + averages.get("Mean") + "ms");
+        System.out.println("Median:\t\t\t" + averages.get("Median") + "ms");
+        System.out.println("Min:\t\t\t" + averages.get("Min") + "ms");
+        System.out.println("Max:\t\t\t" + averages.get("Max") + "ms");
+        System.out.println("Total:\t\t\t" + averages.get("Total") + "ms");
+    }
+
+    private static void outputMoveAverages(Map<String, Double> averages) {
+        System.out.println("Mean:\t\t\t" + averages.get("Mean") + " moves");
+        System.out.println("Median:\t\t\t" + averages.get("Median") + " moves");
+        System.out.println("Mode:\t\t\t" + averages.get("Mode") + " moves (" + averages.get("Mode Count") + ")");
+        System.out.println("Min:\t\t\t" + averages.get("Min") + " moves");
+        System.out.println("Max:\t\t\t" + averages.get("Max") + " moves");
+        System.out.println("Total:\t\t\t" + averages.get("Total") + " moves");
+    }
+
+    public static Map<String, Double> getTimeAverages(ArrayList<Double> times) {
+        int totalRuns = times.size();
+        Map<String, Double> averages = new HashMap<>();
+
+        if (totalRuns == 0) {
+            return averages;
+        }
+
+        double totalTime = 0;
+        for (double time : times) {
+            totalTime += time;
+        }
+
+        averages.put("Total", totalTime);
+
+        averages.put("Mean", Math.round(totalTime / totalRuns * 100.0) / 100.0);
+        averages.put("Max", Collections.max(times));
+        averages.put("Min", Collections.min(times));
+
+        Collections.sort(times);
+        if (totalRuns % 2 == 0) {
+            double mid1 = times.get((totalRuns / 2) - 1);
+            double mid2 = times.get(totalRuns / 2);
+            double median = (mid1 + mid2) / 2.0;
+            averages.put("Median", Math.round(median * 100.0) / 100.0);
+        }
+        else {
+            double median = times.get(totalRuns / 2);
+            averages.put("Median", Math.round(median * 100.0) / 100.0);
+        }
+        return averages;
+    }
+
+    public static Map<String, Double> getMoveAverages(List<Double> moves) {
+        int totalRuns = moves.size();
+        Map<Double, Integer> modeMap = new HashMap<>();
+        Map<String, Double> averages = new HashMap<>();
+
+        if (totalRuns == 0) {
+            return averages;
+        }
+
+        double totalMoves = 0;
+        for (double move : moves) {
+            totalMoves += move;
+
+            if (!modeMap.containsKey(move)) {
+                modeMap.put(move, 1);
+            } else {
+                modeMap.put(move, (modeMap.get(move) + 1));
+            }
+        }
+
+        Double mode = null;
+        int maxCount = 0;
+
+        for (Map.Entry<Double, Integer> entry : modeMap.entrySet()) {
+            if (entry.getValue() > maxCount) {
+                maxCount = entry.getValue();
+                mode = entry.getKey();
+            }
+        }
+        averages.put("Mode", mode);
+        averages.put("Mode Count", (double) maxCount);
+        averages.put("Total", totalMoves);
+
+        averages.put("Mean", Math.round(totalMoves / totalRuns * 100.0) / 100.0);
+        averages.put("Max", Collections.max(moves));
+        averages.put("Min", Collections.min(moves));
+
+        Collections.sort(moves);
+        if (totalRuns % 2 == 0) {
+            double mid1 = moves.get((totalRuns / 2) - 1);
+            double mid2 = moves.get(totalRuns / 2);
+            double median = (mid1 + mid2) / 2.0;
+            averages.put("Median", Math.round(median * 100.0) / 100.0);
+        }
+        else {
+            double median = moves.get(totalRuns / 2);
+            averages.put("Median", Math.round(median * 100.0) / 100.0);
+        }
+        return averages;
     }
 
     public static void main(String[] args) {
-        int NUM_THREADS = 5;
-        int NUM_RUNS = 50;
+        int NUM_THREADS = 1;
+        int NUM_RUNS = 100;
         char SOLVER_TYPE = 'm';
         RANDOMNESS_PERCENTAGE = 30;
-        NUM_SIMULATIONS = 100;
+        NUM_SIMULATIONS = 25;
 
         String solver = switch (SOLVER_TYPE) {
             case 'r' -> "Random Move Solver";
