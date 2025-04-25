@@ -1,7 +1,5 @@
 package SolitaireSolver;
 
-import java.time.Duration;
-import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -214,8 +212,8 @@ public class Run {
         ArrayList<Double> solverTimesWins = new ArrayList<>();
         ArrayList<Double> solverTimesLosses = new ArrayList<>();
 
-        List<Integer> wonGamesMoves = Collections.synchronizedList(new ArrayList<>());
-        List<Integer> lostGameMoves = Collections.synchronizedList(new ArrayList<>());
+        List<Double> wonGamesMoves = Collections.synchronizedList(new ArrayList<>());
+        List<Double> lostGameMoves = Collections.synchronizedList(new ArrayList<>());
 
         for (totalRuns = 0; totalRuns < numRuns; totalRuns++) {
             long solverStart = System.nanoTime();
@@ -241,10 +239,10 @@ public class Run {
 //                        System.out.println(Thread.currentThread().getName() + ": " + result);
                         if (result > 0) {
                             numWins.getAndIncrement();
-                            wonGamesMoves.add(result);
+                            wonGamesMoves.add((double) result);
                         }
                         else {
-                            lostGameMoves.add(-result);
+                            lostGameMoves.add((double) -result);
                         }
                     } catch (Exception e) {
                         System.err.println("[" + Thread.currentThread().getName() + "] encountered an error:");
@@ -281,9 +279,11 @@ public class Run {
         System.out.println(wonGamesMoves);
         System.out.println(lostGameMoves);
 
-        Map<String, Double> allAverages = getAverages(solverTimes);
-        Map<String, Double> winAverages = getAverages(solverTimesWins);
-        Map<String, Double> lossAverages = getAverages(solverTimesLosses);
+        Map<String, Double> allAverages = getTimeAverages(solverTimes);
+        Map<String, Double> winAverages = getTimeAverages(solverTimesWins);
+        Map<String, Double> lossAverages = getTimeAverages(solverTimesLosses);
+        Map<String, Double> avMovesOnWinThreads = getMoveAverages(wonGamesMoves);
+        Map<String, Double> avMovesOnLossThreads = getMoveAverages(lostGameMoves);
 
         System.out.println("========================================");
         System.out.println("Total wins:\t\t\t" + numTotalWins + "/" + (totalRuns));
@@ -296,27 +296,45 @@ public class Run {
         System.out.println("Timings:");
         System.out.println("----------------------------------------");
         System.out.println("Wins:\t\t\t" + numTotalWins);
-        outputAverages(winAverages);
+        outputTimeAverages(winAverages);
         System.out.println("----------------------------------------");
 
         System.out.println("Losses:\t\t\t" + (totalRuns - numTotalWins));
-        outputAverages(lossAverages);
+        outputTimeAverages(lossAverages);
         System.out.println("----------------------------------------");
 
         System.out.println("All games:\t\t" + totalRuns);
-        outputAverages(allAverages);
+        outputTimeAverages(allAverages);
+        System.out.println("----------------------------------------");
+
+        System.out.println("Move averages in threaded games:");
+        System.out.println("----------------------------------------");
+        System.out.println("Wins:\t\t\t" + numTotalWins);
+        outputMoveAverages(avMovesOnWinThreads);
+        System.out.println("----------------------------------------");
+        System.out.println("Losses:\t\t\t" + (totalRuns - numTotalWins));
+        outputMoveAverages(avMovesOnLossThreads);
         System.out.println("----------------------------------------");
     }
 
-    private static void outputAverages(Map<String, Double> lossAverages) {
-        System.out.println("Mean:\t\t\t" + lossAverages.get("Mean") + "ms");
-        System.out.println("Median:\t\t\t" + lossAverages.get("Median") + "ms");
-        System.out.println("Min:\t\t\t" + lossAverages.get("Min") + "ms");
-        System.out.println("Max:\t\t\t" + lossAverages.get("Max") + "ms");
-        System.out.println("Total:\t\t\t" + lossAverages.get("Total") + "ms");
+    private static void outputTimeAverages(Map<String, Double> averages) {
+        System.out.println("Mean:\t\t\t" + averages.get("Mean") + "ms");
+        System.out.println("Median:\t\t\t" + averages.get("Median") + "ms");
+        System.out.println("Min:\t\t\t" + averages.get("Min") + "ms");
+        System.out.println("Max:\t\t\t" + averages.get("Max") + "ms");
+        System.out.println("Total:\t\t\t" + averages.get("Total") + "ms");
     }
 
-    public static Map<String, Double> getAverages(ArrayList<Double> times) {
+    private static void outputMoveAverages(Map<String, Double> averages) {
+        System.out.println("Mean:\t\t\t" + averages.get("Mean") + " moves");
+        System.out.println("Median:\t\t\t" + averages.get("Median") + " moves");
+        System.out.println("Mode:\t\t\t" + averages.get("Mode") + " moves (" + averages.get("Mode Count") + ")");
+        System.out.println("Min:\t\t\t" + averages.get("Min") + " moves");
+        System.out.println("Max:\t\t\t" + averages.get("Max") + " moves");
+        System.out.println("Total:\t\t\t" + averages.get("Total") + " moves");
+    }
+
+    public static Map<String, Double> getTimeAverages(ArrayList<Double> times) {
         int totalRuns = times.size();
         Map<String, Double> averages = new HashMap<>();
 
@@ -331,16 +349,71 @@ public class Run {
 
         averages.put("Total", totalTime);
 
-        averages.put("Mean", (double) Math.round( (float) totalTime / totalRuns));
+        averages.put("Mean", Math.round(totalTime / totalRuns * 100.0) / 100.0);
         averages.put("Max", Collections.max(times));
         averages.put("Min", Collections.min(times));
 
         Collections.sort(times);
         if (totalRuns % 2 == 0) {
-            averages.put("Median", (double) Math.round((times.get((totalRuns / 2) - 1) + times.get(totalRuns / 2)) / 2));
+            double mid1 = times.get((totalRuns / 2) - 1);
+            double mid2 = times.get(totalRuns / 2);
+            double median = (mid1 + mid2) / 2.0;
+            averages.put("Median", Math.round(median * 100.0) / 100.0);
         }
         else {
-            averages.put("Median", (double) Math.round(times.get(totalRuns / 2)));
+            double median = times.get(totalRuns / 2);
+            averages.put("Median", Math.round(median * 100.0) / 100.0);
+        }
+        return averages;
+    }
+
+    public static Map<String, Double> getMoveAverages(List<Double> moves) {
+        int totalRuns = moves.size();
+        Map<Double, Integer> modeMap = new HashMap<>();
+        Map<String, Double> averages = new HashMap<>();
+
+        if (totalRuns == 0) {
+            return averages;
+        }
+
+        double totalMoves = 0;
+        for (double move : moves) {
+            totalMoves += move;
+
+            if (!modeMap.containsKey(move)) {
+                modeMap.put(move, 1);
+            } else {
+                modeMap.put(move, (modeMap.get(move) + 1));
+            }
+        }
+
+        Double mode = null;
+        int maxCount = 0;
+
+        for (Map.Entry<Double, Integer> entry : modeMap.entrySet()) {
+            if (entry.getValue() > maxCount) {
+                maxCount = entry.getValue();
+                mode = entry.getKey();
+            }
+        }
+        averages.put("Mode", mode);
+        averages.put("Mode Count", (double) maxCount);
+        averages.put("Total", totalMoves);
+
+        averages.put("Mean", Math.round(totalMoves / totalRuns * 100.0) / 100.0);
+        averages.put("Max", Collections.max(moves));
+        averages.put("Min", Collections.min(moves));
+
+        Collections.sort(moves);
+        if (totalRuns % 2 == 0) {
+            double mid1 = moves.get((totalRuns / 2) - 1);
+            double mid2 = moves.get(totalRuns / 2);
+            double median = (mid1 + mid2) / 2.0;
+            averages.put("Median", Math.round(median * 100.0) / 100.0);
+        }
+        else {
+            double median = moves.get(totalRuns / 2);
+            averages.put("Median", Math.round(median * 100.0) / 100.0);
         }
         return averages;
     }
