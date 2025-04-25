@@ -289,10 +289,7 @@ public class Run {
         System.out.println("Total wins:\t\t\t" + numTotalWins + "/" + (totalRuns));
         System.out.println("Solvability:\t\t" + (numTotalWins * 100.0 / totalRuns) + "%");
         System.out.println("----------------------------------------");
-        if (numTotalWins > 0) {
-            System.out.println("Mean thread wins per winning game:\t" + (double) (numTotalThreadWins / numTotalWins));
-            System.out.println("----------------------------------------");
-        }
+
         System.out.println("Timings:");
         System.out.println("----------------------------------------");
         System.out.println("Wins:\t\t\t" + numTotalWins);
@@ -307,6 +304,10 @@ public class Run {
         outputTimeAverages(allAverages);
         System.out.println("----------------------------------------");
 
+        if (numTotalWins > 0) {
+            System.out.println("Mean thread wins per winning game:\t" + (double) (numTotalThreadWins / numTotalWins));
+            System.out.println("----------------------------------------");
+        }
         System.out.println("Move averages in threaded games:");
         System.out.println("----------------------------------------");
         System.out.println("Wins:\t\t\t" + numTotalWins);
@@ -435,7 +436,12 @@ public class Run {
 
         System.out.println("Solver: " + solver);
         System.out.println("Num threads: " + NUM_THREADS);
-        System.out.println("Num runs: " + NUM_RUNS + "\n");
+        System.out.println("Num runs: " + NUM_RUNS);
+        if (SOLVER_TYPE == 'm') {
+            System.out.println("Num simulations: " + NUM_SIMULATIONS);
+            System.out.println("Randomness percentage: " + RANDOMNESS_PERCENTAGE + "%");
+        }
+        System.out.println();
 
         runSolver(NUM_RUNS, NUM_THREADS, SOLVER_TYPE);
     }
