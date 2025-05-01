@@ -2,12 +2,21 @@ package SolitaireSolver;
 
 import java.util.ArrayList;
 
+/**
+ * GameStateCopy class representing a deep copy of the game state in Solitaire.
+ * This class is used to save the current state of the game, including the stock,
+ * foundation, and piles, allowing for restoration of the game state later.
+ */
 public class GameStateCopy {
     private ArrayList<Card> stockState;
     private int stockIndex;
     private ArrayList<Integer> foundationState;
     private ArrayList<ArrayList<Card>> pileHiddenStates, pileBuildStates;
 
+    /**
+     * Constructor for GameStateCopy.
+     * @param game the current game state to copy
+     */
     public GameStateCopy(Solitaire game) {
         this.pileHiddenStates = new ArrayList<>();
         this.pileBuildStates = new ArrayList<>();
@@ -28,6 +37,10 @@ public class GameStateCopy {
         // Deep copy of foundation
     }
 
+    /**
+     * Restores the game state from the saved copy.
+     * @param game the game to restore the state to
+     */
     public void restoreGameState(Solitaire game) {
         for (int i = 0; i < game.getPiles().length; i++) {
             game.getPiles()[i].setHiddenCards(pileHiddenStates.get(i));
