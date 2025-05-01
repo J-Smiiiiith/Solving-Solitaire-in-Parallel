@@ -6,9 +6,16 @@ package SolitaireSolver;
 import SolitaireSolver.Exceptions.InvalidMoveException;
 import SolitaireSolver.Exceptions.InvalidRankException;
 
+/**
+ * Foundation class representing the foundation piles in the game of Solitaire.
+ * Each foundation pile corresponds to a suit and tracks the number of cards in that pile.
+ */
 public class Foundation {
     int spades, hearts, clubs, diamonds;
 
+    /**
+     * Constructor for Foundation.
+     */
     public Foundation() {
         spades = 0;
         hearts = 0;
@@ -16,6 +23,10 @@ public class Foundation {
         diamonds = 0;
     }
 
+    /**
+     * Deep copy constructor for Foundation.
+     * @param other the Foundation to copy
+     */
     public Foundation(Foundation other) {
         this.spades = other.spades;
         this.hearts = other.hearts;
@@ -123,9 +134,6 @@ public class Foundation {
         this.diamonds = diamonds;
     }
 
-    //Note: These getters are only to visualise the game. They will not be used in actual solution.
-    //      Getters returning the integer values will be used instead.
-
     public String getSpadeCard() {
         String spadeCard;
         if (this.getSpades() == 1) {
@@ -208,11 +216,6 @@ public class Foundation {
 
     public String getFoundationState() {
         return getSpadeCard() + getHeartCard() + getClubCard() + getDiamondCard();
-    }
-
-    public int getTotalFoundationCards() {
-        return this.getClubs() + this.getDiamonds() + this.getHearts() +
-                this.getSpades();
     }
 
     public boolean checkWin() {
