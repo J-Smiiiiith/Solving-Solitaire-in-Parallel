@@ -1,7 +1,8 @@
 package SolitaireSolver;
 
-import java.util.ArrayList;
-
+/**
+ * Move class representing a move in the game of Solitaire.
+ */
 public class Move {
     Card card;
     Pile dst;
@@ -10,22 +11,35 @@ public class Move {
     int moveType;
     int monteCarloScore;
 
+    /**
+     * Constructor for Move.
+     * Represents a move of a card to the Foundation.
+     * @param card the card to be moved
+     */
     public Move(Card card) {
-        //Stock to Foundation move / Pile to Foundation move
         this.card = card;
         this.heuristic = 0;
         this.priority = 0;
         this.monteCarloScore = 0;
     }
 
+    /**
+     * Constructor for Move.
+     * Represents a move of a card to a Pile.
+     * @param card the card to be moved
+     * @param dst the destination pile
+     */
     public Move(Card card, Pile dst) {
-        //Pile to Pile move / Stock to Pile move
         this.card = card;
         this.dst = dst;
         this.heuristic = 0;
         this.priority = 0;
     }
 
+    /**
+     * Determines the specific type of move based on the current game state.
+     * @param piles the array of piles in the game
+     */
     public void determineMoveType(Pile[] piles) {
         if (dst == null) {
             this.setMoveType(0);
@@ -43,6 +57,10 @@ public class Move {
         this.determineHeuristic(piles);
     }
 
+    /**
+     * Determines the heuristic value of the move based on the current game state.
+     * @param piles the array of piles in the game
+     */
     private void determineHeuristic(Pile[] piles) {
         switch (moveType) {
             case 0:
@@ -55,7 +73,7 @@ public class Move {
                             }
                         }
                     }
-                } // Stock to foundation move may block a card of an opposite colour and rank-1 from being moved
+                } // Stock to Foundation move may block a card of an opposite colour and rank-1 from being moved
                 if (card.getLocation() != 7) {
                     if ((!piles[card.getLocation()].getHiddenCards().isEmpty()) &&
                             (piles[card.getLocation()].getBuildStack().size() == 1)) {
@@ -81,7 +99,7 @@ public class Move {
                             }
                         }
                     }
-                }
+                } // Stock to Pile move
                 break;
             case 2:
                 if (!piles[card.getLocation()].getHiddenCards().isEmpty()) {
