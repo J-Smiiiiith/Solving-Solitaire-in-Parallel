@@ -3,9 +3,16 @@ package SolitaireSolver;
 import java.util.Collections;
 import java.util.Stack;
 
+/**
+ * Deck class representing a standard deck of playing cards.
+ * The deck is initialized with 52 cards, shuffled, and can be accessed as a stack.
+ */
 public class Deck {
     public Stack<Card> deck;
 
+    /**
+     * Constructor for Deck.
+     */
     public Deck() {
         deck = new Stack<>();
         char[] SUITS = {'C', 'D', 'H', 'S'};
