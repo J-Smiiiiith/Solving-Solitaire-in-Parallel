@@ -1,25 +1,41 @@
 package SolitaireSolver;
 
+/**
+ * Card class representing a playing card in the game of Solitaire.
+ * Each card has a rank, suit, location, and color (black or red).
+ */
 public class Card {
     int rank, location;
     // Location: 7: Stock, 0-6: Piles
     char suit;
     boolean black;
 
-
+    /**
+     * Constructor for Card.
+     * @param rank 1-13
+     * @param suit 'S', 'H', 'D', 'C'
+     */
     public Card(int rank, char suit) {
         this.rank = rank;
         this.suit = suit;
         black = (suit == 'S' || suit == 'C');
     }
 
+    /**
+     * Deep copy constructor for Card.
+     * @param other the Card to copy
+     */
     public Card(Card other) {
         this.rank = other.rank;
         this.suit = other.suit;
         this.black = other.black;
         this.location = other.location;
-    } // Deep copy for card
+    }
 
+    /**
+     * Returns a string representation of the card.
+     * @return String representation of the card
+     */
     @Override
     public String toString() {
         return switch (rank) {
