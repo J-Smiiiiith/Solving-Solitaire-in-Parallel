@@ -8,11 +8,22 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Run class to execute the Solitaire game solver.
+ * This class contains methods to run different solvers and output results.
+ */
 public class Run {
     static int MAX_REPEATS = 5;
     static int RANDOMNESS_PERCENTAGE;
     static int NUM_SIMULATIONS;
 
+    /**
+     * Outputs the current game state, possible moves, and chosen move.
+     * Used when testing the solvers.
+     * @param game the current game state
+     * @param moves the list of possible moves
+     * @param chosenMove the chosen move
+     */
     public static void outputGame(Solitaire game, ArrayList<Move> moves, Move chosenMove) {
         String output = "";
 
@@ -23,6 +34,12 @@ public class Run {
         System.out.println(output);
     }
 
+    /**
+     * Randomly selects a move from the list of possible moves and applies it to the game.
+     * Returns the number of moves made when the game is solved/unsolved.
+     * @param game the initial game state
+     * @return the number of moves made. - 1 if the game is unsolvable, + if the game is solvable.
+     */
     public static int randomSolitaireSolver(Solitaire game) {
         ArrayList<String> gameStates = new ArrayList<>();
         gameStates.add(game.getGameState());
@@ -55,6 +72,13 @@ public class Run {
         return -movesMade;
     }
 
+    /**
+     * Greedily selects the best move, based on a heuristic value, from the list of possible moves and applies
+     * it to the game.
+     * Returns the number of moves made when the game is solved/unsolved.
+     * @param game the initial game state
+     * @return the number of moves made. - 1 if the game is unsolvable, + if the game is solvable.
+     */
     public static int greedyHeuristicSolitaireSolver(Solitaire game) {
         ArrayList<String> gameStates = new ArrayList<>();
         gameStates.add(game.getGameState());
@@ -84,6 +108,13 @@ public class Run {
         return -movesMade;
     }
 
+    /**
+     * Greedily selects the best move, based on a heuristic value and priority, from the list of possible moves
+     * and applies it to the game.
+     * Returns the number of moves made when the game is solved/unsolved.
+     * @param game the initial game state
+     * @return the number of moves made. - 1 if the game is unsolvable, + if the game is solvable.
+     */
     public static int greedyHeuristicPrioritySolitaireSolver(Solitaire game) {
         ArrayList<String> gameStates = new ArrayList<>();
         gameStates.add(game.getGameState());
@@ -114,8 +145,15 @@ public class Run {
         return -movesMade;
     }
 
+    /**
+     * Used by the monteCarloSolitaireSolver in the move simulations.
+     * There is a RANDOMNESS_PERCENTAGE chance that a random move will be made. Otherwise, the solver
+     * greedily selects the best move, based on a heuristic value and priority
+     * Returns the number of 'face-up' cards left in the game
+     * @param game the initial game state of the simulated game.
+     * @return the number of 'face-up' cards left in the game.
+     */
     public static int greedyHeuristicPrioritySolitaireSolverWithRandom(Solitaire game) {
-        //Returns the number of visible cards remaining in the game.
         ArrayList<String> gameStates = new ArrayList<>();
         gameStates.add(game.getGameState());
         ArrayList<Move> possibleMoves;
@@ -150,6 +188,16 @@ public class Run {
         return -1;
     }
 
+    /**
+     * Monte Carlo solver that simulates moves and selects the best one based on the Monte Carlo score achieved
+     * by each move.
+     * Each simulation returns the number of 'face-up' cards left in the game, which is added to the Monte
+     * Carlo score of the move.
+     * Returns the number of moves made when the game is solved/unsolved.
+     * @param game the initial game state
+     * @param numSimulations the number of simulations to run for each move
+     * @return the number of moves made. - 1 if the game is unsolvable, + if the game is solvable.
+     */
     public static int monteCarloSolitaireSolver(Solitaire game, int numSimulations) {
         ArrayList<String> gameStates = new ArrayList<>();
         gameStates.add(game.getGameState());
@@ -206,6 +254,14 @@ public class Run {
         return -movesMade;
     }
 
+    /**
+     * Runs the specified solver for a given number of runs.
+     * Each game is run 'numThreads' times in parallel.
+     * Outputs the results, including the number of wins, time taken, and move averages.
+     * @param numRuns the number of runs to perform
+     * @param numThreads the number of threads to use
+     * @param solverType the type of solver to use ('r', 'g', 'p', or 'm')
+     */
     public static void runSolver(int numRuns, int numThreads, char solverType) {
         int numTotalWins = 0;
         int numTotalThreadWins = 0;
@@ -238,7 +294,6 @@ public class Run {
                             case 'm' -> monteCarloSolitaireSolver(game, NUM_SIMULATIONS);
                             default -> -1;
                         };
-//                        System.out.println(Thread.currentThread().getName() + ": " + result);
                         if (result > 0) {
                             numWins.getAndIncrement();
                             wonGamesMoves.add((double) result);
@@ -418,6 +473,12 @@ public class Run {
         return averages;
     }
 
+    /**
+     * Main method to run the Solitaire solvers.
+     * Accepts command line arguments for number of threads, number of runs, and solver type.
+     * If the solver type is 'm', it also accepts randomness percentage and number of simulations.
+     * @param args command line arguments
+     */
     public static void main(String[] args) {
         int NUM_THREADS;
         int NUM_RUNS;

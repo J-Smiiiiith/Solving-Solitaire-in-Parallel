@@ -7,15 +7,27 @@ import SolitaireSolver.Exceptions.InvalidRankException;
 import java.util.ArrayList;
 import java.util.Stack;
 
+/**
+ * Pile class representing a pile of cards in the game of Solitaire.
+ * Each pile contains hidden cards and a build stack.
+ */
 public class Pile {
     Stack<Card> hiddenCards;
     Stack<Card> buildStack;
 
+    /**
+     * Constructor for Pile.
+     * Initializes the hidden cards and build stack as empty stacks.
+     */
     public Pile() {
         hiddenCards = new Stack<>();
         buildStack = new Stack<>();
     }
 
+    /**
+     * Deep copy constructor for Pile.
+     * @param other the Pile to copy
+     */
     public Pile(Pile other) {
         this.hiddenCards = new Stack<>();
         for (Card c : other.getHiddenCards()) {
@@ -26,7 +38,7 @@ public class Pile {
         for (Card c : other.getBuildStack()) {
             this.buildStack.push(new Card(c));
         }
-    } // Deep copy for pile
+    }
 
     public void dealCard(Card card) {
         hiddenCards.push(card);
