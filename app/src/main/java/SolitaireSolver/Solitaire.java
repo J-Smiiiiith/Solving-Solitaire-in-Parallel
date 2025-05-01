@@ -6,12 +6,22 @@ import SolitaireSolver.Exceptions.EmptyStockException;
 import SolitaireSolver.Exceptions.InvalidMoveException;
 import SolitaireSolver.Exceptions.InvalidSuitException;
 
+/**
+ * Solitaire class representing the game of Solitaire.
+ * This class manages the deck, piles, foundation, and stock,
+ * and provides methods for dealing cards, making moves, and checking game state.
+ */
 public class Solitaire {
     Stack<Card> deck;
     Pile[] piles;
     Foundation foundation;
     Stock stock;
 
+    /**
+     * Constructor for Solitaire.
+     * Initializes the game with a shuffled deck and deals cards to the piles.
+     * @param deck the deck of cards to be used in the game
+     */
     public Solitaire(Deck deck) {
         this.deck = deck.getDeck();
         piles = new Pile[]{new Pile(), new Pile(), new Pile(), new Pile(), new Pile(), new Pile(), new Pile()};
@@ -25,6 +35,10 @@ public class Solitaire {
         stock = new Stock(newDeck);
     }
 
+    /**
+     * Deep copy constructor for Solitaire.
+     * @param other the Solitaire game to copy
+     */
     public Solitaire(Solitaire other) {
         this.foundation = new Foundation(other.foundation);
 
@@ -34,7 +48,7 @@ public class Solitaire {
         }
 
         this.stock = new Stock(other.stock);
-    } // Deep copy for solitaire
+    }
 
     private void dealCards() {
         for (int i = 0; i < 7; i++) {
@@ -128,7 +142,6 @@ public class Solitaire {
     public ArrayList<Move> getPossibleMoves() {
         ArrayList<Move> possibleMoves = new ArrayList<>();
         ArrayList<Card> usableCards = getUsableCards();
-        //System.out.println("Usable Cards: " + usableCards);
 
         for (Card card : usableCards) {
             if (card.getLocation() != 7) {
@@ -207,6 +220,12 @@ public class Solitaire {
         }
     }
 
+    /**
+     * Returns the best move from a list of moves based on the heuristic value.
+     * Used in the greedyHeuristicSolitaireSolver.
+     * @param moves possible moves
+     * @return the best move based on the heuristic value
+     */
     public Move getBestMove(ArrayList<Move> moves) {
         Move bestMove = moves.getFirst();
         for (Move move : moves) {
@@ -217,6 +236,12 @@ public class Solitaire {
         return bestMove;
     }
 
+    /**
+     * Returns the best move from a list of moves based on the heuristic value and priority.
+     * Used in the priorityHeuristicSolitaireSolverWithPriority.
+     * @param moves possible moves
+     * @return the best move based on the heuristic value and priority
+     */
     public Move getBestMoveWithPriority(ArrayList<Move> moves) {
         ArrayList<Move> bestMoves = new ArrayList<>();
         bestMoves.add(moves.getFirst());
@@ -239,6 +264,12 @@ public class Solitaire {
         return bestMovePriority;
     }
 
+    /**
+     * Returns the best move from a list of moves based on the Monte Carlo score.
+     * Used in the monteCarloSolitaireSolver.
+     * @param moves possible moves
+     * @return the best move based on the Monte Carlo score
+     */
     public Move getBestMoveMonetCarlo(ArrayList<Move> moves) {
         Move bestMove = moves.getFirst();
         for (Move move : moves) {
