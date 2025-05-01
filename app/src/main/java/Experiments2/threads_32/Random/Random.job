@@ -1,0 +1,24 @@
+#!/bin/bash
+#SBATCH --job-name=Random
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=96              # Match number of threads you use in your Java code
+#SBATCH --mem=4G
+#SBATCH --time=0-00:30:00
+#SBATCH --nodes=1
+#SBATCH --exclusive
+#SBATCH --mail-type=ALL                 # Mail events (NONE, BEGIN, END, FAIL, ALL)
+#SBATCH --mail-user=js3780@york.ac.uk   # Where to send mail
+#SBATCH --output=Random-%j.out
+#SBATCH --error=Random-%j.err        # Replace with your actual project/account name
+#SBATCH --account=cs-cshpc-2019
+#SBATCH --partition=nodes               # Or use "nodes" for longer bs
+
+module purge
+
+module load Java/21.0.2
+
+set -e
+
+# Run the Java program
+javac -d Solver/ ../../../SolitaireSolver/*.java ../../../SolitaireSolver/Exceptions/*java
+java -cp Solver SolitaireSolver.Run 32 10000 r
